@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "962783438468",
+    "firebase_url": "https://myevent-glbajaj-default-rtdb.firebaseio.com",
+    "project_id": "myevent-glbajaj",
+    "storage_bucket": "myevent-glbajaj.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:962783438468:android:ac7a54882beb2498cd44d1",
+        "android_client_info": {
+          "package_name": "com.om.glbapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "962783438468-a74aakrhquprfito23if4vd7vocomjj3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.om.glbapp",
+            "certificate_hash": "2993c959f76210f3b174ab9e0f5d4aae79354e95"
+          }
+        },
+        {
+          "client_id": "962783438468-6t48di82hihfjk109lq7h9i77m4c92s6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4Xtgo_7n5zhEl6rb7v3ylk5u0FTVAtTU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "962783438468-6t48di82hihfjk109lq7h9i77m4c92s6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
