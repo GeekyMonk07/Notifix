@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, duplicate_ignore
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class TopBar extends StatelessWidget {
@@ -7,6 +8,8 @@ class TopBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user=FirebaseAuth.instance.currentUser;
+
     return Material(
       elevation: 5,
       borderRadius: BorderRadius.only(
@@ -36,7 +39,7 @@ class TopBar extends StatelessWidget {
               ),
             ),
             Text(
-              "Hey, Anmol",
+              "Hey, ${user?.displayName}",
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             Container(

@@ -1,4 +1,6 @@
+// @dart=2.9
 import 'package:appnewui/Authentication/adminlogin/adminlogin.dart';
+import 'package:appnewui/Authentication/welcomePage/Controller.dart';
 import 'package:appnewui/Authentication/welcomePage/welcome.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/Contacts/contacts.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/Gallery/gallery.dart';
@@ -13,29 +15,34 @@ import 'package:appnewui/Pages/Permission/permission.dart';
 import 'package:appnewui/Pages/settingsPageItems/about.dart';
 import 'package:appnewui/Pages/settingsPageItems/eventform.dart';
 import 'package:appnewui/indexPage.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'Pages/HomePageItems/ItemBox/Clubs/clubs_page.dart';
 import 'Pages/HomePageItems/Notifications/notifs.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:appnewui/Authentication/Auth/firebase.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(const MyApp());
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        home: WelcomePage(),
+class MyApp extends StatelessWidget {
+@override
+  Widget build(BuildContext context) => ChangeNotifierProvider(
+      create: (context) => GoogleSignInProvider(),
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        title: "GLBITM App",
         initialRoute: "/",
+        // home: Controller(),
         routes: {
+          "/": (context) => Controller(),
           "/index": (context) => IndexPage(),
           "/login": (context) => AdminLogin(),
           "/notifs": (context) => Notifs(),
@@ -52,6 +59,6 @@ class _MyAppState extends State<MyApp> {
           "/organise": (context) => EventForm(),
           "/events": (context) => Events(),
           //"/contacts": (context) => Contacts(),
-        });
-  }
+        },
+      ));
 }

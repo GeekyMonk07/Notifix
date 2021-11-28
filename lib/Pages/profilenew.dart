@@ -1,11 +1,15 @@
 import 'package:appnewui/Pages/settingsPageItems/buttons.dart';
 import 'package:appnewui/constrants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final user=FirebaseAuth.instance.currentUser;
+print(user?.photoURL);
+
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Material(
@@ -50,25 +54,20 @@ class ProfilePage extends StatelessWidget {
               ClipOval(
                 child: Material(
                   color: Colors.transparent,
-                  child: Image.asset(
-                    "assets/images/user.png",
-                    fit: BoxFit.cover,
-                    width: 128,
-                    height: 128,
-                  ),
+                  child: Image.network("${user?.photoURL}"),
                 ),
               ),
               SizedBox(
                 height: 10,
               ),
               Text(
-                "Anmol Gangwar",
+                "${user?.displayName}",
                 // user.name,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
               ),
               const SizedBox(height: 4),
               Text(
-                "cs20108@glbitm.ac.in",
+                "${user?.email}",
                 //user.email,
                 style: TextStyle(color: Colors.grey, fontSize: 18),
               ),

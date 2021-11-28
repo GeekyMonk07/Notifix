@@ -1,6 +1,10 @@
 import 'package:appnewui/Pages/settingsPageItems/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
+import 'package:appnewui/Authentication/Auth/firebase.dart';
+import 'package:appnewui/Authentication/welcomePage/Controller.dart';
+
 
 class SettingsPage extends StatelessWidget {
   @override
@@ -60,25 +64,44 @@ class SettingsPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 40, right: 40, bottom: 20),
                 child: SettingsButton(
-                  ontap: () => Navigator.pushNamed(context, "/appfeedback"),
-                  imgtext: "App Feedback",
+                  ontap:(){
+                    print("Logged out clicked");
+                    final provider=Provider.of<GoogleSignInProvider>(context,listen:false);
+                    provider.signOutGoogle();
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Controller()));
+                  },
+                  imgtext: "LogOut",
                   imgUrl: "assets/images/itemboxIcons/feedback.png",
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 40, right: 40, bottom: 20),
                 child: SettingsButton(
-                  // ontap: () => Navigator.pushNamed(context, "/about"),
+                  ontap: () => Navigator.pushNamed(context, "/about"),
                   imgtext: "Contact Us",
                   imgUrl: "assets/images/contactus.png",
                 ),
               ),
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 40, right: 40, bottom: 20),
+              //   child: SettingsButton(
+              //     // ontap: () => Navigator.pushNamed(context, "/about"),
+              //     ontap:(){
+              //       final provider=Provider.of<GoogleSignInProvider>(context,listen:false);
+              //       provider.signOutGoogle();
+              //       Navigator.push(context, MaterialPageRoute(builder: (context) => Controller()));
+              //     },
+              //     imgtext: "LogOut",
+              //     imgUrl: "assets/images/contactus.png",
+              //   ),
+              // ),
               InkWell(
                   onTap: () {
                     hiddenCounter++;
                     if (hiddenCounter == 12) Navigator.pushNamed(context, "");
                   },
-                  child: Text("App version: 1.0"))
+                  child: Text("App version: 1.0")),
+
             ],
           ),
         ),
