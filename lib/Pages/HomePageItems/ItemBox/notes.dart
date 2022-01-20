@@ -1,71 +1,123 @@
-import 'package:appnewui/constrants.dart';
-import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 
-class Notes extends StatelessWidget {
+import 'dart:convert';
+import 'dart:io';
+import 'dart:math';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:appnewui/Pages/HomePageItems/ItemBox/firebase_api.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:path/path.dart';
+
+
+
+
+class MainPage extends StatefulWidget {
+  @override
+  _MainPageState createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  UploadTask? task;
+  File? file;
+  final database = FirebaseDatabase.instance.reference();
+
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(backgroundColor: secondaryPurple,
-          body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          IconButton(
-            icon: Icon(
-              Icons.arrow_back_ios,
-              size: 30,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: (102.0)),
-            child: Text(
-              "Notes",
-              //details.name,
-              style: TextStyle(
-                fontFamily: 'Avenir',
-                fontSize: 56,
-                color: Colors.black,
-                fontWeight: FontWeight.w900,
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: (118.0)),
-            child: Text(
-              'GLBITM',
-              style: TextStyle(
-                fontFamily: 'Avenir',
-                fontSize: 30,
-                color: Colors.black,
-                fontWeight: FontWeight.w300,
-              ),
-            ),
-          ),
-          Center(
-              child: Stack(
-            alignment: Alignment.center,
+    final fileName = file != null ? basename(file!.path) : 'No File Selected';
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Upload"),
+        centerTitle: true,
+      ),
+      body: Container(
+        padding: EdgeInsets.all(32),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Lottie.asset("assets/images/notes.json", height: 200),
-              // const Text(
-              //   "Uploading Timetable...",
-              //   style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-              // ),
+              ElevatedButton(onPressed: selectFile, child: Text("Select file")),
+              SizedBox(height: 8),
+
+              Text(
+                fileName,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              ),
+              SizedBox(height: 48),
+              ElevatedButton(onPressed: uploadFile, child: Text("Upload file")),
+
+
+              task != null ? buildUploadStatus(task!) : Container(),
             ],
-          )),
-          Center(
-            child: Text(
-              "Uploading Notes...",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-            ),
           ),
-        ]),
-      )),
+        ),
+      ),
     );
   }
+
+  Future selectFile() async {
+    final result = await FilePicker.platform.pickFiles(allowMultiple: false);
+
+    if (result == null) return;
+    final path = result.files.single.path!;
+
+    setState(() => file = File(path));
+  }
+
+  Future uploadFile() async {
+    if (file == null) return;
+
+    final fileName = basename(file!.path);
+    final destination = 'files/$fileName';
+
+    task = FirebaseApi.uploadFile(destination, file!);
+    setState(() {});
+
+    if (task == null) return;
+
+    final snapshot = await task!.whenComplete(() {});
+    final urlDownload = await snapshot.ref.getDownloadURL();
+
+    // print('Download-Link: $urlDownload');
+    set_database(urlDownload, fileName);
+  }
+  String cryptoRandom([int length = 32]){
+    final Random _random = Random.secure();
+    var values = List<int>.generate(length,(i)=>_random.nextInt(256));
+    return base64Url.encode(values);
+  }
+  Future set_database(String url, String file) async{
+    final uploadNotes = database.child('uploadnotes/');
+    try{
+      await uploadNotes.child(cryptoRandom()).update({'file_name':file,'url':url});
+      Fluttertoast.showToast(msg:"uploaded succesfully");
+      print("uploaded succesfully");
+    } catch(e){
+      print('You got error $e');
+    }
+  }
+
+  Widget buildUploadStatus(UploadTask task) => StreamBuilder<TaskSnapshot>(
+    stream: task.snapshotEvents,
+    builder: (context, snapshot) {
+      if (snapshot.hasData) {
+        final snap = snapshot.data!;
+        final progress = snap.bytesTransferred / snap.totalBytes;
+        final percentage = (progress * 100).toStringAsFixed(2);
+
+        return Text(
+          '$percentage %',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        );
+      } else {
+        return Container();
+      }
+    },
+  );
 }
