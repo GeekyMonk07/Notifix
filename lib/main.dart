@@ -4,6 +4,7 @@ import 'package:appnewui/Authentication/welcomePage/Controller.dart';
 import 'package:appnewui/Authentication/welcomePage/welcome.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/Contacts/contacts.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/Gallery/gallery.dart';
+import 'package:appnewui/Pages/HomePageItems/ItemBox/Gallery/pdf.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/cafeteria.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/events.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/feedback.dart';
@@ -49,8 +50,8 @@ class MyApp extends StatelessWidget {
           "/clubs": (context) => ClubsPage(),
           "/library": (context) => CentralLibrary(),
           "/timetable": (context) => TimeTable(),
-          "/notes": (context) => Notes(),
-          "/labs": (context) => Labs(),
+          "/notes": (context) => MainPage(),
+          "/labs": (context) => pdf_view(),
           "/cafeteria": (context) => Cafeteria(),
           "/gallery": (context) => PhotoGallery(),
           "/appfeedback": (context) => AppFeedback(),
