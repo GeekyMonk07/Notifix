@@ -1,10 +1,7 @@
-
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
-
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/firebase_api.dart';
@@ -13,8 +10,6 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path/path.dart';
 import 'package:intl/intl.dart';
-
-
 
 
 class MainPage extends StatefulWidget {
@@ -75,19 +70,12 @@ class _MainPageState extends State<MainPage> {
 
   Future uploadFile() async {
     if (file == null) return;
-
     final fileName = basename(file!.path);
-    final destination = 'files/$fileName';
-
+    final destination = 'File/$fileName';
     task = FirebaseApi.uploadFile(destination, file!);
-    setState(() {});
-
     if (task == null) return;
-
     final snapshot = await task!.whenComplete(() {});
     final urlDownload = await snapshot.ref.getDownloadURL();
-
-    // print('Download-Link: $urlDownload');
     set_database(urlDownload, fileName);
   }
   String cryptoRandom([int length = 32]){

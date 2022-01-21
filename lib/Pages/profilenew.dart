@@ -1,4 +1,3 @@
-import 'package:appnewui/Pages/settingsPageItems/buttons.dart';
 import 'package:appnewui/constrants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +7,6 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user=FirebaseAuth.instance.currentUser;
-print(user?.photoURL);
-
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Material(
