@@ -5,8 +5,20 @@ import 'package:provider/provider.dart';
 import 'package:appnewui/Authentication/Auth/firebase.dart';
 import 'package:appnewui/Authentication/welcomePage/Controller.dart';
 
+class SettingsPage extends StatefulWidget {
+  const SettingsPage({Key? key}) : super(key: key);
 
-class SettingsPage extends StatelessWidget {
+  @override
+  _SettingsPageState createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+  @override
+  void initState() {
+    super.initState();
+    print("INit state of settings page");
+  }
+
   @override
   Widget build(BuildContext context) {
     int hiddenCounter = 0;
@@ -64,11 +76,14 @@ class SettingsPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 40, right: 40, bottom: 20),
                 child: SettingsButton(
-                  ontap:(){
+                  ontap: () {
                     print("Logged out clicked");
-                    final provider=Provider.of<GoogleSignInProvider>(context,listen:false);
+                    final provider = Provider.of<GoogleSignInProvider>(context,
+                        listen: false);
                     provider.signOutGoogle();
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => Controller()));
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => Controller()),
+                        (Route<dynamic> route) => false);
                   },
                   imgtext: "LogOut",
                   imgUrl: "assets/images/itemboxIcons/feedback.png",
@@ -101,7 +116,6 @@ class SettingsPage extends StatelessWidget {
                     if (hiddenCounter == 12) Navigator.pushNamed(context, "");
                   },
                   child: Text("App version: 1.0")),
-
             ],
           ),
         ),

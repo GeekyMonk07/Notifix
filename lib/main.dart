@@ -1,8 +1,6 @@
 // @dart=2.9
 import 'package:appnewui/Authentication/adminlogin/adminlogin.dart';
 import 'package:appnewui/Authentication/welcomePage/Controller.dart';
-import 'package:appnewui/Authentication/welcomePage/welcome.dart';
-import 'package:appnewui/Pages/HomePageItems/ItemBox/Contacts/contacts.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/Gallery/gallery.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/Gallery/pdf.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/cafeteria.dart';
@@ -16,20 +14,42 @@ import 'package:appnewui/Pages/Permission/permission.dart';
 import 'package:appnewui/Pages/settingsPageItems/about.dart';
 import 'package:appnewui/Pages/settingsPageItems/eventform.dart';
 import 'package:appnewui/indexPage.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'Pages/HomePageItems/ItemBox/Clubs/clubs_page.dart';
 import 'Pages/HomePageItems/Notifications/notifs.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:appnewui/Authentication/Auth/firebase.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 
-void main() async {
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'high_importance_channel', // id
+    'High Importance Notifications', // title// description
+    importance: Importance.high,
+    playSound: true);
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+}
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
   runApp(MyApp());
 }
 
@@ -41,7 +61,6 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: "GLBITM App",
         initialRoute: "/",
-        // home: Controller(),
         routes: {
           "/": (context) => Controller(),
           "/index": (context) => IndexPage(),
@@ -59,7 +78,6 @@ class MyApp extends StatelessWidget {
           "/permission": (context) => PermissionPage(),
           "/organise": (context) => EventForm(),
           "/events": (context) => Events(),
-          //"/contacts": (context) => Contacts(),
         },
       ));
 }

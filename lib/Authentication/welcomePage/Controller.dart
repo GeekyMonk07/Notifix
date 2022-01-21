@@ -9,8 +9,6 @@ import 'package:appnewui/Authentication/adminlogin/adminlogin.dart';
 class Controller extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final user=FirebaseAuth.instance.currentUser;
-    // print(user);
     return Scaffold(
         body: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
@@ -20,13 +18,11 @@ class Controller extends StatelessWidget {
             else if(snapshot.hasData) {
               print("admin");
               return AdminLogin();
-
             }
             else if(snapshot.hasError)
-              return Center(child: Text('something went wrong '),);
+              return Center(child: Text('Something went wrong! '),);
             else{
               print("Welcome page");
-
               return WelcomePage();
             }
           },
