@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path/path.dart';
+import 'package:intl/intl.dart';
 
 
 
@@ -62,6 +63,8 @@ class _MainPageState extends State<MainPage> {
   }
 
   Future selectFile() async {
+
+
     final result = await FilePicker.platform.pickFiles(allowMultiple: false);
 
     if (result == null) return;
@@ -95,7 +98,11 @@ class _MainPageState extends State<MainPage> {
   Future set_database(String url, String file) async{
     final uploadNotes = database.child('uploadnotes/');
     try{
-      await uploadNotes.child(cryptoRandom()).update({'file_name':file,'url':url});
+      final DateTime now = DateTime.now();
+      final DateFormat formatter = DateFormat('dd MMMM hh:mma');
+      final String date = formatter.format(now);
+      print(date);
+      await uploadNotes.child(cryptoRandom()).update({'file_name':file,'url':url,'time':date,'timestamp':ServerValue.timestamp});
       Fluttertoast.showToast(msg:"uploaded succesfully");
       print("uploaded succesfully");
     } catch(e){

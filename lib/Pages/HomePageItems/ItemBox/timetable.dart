@@ -1,8 +1,13 @@
+
 import 'package:appnewui/constrants.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TimeTable extends StatelessWidget {
+  final database = FirebaseDatabase.instance.reference();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -24,27 +29,40 @@ class TimeTable extends StatelessWidget {
                           bottomRight: Radius.circular(22.0))))),
           body: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-              ),
-              itemCount: 8,
-              itemBuilder: (BuildContext context, int index) {
-                return
-                    //InkWell(
-                    // onTap: () => Navigator.pushNamed(context, "/branch"),
-                    //child:
-                    Card(
-                  color: secondaryPurple,
-                  margin: EdgeInsets.all(5),
-                  child: Center(
-                      child: Text("SEM " + (index + 1).toString(),
-                          style: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.bold))),
-                  //),
-                );
-              },
-            ),
+            child: StreamBuilder(
+                stream: database
+                    .child('uploadnotes')
+                    .orderByChild('timestamp')
+                    .limitToLast(5)
+                    .onValue,
+                builder: (context, AsyncSnapshot<Event> snapshot) {
+                  final tilesList = <ListTile>[];
+                  if (snapshot.hasData) {
+                    final abc = Map<String, dynamic>.from(
+                        (snapshot.data! as Event).snapshot.value);
+                    abc.forEach((key, value) {
+                      final next_pdf = Map<String, dynamic>.from(value);
+                      final orderTile = ListTile(
+                        leading: Icon(Icons.picture_as_pdf),
+                        title: Text(next_pdf['file_name']),
+                        subtitle: Text("Updated on "+(next_pdf['time']==null ?"":next_pdf['time'])),
+                        onTap: () {
+                          launch(next_pdf["url"]);
+                        },
+                      );
+                      tilesList.add(orderTile);
+                    });
+                    // tilesList.reversed.toList();
+                    return Expanded(
+                      child: ListView(
+                        children: tilesList,
+                        reverse: true,
+                        shrinkWrap: true,
+                      ),
+                    );
+                  }
+                  return Center(child: CircularProgressIndicator(),);
+                })
           )),
     );
   }
