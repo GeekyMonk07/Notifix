@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:appnewui/Pages/HomePageItems/UPLOAD%20BUTTON%20DATA/EventsPageItems/UploadTimeTable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -29,7 +30,7 @@ class _MainPageState extends State<MainPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Upload"),
+        title: Text("Upload pdfs"),
         centerTitle: true,
       ),
       body: Container(
@@ -38,17 +39,23 @@ class _MainPageState extends State<MainPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton(onPressed: selectFile, child: Text("Select file")),
+              UploadButton(
+                imgtext: "SELECT FILE",
+                colorButton: Color(0xffF1E6FF),
+                ontap: selectFile,
+              ),
               SizedBox(height: 8),
-
               Text(
                 fileName,
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
               SizedBox(height: 48),
-              ElevatedButton(onPressed: uploadFile, child: Text("Upload file")),
-
-
+              UploadButton(
+                imgtext: "UPLOAD",
+                colorButton: Color(0xff6F35A5),
+                ontap: uploadFile,
+              ),
+              SizedBox(height: 20),
               task != null ? buildUploadStatus(task!) : Container(),
             ],
           ),
@@ -102,6 +109,7 @@ class _MainPageState extends State<MainPage> {
     stream: task.snapshotEvents,
     builder: (context, snapshot) {
       if (snapshot.hasData) {
+        print("Triggered task upload");
         final snap = snapshot.data!;
         final progress = snap.bytesTransferred / snap.totalBytes;
         final percentage = (progress * 100).toStringAsFixed(2);
@@ -110,6 +118,7 @@ class _MainPageState extends State<MainPage> {
           '$percentage %',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         );
+        
       } else {
         return Container();
       }

@@ -6,7 +6,10 @@ import 'package:flutter/rendering.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TimeTable extends StatelessWidget {
+  final String branch;
+  TimeTable({required this.branch});
   final database = FirebaseDatabase.instance.reference();
+
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,7 @@ class TimeTable extends StatelessWidget {
               //elevation: 5.0,
               toolbarHeight: 60,
               title: Text(
-                "Timetable",
+                branch,
                 style: TextStyle(color: Colors.black),
               ),
               centerTitle: true,
@@ -31,7 +34,7 @@ class TimeTable extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: StreamBuilder(
                 stream: database
-                    .child('uploadnotes')
+                    .child('timetable/$branch')
                     .orderByChild('timestamp')
                     .limitToLast(5)
                     .onValue,

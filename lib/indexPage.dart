@@ -3,8 +3,6 @@
 import 'package:appnewui/Pages/eventpage.dart';
 import 'package:appnewui/Pages/homepage.dart';
 import 'package:appnewui/Pages/profilenew.dart';
-import 'package:appnewui/Pages/profilepage.dart';
-
 import 'package:appnewui/Pages/settingspage.dart';
 import 'package:flutter/material.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';

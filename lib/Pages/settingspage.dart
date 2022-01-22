@@ -97,19 +97,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   imgUrl: "assets/images/contactus.png",
                 ),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.only(left: 40, right: 40, bottom: 20),
-              //   child: SettingsButton(
-              //     // ontap: () => Navigator.pushNamed(context, "/about"),
-              //     ontap:(){
-              //       final provider=Provider.of<GoogleSignInProvider>(context,listen:false);
-              //       provider.signOutGoogle();
-              //       Navigator.push(context, MaterialPageRoute(builder: (context) => Controller()));
-              //     },
-              //     imgtext: "LogOut",
-              //     imgUrl: "assets/images/contactus.png",
-              //   ),
-              // ),
+
               InkWell(
                   onTap: () {
                     hiddenCounter++;

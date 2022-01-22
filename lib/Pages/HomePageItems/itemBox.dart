@@ -25,10 +25,11 @@ class ItemBox extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ItemBoxButton(
-                    ontap: () => Navigator.pushNamed(context, "/clubs"),
-                    imgUrl: "assets/images/itemboxIcons/club.png",
-                    imgCaption: "Clubs",
+                    ontap: () => Navigator.pushNamed(context, "/labs"),
+                    imgUrl: "assets/images/itemboxIcons/map.png",
+                    imgCaption: "Notice",
                   ),
+
                   ItemBoxButton(
                     ontap: () => Navigator.pushNamed(context, "/gallery"),
                     imgUrl: "assets/images/itemboxIcons/photo.png",
@@ -66,9 +67,9 @@ class ItemBox extends StatelessWidget {
                   imgCaption: "Feedback",
                 ),
                 ItemBoxButton(
-                  ontap: () => Navigator.pushNamed(context, "/labs"),
-                  imgUrl: "assets/images/itemboxIcons/map.png",
-                  imgCaption: "Notes",
+                  ontap: () => Navigator.pushNamed(context, "/clubs"),
+                  imgUrl: "assets/images/itemboxIcons/club.png",
+                  imgCaption: "Clubs",
                 ),
                 ItemBoxButton(
                   //ontap: () => Navigator.pushNamed(context, "/contacts"),
