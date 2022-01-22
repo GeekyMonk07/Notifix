@@ -2,14 +2,16 @@
 import 'package:appnewui/Authentication/adminlogin/adminlogin.dart';
 import 'package:appnewui/Authentication/welcomePage/Controller.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/Gallery/gallery.dart';
-import 'package:appnewui/Pages/HomePageItems/ItemBox/Gallery/pdf.dart';
+import 'package:appnewui/Pages/HomePageItems/UPLOAD%20BUTTON%20DATA/EventsPageItems/showNotice.dart';
+import 'package:appnewui/Pages/HomePageItems/ItemBox/showTimeTable.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/cafeteria.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/events.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/feedback.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/labs.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/library.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/notes.dart';
-import 'package:appnewui/Pages/HomePageItems/ItemBox/timetable.dart';
+import 'package:appnewui/Pages/HomePageItems/UPLOAD%20BUTTON%20DATA/EventsPageItems/UploadTimeTable.dart';
+import 'package:appnewui/Pages/HomePageItems/UPLOAD%20BUTTON%20DATA/EventsPageItems/uploadNotice.dart';
 import 'package:appnewui/Pages/Permission/permission.dart';
 import 'package:appnewui/Pages/settingsPageItems/about.dart';
 import 'package:appnewui/Pages/settingsPageItems/eventform.dart';
@@ -68,7 +70,7 @@ class MyApp extends StatelessWidget {
           "/notifs": (context) => Notifs(),
           "/clubs": (context) => ClubsPage(),
           "/library": (context) => CentralLibrary(),
-          "/timetable": (context) => TimeTable(),
+          "/timetable": (context) => TimeTables(),
           "/notes": (context) => MainPage(),
           "/labs": (context) => pdf_view(),
           "/cafeteria": (context) => Cafeteria(),
@@ -78,6 +80,8 @@ class MyApp extends StatelessWidget {
           "/permission": (context) => PermissionPage(),
           "/organise": (context) => EventForm(),
           "/events": (context) => Events(),
+          "/updateTimeTable":(context)=>UploadTimetable(),
+          "/updateNotice":(context)=>UploadNotice(),
         },
       ));
 }

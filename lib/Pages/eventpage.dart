@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
+import 'HomePageItems/UPLOAD BUTTON DATA/EventsPageItems/UploadTimeTable.dart';
 import 'settingsPageItems/buttons.dart';
 
 class EventPage extends StatelessWidget {
@@ -70,7 +71,7 @@ class EventPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 40, right: 40, bottom: 20),
                 child: SettingsButton(
-                  ontap: () {},
+                  ontap: () => Navigator.pushNamed(context, "/updateNotice"),
                   imgtext: "Add Notice",
                   imgUrl: "assets/images/itemboxIcons/bellIcon.png",
                 ),
@@ -78,7 +79,9 @@ class EventPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 40, right: 40, bottom: 20),
                 child: SettingsButton(
-                  ontap: () {},
+                  ontap: () {
+                    Navigator.pushNamed(context, "/updateTimeTable");
+                  },
                   imgtext: "Update TimeTable",
                   imgUrl: "assets/images/itemboxIcons/updatetimetabe.png",
                 ),

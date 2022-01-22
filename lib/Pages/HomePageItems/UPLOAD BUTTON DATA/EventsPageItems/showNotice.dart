@@ -17,7 +17,7 @@ class pdf_view extends StatelessWidget {
               //elevation: 5.0,
               toolbarHeight: 60,
               title: Text(
-                "Notes",
+                "Notices",
                 style: TextStyle(color: Colors.black),
               ),
               centerTitle: true,
@@ -31,7 +31,7 @@ class pdf_view extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: StreamBuilder(
                   stream: database
-                      .child('uploadnotes')
+                      .child('notices')
                       .orderByChild('timestamp')
                       .limitToLast(10)
                       .onValue,
@@ -43,12 +43,9 @@ class pdf_view extends StatelessWidget {
                       abc.forEach((key, value) {
                         final next_pdf = Map<String, dynamic>.from(value);
                         final orderTile = ListTile(
-                          leading: Icon(Icons.picture_as_pdf),
-                          title: Text(next_pdf['file_name']),
-                          subtitle: Text("Updated on "+(next_pdf['time']==null ?"":next_pdf['time'])),
-                          onTap: () {
-                            launch(next_pdf["url"]);
-                          },
+                          leading: Icon(Icons.doorbell_outlined),
+                          title: Text(next_pdf['title']),
+                          subtitle: Text(next_pdf['description']+ "\n\nUpdated on " + next_pdf['time']),
                         );
                         tilesList.add(orderTile);
                       });
