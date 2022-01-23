@@ -9,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
 import 'package:firebase_database/firebase_database.dart';
+import 'package:lottie/lottie.dart';
 
 import 'package:select_form_field/select_form_field.dart';
 
@@ -50,8 +51,10 @@ class _EventFormState extends State<EventForm> {
     super.initState();
     user = FirebaseAuth.instance.currentUser;
     setState(() {
-      userName = user.displayName;
-      email = user.email;
+      // userName = user.displayName;
+      // email = user.email;
+      userName = 'tanay';
+      email = 'tanaywhocodes@gmail.com';
     });
   }
 
@@ -146,7 +149,7 @@ class _EventFormState extends State<EventForm> {
       'venue': venue,
       'emailId': user?.email,
       'registrations': 0,
-      'timestamp':ServerValue.timestamp,
+      'timestamp': ServerValue.timestamp,
     };
 
     //pushing pending events
@@ -200,239 +203,339 @@ class _EventFormState extends State<EventForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: secondaryPurple,
-        toolbarHeight: 70,
-        title: Text(
-          "Organize your event!",
-          style: TextStyle(color: Colors.black),
-        ),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Center(
+    Size size = MediaQuery.of(context).size;
+    return Material(
+      color: Colors.white,
+      child: SafeArea(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 50.0,
+        children: [
+          // <-----------------------------------------------Top Bar-------------------------------------------->
+          Material(
+            elevation: 5,
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(22),
+                bottomRight: Radius.circular(22)),
+            child: Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Organize Your Event",
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 30.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Container(
-                          child: Center(
-                            child: Text('Event Form',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.normal,
-                                )),
+              height: size.height * .075,
+              width: size.width,
+              decoration: BoxDecoration(
+                  color: secondaryPurple,
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(22),
+                      bottomRight: Radius.circular(22))),
+            ),
+          ),
+          // <-----------------------------------------------Top Bar ends-------------------------------------------->
+
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  //<-------------------------- Animation STARTS-------------------------->
+
+                  Lottie.asset("assets/images/evenformpage.json", height: 200),
+
+                  //<-------------------------- Animation ENDS-------------------------->
+
+                  Container(
+                    padding: EdgeInsets.all(8),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Container(
+                              child: Center(
+                                child: Text('Event Form',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.normal,
+                                    )),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            filled: true,
-                            hintText: "Name of the Event",
-                            border: InputBorder.none,
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              cursorColor: primaryColor,
+                              decoration: InputDecoration(
+                                fillColor: secondaryPurple,
+                                filled: true,
+                                hintText: "Name of the Event",
+                                border: InputBorder.none,
+                              ),
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(30)
+                              ],
+                              onChanged: (value) => setState(() {
+                                name = value;
+                              }),
+                              validator: RequiredValidator(
+                                  errorText: "Required Field"),
+                            ),
                           ),
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(30)
-                          ],
-                          onChanged: (value) => setState(() {
-                            name = value;
-                          }),
-                          validator:
-                              RequiredValidator(errorText: "Required Field"),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          onChanged: (value) => setState(() {
-                            uniqueId = value;
-                          }),
-                          validator:
-                              RequiredValidator(errorText: "Required Field"),
-                          decoration: InputDecoration(
-                            filled: true,
-                            hintText: "Unique ID / Adm ID",
-                            border: InputBorder.none,
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              cursorColor: primaryColor,
+                              onChanged: (value) => setState(() {
+                                uniqueId = value;
+                              }),
+                              validator: RequiredValidator(
+                                  errorText: "Required Field"),
+                              decoration: InputDecoration(
+                                fillColor: secondaryPurple,
+                                filled: true,
+                                hintText: "Unique ID / Adm ID",
+                                border: InputBorder.none,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          validator: MultiValidator([
-                            RequiredValidator(errorText: "Required"),
-                          ]),
-                          onChanged: (value) => setState(() {
-                            topic = value;
-                          }),
-                          decoration: InputDecoration(
-                            filled: true,
-                            hintText:
-                                "Name of the event/purpose ( should not use -,.,# etc)",
-                            border: InputBorder.none,
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              cursorColor: primaryColor,
+                              validator: MultiValidator([
+                                RequiredValidator(errorText: "Required"),
+                              ]),
+                              onChanged: (value) => setState(() {
+                                topic = value;
+                              }),
+                              decoration: InputDecoration(
+                                fillColor: secondaryPurple,
+                                filled: true,
+                                hintText:
+                                    "Name of the event/purpose ( should not use -,.,# etc)",
+                                border: InputBorder.none,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: SelectFormField(
-                          type: SelectFormFieldType.dropdown,
-                          // or can be dialog
-                          initialValue: 'Not Selected',
-                          icon: Icon(Icons.format_shapes),
-                          labelText: 'Venue',
-                          items: _items,
-                          onChanged: (val) => venue = val,
-                          onSaved: (val) => venue = val!,
-                        ),
-                      ),
-                      Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Expanded(
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white10,
-                                    ),
-                                    child: Text(
-                                      (showTime != "")
-                                          ? showTime
-                                          : "Select Date",
-                                      style: TextStyle(
-                                          fontSize: 17, color: Colors.grey),
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: SelectFormField(
+                              cursorColor: primaryColor,
+
+                              type: SelectFormFieldType.dropdown,
+                              // or can be dialog
+                              initialValue: 'Not Selected',
+                              icon: Icon(
+                                Icons.format_shapes,
+                                color: primaryColor,
+                              ),
+                              labelText: 'Venue',
+                              style: TextStyle(color: primaryColor),
+                              items: _items,
+                              onChanged: (val) => venue = val,
+                              onSaved: (val) => venue = val!,
+                            ),
+                          ),
+                          Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white10,
+                                      ),
+                                      child: Text(
+                                        (showTime != "")
+                                            ? showTime
+                                            : "Select Date",
+                                        style: TextStyle(
+                                            fontSize: 17, color: Colors.black),
+                                      ),
                                     ),
                                   ),
+                                  IconButton(
+                                      onPressed: () async {
+                                        _selectDate(context);
+                                      },
+                                      icon: Icon(
+                                        Icons.calendar_today,
+                                        color: primaryColor,
+                                      ))
+                                ],
+                              )),
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: SelectFormField(
+                                type: SelectFormFieldType.dropdown,
+                                initialValue: 'C',
+                                icon: Icon(
+                                  Icons.format_shapes,
+                                  color: primaryColor,
                                 ),
-                                IconButton(
-                                    onPressed: () async {
-                                      _selectDate(context);
-                                    },
-                                    icon: Icon(Icons.calendar_today))
-                              ],
+                                labelText: 'Select Slot',
+                                style: TextStyle(color: primaryColor),
+                                items: _time,
+                                onChanged: (val) {
+                                  setState(() {
+                                    selected_slot = val;
+                                  });
+                                }),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              cursorColor: primaryColor,
+                              validator: RequiredValidator(
+                                  errorText: "Required Field"),
+                              onChanged: (value) => setState(() {
+                                tenure = value;
+                              }),
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: secondaryPurple,
+                                hintText: "Tenure in hrs",
+                                border: InputBorder.none,
+                              ),
                             ),
-                          )),
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: SelectFormField(
-                            type: SelectFormFieldType.dropdown,
-                            initialValue: 'C',
-                            icon: Icon(Icons.format_shapes),
-                            labelText: 'Select Slot',
-                            items: _time,
-                            onChanged: (val) {
-                              setState(() {
-                                selected_slot = val;
-                              });
-                            }
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              cursorColor: primaryColor,
+                              validator: RequiredValidator(
+                                  errorText: "Required Field"),
+                              onChanged: (value) => setState(() {
+                                description = value;
+                              }),
+                              maxLines: 6,
+                              decoration: InputDecoration(
+                                fillColor: secondaryPurple,
+                                filled: true,
+                                hintText: "Description",
+                                border: InputBorder.none,
+                              ),
                             ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          validator:
-                              RequiredValidator(errorText: "Required Field"),
-                          onChanged: (value) => setState(() {
-                            tenure = value;
-                          }),
-                          decoration: InputDecoration(
-                            filled: true,
-                            hintText: "Tenure in hrs",
-                            border: InputBorder.none,
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          validator:
-                              RequiredValidator(errorText: "Required Field"),
-                          onChanged: (value) => setState(() {
-                            description = value;
-                          }),
-                          maxLines: 6,
-                          decoration: InputDecoration(
-                            filled: true,
-                            hintText: "Description",
-                            border: InputBorder.none,
+                          SizedBox(
+                            height: 10,
                           ),
-                        ),
-                      ),
-                      Container(
-                        alignment: Alignment.bottomLeft,
-                        child: TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            "Event Poster",
-                            style: TextStyle(color: Colors.white),
+                          //<-----------------------------------------button for uploading poster---------------------->
+                          UploadButton(
+                            imgtext: "UPLOAD EVENT POSTER",
+                            colorButton: primaryColor,
+                            colorText: Colors.black,
+                            ontap: () {},
                           ),
-                          style: TextButton.styleFrom(
-                              backgroundColor: primaryColor),
-                        ),
+
+                          //<-----------------------------------------button for uploading poster ended ---------------------->
+                          SizedBox(
+                            height: 15,
+                          ),
+                          UploadButton(
+                            imgtext: "CONFIRM",
+                            colorButton: primaryColor,
+                            colorText: Colors.white,
+                            ontap: _isDisable
+                                ? null
+                                : () async {
+                                    setState(() {
+                                      _isDisable = true;
+                                    });
+                                    if (validate_form()) {
+                                      await check_slot(final_selected_time);
+                                      if (already_slot_exist == true) {
+                                        await snackBarMssgs(
+                                            'Slot Not Available , already Booked! Try out with other slots');
+                                      } else {
+                                        try {
+                                          await _inputUserEventData();
+                                          if (push_event) {
+                                            await snackBarMssgs(
+                                                'Slot booked, Verification pending');
+                                          }
+                                        } catch (e) {
+                                          await snackBarMssgs("$e");
+                                        }
+                                      }
+                                    } else {
+                                      await snackBarMssgs(
+                                          "Something went wrong!");
+                                    }
+                                    setState(() {
+                                      _isDisable = false;
+                                    });
+                                  },
+                          ),
+                        ],
                       ),
-                      TextButton(
-                          style: TextButton.styleFrom(
-                              backgroundColor: primaryColor),
-                          onPressed: _isDisable ?null: () async {
-                            setState(() {
-                              _isDisable = true;
-                            });
-                            if (validate_form()) {
-                              await check_slot(final_selected_time);
-                              if (already_slot_exist == true) {
-                                await snackBarMssgs(
-                                    'Slot Not Available , already Booked! Try out with other slots');
-                              } else {
-                                try {
-                                  await _inputUserEventData();
-                                  if (push_event) {
-                                    await snackBarMssgs(
-                                        'Slot booked, Verification pending');
-                                  }
-                                } catch (e) {
-                                  await snackBarMssgs("$e");
-                                }
-                              }
-                            } else {
-                              await snackBarMssgs("Something went wrong!");
-                            }
-                            setState(() {
-                              _isDisable = false;
-                            });
-                          },
-                          child: Text(_isDisable ? "Hold on...":"Confirm",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ))),
-                    ],
+                    ),
                   ),
-                ),
+                  SizedBox(
+                    height: 150.0,
+                  ),
+                ],
               ),
-              SizedBox(
-                height: 100.0,
-              ),
+            ),
+          )
+        ],
+      )),
+    );
+  }
+}
+
+//<-------------------------- CLASS FOR BUTTONS USED At the end--------------------->
+
+class UploadButton extends StatelessWidget {
+  final String imgtext;
+  final VoidCallback? ontap;
+  final Color? colorText;
+  final Color? colorButton;
+
+  const UploadButton(
+      {Key? key,
+      required this.imgtext,
+      this.ontap,
+      this.colorText,
+      this.colorButton})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      borderRadius: BorderRadius.circular(5),
+      color: colorButton,
+      //color: Color(0xffF1E6FF),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(5),
+        onTap: ontap,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+          ),
+          height: 50,
+          width: 300,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "$imgtext",
+                style: TextStyle(
+                    color: (colorButton == Color(0xff6F35A5))
+                        ? Colors.white
+                        : Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500),
+              )
             ],
           ),
         ),
