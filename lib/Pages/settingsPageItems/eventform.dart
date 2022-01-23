@@ -51,10 +51,10 @@ class _EventFormState extends State<EventForm> {
     super.initState();
     user = FirebaseAuth.instance.currentUser;
     setState(() {
-      // userName = user.displayName;
-      // email = user.email;
-      userName = 'tanay';
-      email = 'tanaywhocodes@gmail.com';
+      userName = user.displayName;
+      email = user.email;
+      // userName = 'tanay';
+      // email = 'tanaywhocodes@gmail.com';
     });
   }
 
@@ -348,6 +348,14 @@ class _EventFormState extends State<EventForm> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
+                                  IconButton(
+                                      onPressed: () async {
+                                        _selectDate(context);
+                                      },
+                                      icon: Icon(
+                                        Icons.calendar_today,
+                                        color: primaryColor,
+                                      )),
                                   Padding(
                                     padding: const EdgeInsets.all(10.0),
                                     child: Container(
@@ -363,14 +371,6 @@ class _EventFormState extends State<EventForm> {
                                       ),
                                     ),
                                   ),
-                                  IconButton(
-                                      onPressed: () async {
-                                        _selectDate(context);
-                                      },
-                                      icon: Icon(
-                                        Icons.calendar_today,
-                                        color: primaryColor,
-                                      ))
                                 ],
                               )),
                           Padding(
