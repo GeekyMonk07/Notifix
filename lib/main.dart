@@ -2,6 +2,7 @@
 import 'package:appnewui/Authentication/adminlogin/adminlogin.dart';
 import 'package:appnewui/Authentication/welcomePage/Controller.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/Gallery/gallery.dart';
+import 'package:appnewui/Pages/HomePageItems/ItemBox/fetching_timetable.dart';
 import 'package:appnewui/Pages/HomePageItems/UPLOAD%20BUTTON%20DATA/EventsPageItems/showNotice.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/showTimeTable.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/cafeteria.dart';
