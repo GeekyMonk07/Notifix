@@ -54,6 +54,7 @@ Future<void> main() async {
   );
   runApp(MyApp());
 }
+// flutter build apk --build-name=1.0.1 --build-number=1
 
 class MyApp extends StatelessWidget {
 @override
@@ -77,7 +78,7 @@ class MyApp extends StatelessWidget {
           "/gallery": (context) => PhotoGallery(),
           "/appfeedback": (context) => AppFeedback(),
           "/about": (context) => AboutUs(),
-          "/permission": (context) => PermissionPage(),
+          "/permission": (context) => Verify(),
           "/organise": (context) => EventForm(),
           "/events": (context) => Events(),
           "/updateTimeTable":(context)=>UploadTimetable(),
