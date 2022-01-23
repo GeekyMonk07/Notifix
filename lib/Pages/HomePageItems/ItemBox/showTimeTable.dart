@@ -6,157 +6,181 @@ import 'fetching_timetable.dart';
 class TimeTables extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-            appBar: AppBar(
-                backgroundColor: Colors.transparent,
-                //elevation: 5.0,
-                toolbarHeight: 60,
-                title: Text(
-                  "Timetable",
-                  style: TextStyle(color: Colors.black),
-                ),
-                centerTitle: true,
-                flexibleSpace: Container(
-                    decoration: BoxDecoration(
-                        color: secondaryPurple,
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(22.0),
-                            bottomRight: Radius.circular(22.0))))),
-            body: Material(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GridView.count(crossAxisCount: 2, children: <Widget>[
-                  Container(
-                      child: Column(children: [
-                    Image.asset('assets/images/sem1.png',
-                        fit: BoxFit.cover, width: 120, height: 120),
-                        TextButton(
-                          onPressed: (){
-                            Navigator.push(context,MaterialPageRoute(builder: (context)=> TimeTable(branch:"SEM 1")));
-                          },
-                          child: Text('SEM 1',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold,
-                              )),
-                        ),
-                  ])),
-                  Container(
-                      child: Column(children: [
-                    Image.asset('assets/images/sem2.png',
-                        fit: BoxFit.cover, width: 120, height: 120),
-                        TextButton(
-                          onPressed: (){
-                            Navigator.push(context,MaterialPageRoute(builder: (context)=> TimeTable(branch:"SEM 2")));
-                          },
-                          child: Text('SEM 2',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold,
-                              )),
-                        ),
-                  ])),
-                  Container(
-                      child: Column(children: [
-                    Image.asset('assets/images/cse.png',
-                        fit: BoxFit.cover, width: 120, height: 120),
-                    TextButton(
-                      onPressed: (){
-                        Navigator.push(context,MaterialPageRoute(builder: (context)=> TimeTable(branch:"CSE")));
-                      },
-                      child: Text('CSE',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                          )),
-                    ),
-                  ])),
-                  Container(
-                      child: Column(children: [
-                    Image.asset('assets/images/ece.png',
-                        fit: BoxFit.cover, width: 120, height: 120),
-                        TextButton(
-                          onPressed: (){
-                            Navigator.push(context,MaterialPageRoute(builder: (context)=> TimeTable(branch:"ECE")));
-                          },
-                          child: Text('ECE',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold,
-                              )),
-                        ),
-                  ])),
-                  Container(
-                      child: Column(children: [
-                    Image.asset('assets/images/it.png',
-                        fit: BoxFit.cover, width: 120, height: 120),
-                        TextButton(
-                          onPressed: (){
-                            Navigator.push(context,MaterialPageRoute(builder: (context)=> TimeTable(branch:"IT")));
-                          },
-                          child: Text('IT',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold,
-                              )),
-                        ),
-                  ])),
-                  Container(
-                      child: Column(children: [
-                    Image.asset('assets/images/mech.png',
-                        fit: BoxFit.cover, width: 120, height: 120),
-                        TextButton(
-                          onPressed: (){
-                            Navigator.push(context,MaterialPageRoute(builder: (context)=> TimeTable(branch:"ME")));
-                          },
-                          child: Text('MECH',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold,
-                              )),
-                        ),
-                  ])),
-                  Container(
-                      child: Column(children: [
-                    Image.asset('assets/images/civil.png',
-                        fit: BoxFit.cover, width: 120, height: 120),
-                        TextButton(
-                          onPressed: (){
-                            Navigator.push(context,MaterialPageRoute(builder: (context)=> TimeTable(branch:"CE")));
-                          },
-                          child: Text('CIVIL',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold,
-                              )),
-                        ),
-                  ])),
-                  Container(
-                      child: Column(children: [
-                    Image.asset('assets/images/ee.png',
-                        fit: BoxFit.cover, width: 120, height: 120),
-                        TextButton(
-                          onPressed: (){
-                            Navigator.push(context,MaterialPageRoute(builder: (context)=> TimeTable(branch:"EE")));
-                          },
-                          child: Text('EE',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold,
-                              )),
-                        ),
-                  ])),
-                ]),
+    Size size = MediaQuery.of(context).size;
+    return Material(
+      color: Colors.white,
+      child: SafeArea(
+          child: Column(
+        children: [
+          // <-----------------------------------------------Top Bar-------------------------------------------->
+          Material(
+            elevation: 5,
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(22),
+                bottomRight: Radius.circular(22)),
+            child: Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Time Table",
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
-            )));
+              height: size.height * .075,
+              width: size.width,
+              decoration: BoxDecoration(
+                  color: Color(0xffF1E6FF),
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(22),
+                      bottomRight: Radius.circular(22))),
+            ),
+          ),
+          // <-----------------------------------------------Top Bar-------------------------------------------->
+          SizedBox(
+            height: size.height * .02,
+          ),
+          Expanded(
+              child: GridView.count(
+            // mainAxisSpacing: 20,
+            crossAxisSpacing: 5,
+            padding: EdgeInsets.only(bottom: 30),
+            scrollDirection: Axis.vertical,
+            childAspectRatio: 1,
+            shrinkWrap: true,
+
+            mainAxisSpacing: 5,
+            crossAxisCount: 2,
+            children: [
+              //<----------------------------------------------------------------------------------------->
+              ContainerBlock(
+                imageurl: 'assets/images/sem1.png',
+                branch: "SEM 1",
+                tap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TimeTable(branch: "SEM 1")));
+                },
+              ),
+              //<----------------------------------------------------------------------------------------->
+              ContainerBlock(
+                imageurl: 'assets/images/sem2.png',
+                branch: "SEM 2",
+                tap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TimeTable(branch: "SEM 2")));
+                },
+              ),
+              //<----------------------------------------------------------------------------------------->
+              ContainerBlock(
+                imageurl: 'assets/images/cse.png',
+                branch: "CSE",
+                tap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TimeTable(branch: "CSE")));
+                },
+              ),
+              //<----------------------------------------------------------------------------------------->
+              ContainerBlock(
+                imageurl: 'assets/images/ece.png',
+                branch: "ECE",
+                tap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TimeTable(branch: "ECE")));
+                },
+              ),
+              //<----------------------------------------------------------------------------------------->
+              ContainerBlock(
+                imageurl: 'assets/images/it.png',
+                branch: "IT",
+                tap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TimeTable(branch: "IT")));
+                },
+              ),
+              //<----------------------------------------------------------------------------------------->
+              ContainerBlock(
+                imageurl: 'assets/images/mech.png',
+                branch: "MECH",
+                tap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TimeTable(branch: "ME")));
+                },
+              ),
+              //<----------------------------------------------------------------------------------------->
+              ContainerBlock(
+                imageurl: 'assets/images/civil.png',
+                branch: "CIVIL",
+                tap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TimeTable(branch: "CE")));
+                },
+              ),
+              //<----------------------------------------------------------------------------------------->
+              ContainerBlock(
+                imageurl: 'assets/images/ee.png',
+                branch: "EE",
+                tap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TimeTable(branch: "EE")));
+                },
+              ),
+
+              //<----------------------------------------------------------------------------------------->
+            ],
+          )),
+        ],
+      )),
+    );
+  }
+}
+
+//<--------------------------------class for making block of timetable---------------------------->
+class ContainerBlock extends StatelessWidget {
+  final VoidCallback? tap;
+  final String? branch;
+  final String? imageurl;
+  const ContainerBlock({Key? key, this.tap, this.branch, this.imageurl})
+      : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Material(
+      color: Colors.white,
+      child: InkWell(
+        onTap: tap,
+        child: Container(
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Image.asset(
+            '$imageurl',
+            fit: BoxFit.fitHeight,
+            width: size.width * .3,
+          ),
+          Text('$branch',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+              )),
+        ])),
+      ),
+    );
   }
 }

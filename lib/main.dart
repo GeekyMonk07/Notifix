@@ -25,7 +25,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', // id
     'High Importance Notifications', // title// description
@@ -33,18 +32,20 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
     playSound: true);
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-FlutterLocalNotificationsPlugin();
+    FlutterLocalNotificationsPlugin();
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
 }
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
 
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
@@ -57,7 +58,7 @@ Future<void> main() async {
 // flutter build apk --build-name=1.0.1 --build-number=1
 
 class MyApp extends StatelessWidget {
-@override
+  @override
   Widget build(BuildContext context) => ChangeNotifierProvider(
       create: (context) => GoogleSignInProvider(),
       child: MaterialApp(
@@ -81,8 +82,8 @@ class MyApp extends StatelessWidget {
           "/permission": (context) => Verify(),
           "/organise": (context) => EventForm(),
           "/events": (context) => Events(),
-          "/updateTimeTable":(context)=>UploadTimetable(),
-          "/updateNotice":(context)=>UploadNotice(),
+          "/updateTimeTable": (context) => UploadTimetable(),
+          "/updateNotice": (context) => UploadNotice(),
         },
       ));
 }

@@ -34,11 +34,11 @@ class TimeTableBox extends StatelessWidget {
                     padding: const EdgeInsets.only(
                       left: 15,
                     ),
-                    child: Text("No more hassle to check your"),
+                    child: Text("No more hassle to check"),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 15),
-                    child: Text("college timetable!"),
+                    child: Text("your college timetable!"),
                   )
                 ],
               ),
