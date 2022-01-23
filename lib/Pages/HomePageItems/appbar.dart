@@ -8,7 +8,6 @@ class TopBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user=FirebaseAuth.instance.currentUser;
 
     return Material(
       elevation: 5,
@@ -39,7 +38,7 @@ class TopBar extends StatelessWidget {
               ),
             ),
             Text(
-              "Hey, ${user?.displayName}",
+              "Hey, ${extractName()}",
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             Container(
@@ -53,5 +52,20 @@ class TopBar extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String extractName(){
+    final user = FirebaseAuth.instance.currentUser;
+    String first_name = "";
+    String? name = user?.displayName;
+    var idx = 0;
+    // print(name);
+    while(idx<name!.length){
+      if(name[idx]==' ')break;
+      first_name += name[idx];
+      idx++;
+    }
+    return first_name;
+
   }
 }

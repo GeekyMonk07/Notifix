@@ -15,10 +15,17 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  bool _isLoading = false;
   void click() {
+    setState(() {
+      _isLoading = true;
+    });
     print("Signing with google clicked------>");
     final provider=Provider.of<GoogleSignInProvider>(context,listen:false);
     provider.signInWithGoogle();
+    setState(() {
+      _isLoading = false;
+    });
 
   }
   @override
@@ -26,7 +33,7 @@ class _BodyState extends State<Body> {
     Size size = MediaQuery.of(context).size;
 
     return WelcomeBackground(
-      body: SafeArea(
+      body: _isLoading ? Center(child:CircularProgressIndicator()): SafeArea(
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
