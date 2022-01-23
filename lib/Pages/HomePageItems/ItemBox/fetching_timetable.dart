@@ -84,8 +84,14 @@ class TimeTable extends StatelessWidget {
                             abc.forEach((key, value) {
                               final next_pdf = Map<String, dynamic>.from(value);
                               final orderTile = ListTile(
-                                leading: Icon(Icons.picture_as_pdf),
-                                title: Text(next_pdf['file_name']),
+                                leading: Icon(
+                                  Icons.picture_as_pdf,
+                                  color: primaryColor,
+                                ),
+                                title: Text(
+                                  next_pdf['file_name'],
+                                  style: TextStyle(color: Colors.black),
+                                ),
                                 subtitle: Text("Updated on " +
                                     (next_pdf['time'] == null
                                         ? ""
@@ -111,13 +117,17 @@ class TimeTable extends StatelessWidget {
                               padding: const EdgeInsets.all(8),
                               itemCount: tilesList.length,
                               itemBuilder: (BuildContext context, int index) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: secondaryPurple,
+                                return Material(
+                                  elevation: 3,
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      color: secondaryPurple,
+                                    ),
+                                    height: 70,
+                                    child: Center(child: tilesList[index]),
                                   ),
-                                  height: 60,
-                                  child: tilesList[index],
                                 );
                               },
                               separatorBuilder:
@@ -126,7 +136,9 @@ class TimeTable extends StatelessWidget {
                             ));
                           }
                           return Center(
-                            child: CircularProgressIndicator(),
+                            child: CircularProgressIndicator(
+                              color: primaryColor,
+                            ),
                           );
                         }),
                   )
