@@ -130,6 +130,7 @@ class _EventFormState extends State<EventForm> {
         lastDate: DateTime(2050));
     if (pickedDate != null)
       setState(() {
+        already_slot_exist = false;
         time_slot = pickedDate;
         showTime = DateFormat('dd MMMM yyyy').format(time_slot);
       });
@@ -153,15 +154,9 @@ class _EventFormState extends State<EventForm> {
     };
 
     //pushing pending events
-    try {
+
       await _database.child("/pending_events").push().update(nextEvent);
-      setState(() {
-        push_event = true;
-      });
-      print("Success");
-    } catch (e) {
-      print("Failed $e");
-    }
+
   }
 
   Future<void> snackBarMssgs(String msg) async {
@@ -391,6 +386,7 @@ class _EventFormState extends State<EventForm> {
                                   items: _time,
                                   onChanged: (val) {
                                     setState(() {
+                                      already_slot_exist=false;
                                       selected_slot = val;
                                     });
                                   }),
@@ -463,17 +459,17 @@ class _EventFormState extends State<EventForm> {
                                         } else {
                                           try {
                                             await _inputUserEventData();
-                                            if (push_event) {
+
                                               await snackBarMssgs(
                                                   'Slot booked, Verification pending');
-                                            }
+
                                           } catch (e) {
                                             await snackBarMssgs("$e");
                                           }
                                         }
                                       } else {
                                         await snackBarMssgs(
-                                            "Something went wrong!");
+                                            "Fill form correctely!");
                                       }
                                       setState(() {
                                         _isDisable = false;
