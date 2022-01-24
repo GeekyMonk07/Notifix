@@ -1,5 +1,7 @@
+import 'package:appnewui/Authentication/welcomePage/welcome.dart';
 import 'package:appnewui/Pages/settingsPageItems/buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:appnewui/Authentication/Auth/firebase.dart';
@@ -13,17 +15,20 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  late bool _isLoading;
   @override
   void initState() {
     super.initState();
-    print("INit state of settings page");
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     int hiddenCounter = 0;
     Size size = MediaQuery.of(context).size;
-    return SafeArea(
+    return _isLoading ? Center(child:CircularProgressIndicator()) : SafeArea(
       child: Material(
         color: Colors.white,
         child: SafeArea(
@@ -76,14 +81,25 @@ class _SettingsPageState extends State<SettingsPage> {
               Padding(
                 padding: const EdgeInsets.only(left: 40, right: 40, bottom: 20),
                 child: SettingsButton(
-                  ontap: () {
+                  ontap: () async {
+                    setState(() {
+                      _isLoading = true;
+                    });
                     print("Logged out clicked");
-                    final provider = Provider.of<GoogleSignInProvider>(context,
-                        listen: false);
-                    provider.signOutGoogle();
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => Controller()),
-                        (Route<dynamic> route) => false);
+                    try{
+                      final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+                      await provider.signOutGoogle();
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(builder: (context) => WelcomePage()),
+                              (Route<dynamic> route) => false);
+                    }catch(e){
+                      Fluttertoast.showToast(msg: "Error while logging out");
+                      setState(() {
+                        _isLoading = false;
+                      });
+                    }
+
+
                   },
                   imgtext: "LogOut",
                   imgUrl: "assets/images/itemboxIcons/feedback.png",
