@@ -51,10 +51,10 @@ class _EventFormState extends State<EventForm> {
     super.initState();
     user = FirebaseAuth.instance.currentUser;
     setState(() {
-      // userName = user.displayName;
-      // email = user.email;
-      userName = 'tanay';
-      email = 'tanaywhocodes@gmail.com';
+      userName = user.displayName;
+      email = user.email;
+      // userName = 'tanay';
+      // email = 'tanaywhocodes@gmail.com';
     });
   }
 
