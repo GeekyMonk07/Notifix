@@ -15,20 +15,13 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  late bool _isLoading;
-  @override
-  void initState() {
-    super.initState();
-    setState(() {
-      _isLoading = false;
-    });
-  }
+
 
   @override
   Widget build(BuildContext context) {
     int hiddenCounter = 0;
     Size size = MediaQuery.of(context).size;
-    return _isLoading ? Center(child:CircularProgressIndicator()) : SafeArea(
+    return SafeArea(
       child: Material(
         color: Colors.white,
         child: SafeArea(
@@ -82,22 +75,19 @@ class _SettingsPageState extends State<SettingsPage> {
                 padding: const EdgeInsets.only(left: 40, right: 40, bottom: 20),
                 child: SettingsButton(
                   ontap: () async {
-                    setState(() {
-                      _isLoading = true;
-                    });
+
                     print("Logged out clicked");
                     try{
                       final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
                       await provider.signOutGoogle();
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) => WelcomePage()),
-                              (Route<dynamic> route) => false);
+
                     }catch(e){
                       Fluttertoast.showToast(msg: "Error while logging out");
-                      setState(() {
-                        _isLoading = false;
-                      });
+
                     }
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => WelcomePage()),
+                            (Route<dynamic> route) => false);
 
 
                   },
