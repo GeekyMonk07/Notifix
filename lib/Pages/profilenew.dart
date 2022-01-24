@@ -58,6 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
     print(user?.photoURL);
+    String alter_image_url = "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png";
 
     Size size = MediaQuery.of(context).size;
 
@@ -106,7 +107,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       ClipOval(
                         child: Material(
                           color: Colors.transparent,
-                          child: Image.network("${user?.photoURL}"),
+                          child: Image.network(user?.photoURL==null ? alter_image_url:"${user!.photoURL}",fit: BoxFit.cover,
+                            width: 60,
+                            height: 60,),
+
                         ),
                       ),
                       SizedBox(
