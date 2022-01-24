@@ -150,7 +150,7 @@ class _UploadTimetableState extends State<UploadTimetable> {
               UploadButton(
                 imgtext: "SELECT FILE",
                 colorButton: Color(0xffF1E6FF),
-                ontap: selectFile,
+                ontap: _isButtonDisabled? null : selectFile,
               ),
               //<-------------------------- FILE SELECTION BUTTON ENDS--------------------->
               SizedBox(height: 8),
@@ -209,7 +209,7 @@ class _UploadTimetableState extends State<UploadTimetable> {
     return base64Url.encode(values);
   }
 
-  Future set_database(String url, String file) async {
+  Future set_database(String url, String temp_file) async {
     final uploadNotes = database.child('timetable/$DropDownBranchValue/');
     try {
       final DateTime now = DateTime.now();
@@ -217,18 +217,21 @@ class _UploadTimetableState extends State<UploadTimetable> {
       final String date = formatter.format(now);
       print(date);
       await uploadNotes.child(cryptoRandom()).update({
-        'file_name': file,
+        'file_name': temp_file,
         'url': url,
         'time': date,
         'timestamp': ServerValue.timestamp
       });
-      Fluttertoast.showToast(msg: "uploaded succesfully");
+
+      Fluttertoast.showToast(msg: "Uploaded succesfully");
 
     } catch (e) {
       Fluttertoast.showToast(msg: 'You got error $e');
     }
     setState(() {
+      task = null;
       _isButtonDisabled = false;
+      file = null;
     });
   }
 
