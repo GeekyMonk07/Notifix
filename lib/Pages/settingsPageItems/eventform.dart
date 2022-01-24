@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -434,19 +434,19 @@ class _EventFormState extends State<EventForm> {
                               height: 10,
                             ),
                             //<-----------------------------------------button for uploading poster---------------------->
-                            UploadButton(
-                              imgtext: "UPLOAD EVENT POSTER",
-                              colorButton: primaryColor,
-                              colorText: Colors.black,
-                              ontap: () {},
-                            ),
+                            // UploadButton(
+                            //   imgtext: "UPLOAD EVENT POSTER",
+                            //   colorButton: primaryColor,
+                            //   colorText: Colors.black,
+                            //   ontap: () {},
+                            // ),
 
                             //<-----------------------------------------button for uploading poster ended ---------------------->
                             SizedBox(
                               height: 15,
                             ),
                             UploadButton(
-                              imgtext: "CONFIRM",
+                              imgtext: _isDisable?"Hold on..":"CONFIRM",
                               colorButton: primaryColor,
                               colorText: Colors.white,
                               ontap: _isDisable
