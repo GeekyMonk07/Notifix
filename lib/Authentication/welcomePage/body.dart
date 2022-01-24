@@ -1,8 +1,10 @@
+import 'package:appnewui/Authentication/adminlogin/adminlogin.dart';
 import 'package:appnewui/Authentication/welcomePage/background.dart';
 import 'package:appnewui/Authentication/widget/button.dart';
 import 'package:appnewui/constrants.dart';
 import 'package:flutter/material.dart';
 import 'package:appnewui/Authentication/Auth/firebase.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:lottie/lottie.dart';
 
@@ -16,16 +18,23 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   bool _isLoading = false;
-  void click() {
+  void click() async{
     setState(() {
       _isLoading = true;
     });
     print("Signing with google clicked------>");
-    final provider=Provider.of<GoogleSignInProvider>(context,listen:false);
-    provider.signInWithGoogle();
-    setState(() {
-      _isLoading = false;
-    });
+    try{
+      final provider=Provider.of<GoogleSignInProvider>(context,listen:false);
+      await provider.signInWithGoogle();
+      Navigator.push(context,MaterialPageRoute(builder: (context)=>AdminLogin()));
+    }catch(e){
+      Fluttertoast.showToast(msg: "Error while logging in");
+      setState(() {
+        _isLoading = false;
+      });
+    }
+
+
 
   }
   @override

@@ -15,7 +15,7 @@ class GoogleSignInProvider extends ChangeNotifier {
   GoogleSignInAccount get user => _user;
 
   Future signInWithGoogle() async {
-    try {
+
       final GoogleSignInAccount googleuser = await googleSignIn.signIn();
       if (googleuser == null) return;
       _user = googleuser;
@@ -30,18 +30,13 @@ class GoogleSignInProvider extends ChangeNotifier {
       await FirebaseAuth.instance.signInWithCredential(credential);
       print(_user);
       notifyListeners();
-    } catch (e) {
-      Fluttertoast.showToast(msg: e);
-    }
+
   }
 
   Future signOutGoogle() async {
-    try{
+
       await googleSignIn.disconnect();
       FirebaseAuth.instance.signOut();
-    }catch(e){
-      Fluttertoast.showToast(msg: e);
-    }
 
   }
 
