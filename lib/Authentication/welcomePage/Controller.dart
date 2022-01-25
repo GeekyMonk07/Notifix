@@ -14,6 +14,7 @@ class Controller extends StatelessWidget {
               return Center(child: CircularProgressIndicator());
             }
             else if (snapshot.hasData) {
+              print("admin");
               return AdminLogin();
             }
             return WelcomePage();
