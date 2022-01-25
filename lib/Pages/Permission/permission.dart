@@ -31,7 +31,7 @@ class _VerifyState extends State<Verify> {
     _ref = FirebaseDatabase.instance
         .reference()
         .child('/pending_events')
-        .orderByChild('name');
+        .orderByChild('timestamp');
   }
 
   Widget _buildContactItem({required Map nextOrder}) {

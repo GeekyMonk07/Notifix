@@ -9,50 +9,45 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:lottie/lottie.dart';
 
-
 class Body extends StatefulWidget {
-  const Body({ Key? key }) : super(key: key);
+  const Body({Key? key}) : super(key: key);
 
   @override
   _BodyState createState() => _BodyState();
 }
 
 class _BodyState extends State<Body> {
-  bool _isLoading = false;
-  @override
-  void initState(){
-    setState(() {
-      _isLoading = false;
-    });
-  }
-  void click() async{
-    setState(() {
-      _isLoading = true;
-    });
+  // bool _isLoading = false;
+  // @override
+  // void initState(){
+  //   setState(() {
+  //     _isLoading = false;
+  //   });
+  // }
+  void click() async {
+    // setState(() {
+    //   _isLoading = true;
+    // });
     print("Signing with google clicked------>");
-    try{
-      final provider=Provider.of<GoogleSignInProvider>(context,listen:false);
-      await provider.signInWithGoogle();
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => Controller()),
-              (Route<dynamic> route) => false);
-    }catch(e){
-      Fluttertoast.showToast(msg: "Error while logging in");
 
-    }
-    setState(() {
-      _isLoading = false;
-    });
+    final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+    provider.signInWithGoogle();
+    Navigator.push(context,MaterialPageRoute(builder: (context)=>Controller()));
+    // Navigator.of(context).pushAndRemoveUntil(
+    //     MaterialPageRoute(builder: (context) => Controller()),
+    //         (Route<dynamic> route) => false);
 
-
-
+    // setState(() {
+    //   _isLoading = false;
+    // });
   }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
+    // _isLoading ? Center(child:CircularProgressIndicator()):
     return WelcomeBackground(
-      body: _isLoading ? Center(child:CircularProgressIndicator()): SafeArea(
+      body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -69,9 +64,7 @@ class _BodyState extends State<Body> {
                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15),
               ),
               SizedBox(height: size.height * 0.05),
-              
               Lottie.asset("assets/images/welcome.json", height: 250),
-              
               SizedBox(height: size.height * 0.05),
               CircularButton(
                 text: "LOGIN",
@@ -87,4 +80,3 @@ class _BodyState extends State<Body> {
     );
   }
 }
-
