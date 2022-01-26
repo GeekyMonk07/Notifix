@@ -28,7 +28,7 @@ class pdf_view extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Notices",
+                    "Notifications",
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -67,13 +67,16 @@ class pdf_view extends StatelessWidget {
                         ),
                         title: Text(
                           next_pdf['title'],
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25,
+                          ),
                         ),
                         subtitle: Text(
                           next_pdf['description'] +
                               "\n\nUpdated on " +
                               next_pdf['time'],
-                          style: TextStyle(color: primaryColor),
+                          style: TextStyle(color: primaryColor, fontSize: 20),
                         ),
                       );
                       tilesList.add(orderTile);

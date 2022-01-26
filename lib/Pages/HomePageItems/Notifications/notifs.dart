@@ -24,25 +24,26 @@ class _NotifsState extends State<Notifs> {
       FirebaseDatabase.instance.reference().child('/verified');
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _ref = FirebaseDatabase.instance
         .reference()
         .child('/verified')
         .orderByChild('name');
     user = FirebaseAuth.instance.currentUser;
-    assert(user!=null);
+    assert(user != null);
     extractEmail();
   }
 
-  void extractEmail(){
+  void extractEmail() {
     String email = user?.email;
     var idx = 0;
-    while(email[idx]!='@'){
+    while (email[idx] != '@') {
       uniqueId += email[idx];
       idx++;
     }
   }
+
   Future<bool> check(String time) async {
     bool ok = false;
 
@@ -56,7 +57,6 @@ class _NotifsState extends State<Notifs> {
       if (!snapshot.exists) return false;
       values.forEach((key, values) {
         if (key == time) ok = true;
-
       });
     });
 
@@ -89,7 +89,7 @@ class _NotifsState extends State<Notifs> {
       child: Scaffold(
         body: Container(
           child: Padding(
-            padding: const EdgeInsets.all(25.0),
+            padding: const EdgeInsets.all(15.0),
             child: FirebaseAnimatedList(
               query: _ref,
               itemBuilder: (BuildContext context, DataSnapshot snapshot,
@@ -100,182 +100,188 @@ class _NotifsState extends State<Notifs> {
                 var count = snapshot.value['registrations'];
                 int ok = 1;
 
-                return Container(
-                  height: 200,
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  color: secondaryPurple,
-                  child: ExpansionCard(
-                    backgroundColor: secondaryPurple,
-                    title: Container(
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                          Text(
-                            snapshot.value['name'].toString(),
-                            style: TextStyle(
-                              fontFamily: 'Avenir',
-                              fontSize: 30,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w400,
+                return Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Container(
+                    height: 200,
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    color: secondaryPurple,
+                    child: ExpansionCard(
+                      backgroundColor: secondaryPurple,
+                      title: Container(
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                            Text(
+                              snapshot.value['name'].toString(),
+                              style: TextStyle(
+                                fontFamily: 'Avenir',
+                                fontSize: 30,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
-                          ),
-                          Text(
-                            snapshot.value['date'].toString(),
+                            Text(
+                              snapshot.value['date'].toString(),
+                              style: TextStyle(
+                                fontFamily: 'Avenir',
+                                fontSize: 15,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            )
+                          ])),
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 7),
+                          alignment: Alignment.bottomLeft,
+                          child: Text(
+                            snapshot.value['topic'].toString(),
                             style: TextStyle(
                               fontFamily: 'Avenir',
                               fontSize: 15,
                               color: Colors.black,
                               fontWeight: FontWeight.w300,
                             ),
-                          )
-                        ])),
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 7),
-                        alignment: Alignment.bottomLeft,
-                        child: Text(
-                          snapshot.value['topic'].toString(),
-                          style: TextStyle(
-                            fontFamily: 'Avenir',
-                            fontSize: 15,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w300,
                           ),
                         ),
-                      ),
-                      TextButton(
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) => Dialog(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              12.0)), //this right here
-                                      child: Container(
-                                        // height: 300.0,
-                                        // width: 600.0,
+                        TextButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) => Dialog(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                                12.0)), //this right here
+                                        child: Container(
+                                          // height: 300.0,
+                                          // width: 600.0,
 
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
-                                              child: Column(
-                                                children: <Widget>[
-                                                  Image.asset(
-                                                      'assets/images/5.jpg'),
-                                                ],
-                                              ),
-                                            ),
-                                            Center(
-                                                child: Text(
-                                              "Event Details",
-                                              style: TextStyle(
-                                                  fontSize: 20.0,
-                                                  fontWeight: FontWeight.bold),
-                                            )),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Container(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(10.0),
                                                 child: Column(
-                                                  children: [
-                                                    Text(
-                                                      "Event Name : ${snapshot.value['name']}",
-                                                      style: TextStyle(
-                                                          fontSize: 18.0),
-                                                    ),
-                                                    Text(
-                                                      "Topic : ${snapshot.value['topic']}",
-                                                      style: TextStyle(
-                                                          fontSize: 18.0),
-                                                    ),
-                                                    Text(
-                                                      "Date : ${snapshot.value['date']}",
-                                                      style: TextStyle(
-                                                          fontSize: 18.0),
-                                                    ),
-                                                    Text(
-                                                      "Venue : ${snapshot.value['venue']}",
-                                                      style: TextStyle(
-                                                          fontSize: 18.0),
-                                                    ),
-                                                    Text(
-                                                      "Description : ${snapshot.value['description']}",
-                                                      style: TextStyle(
-                                                          fontSize: 18.0),
-                                                    )
+                                                  children: <Widget>[
+                                                    Image.asset(
+                                                        'assets/images/5.jpg'),
                                                   ],
                                                 ),
                                               ),
-                                            ),
-                                            FloatingActionButton.extended(
-                                              onPressed: () async => {
-                                                // s=snapshot.value['date'],
-                                                //
-                                                // s=s.substring(0,11)+" "+snapshot.value['topic'],
-                                                s = snapshot.value['date'] + " "+snapshot.value['topic'] ,
-                                                // print(snapshot.value),
-                                                if (await check(s) == false)
-                                                  {
-                                                    reference
-                                                        .child(snapshot
-                                                            .value['key'])
-                                                        .update({
-                                                      'registrations': count + 1
-                                                    }).whenComplete(
-                                                            () => ok = 0),
-                                                    _database
-                                                        .child(
-                                                            '/user_details_for_registration/$uniqueId/$s')
-                                                        .set(snapshot.value)
-                                                        .then((value) => print(
-                                                            'updated 1st '))
-                                                        .catchError((onError) =>
-                                                            print(
-                                                                'error log 1')),
-                                                    _database
-                                                        .child(
-                                                            '/event_registration_user_detials/$s')
-                                                        .push()
-                                                        .set(
-                                                            {'emailId': user!.email})
-                                                        .then((value) =>
-                                                            print('pushed 2nd'))
-                                                        .catchError((onError) =>
-                                                            print(onError
-                                                                .toString())),
-                                                  }
-                                                else if (await check(s) == true)
-                                                  {
-                                                    _showDeleteDialog(),
-                                                  }
-                                              },
-                                              label: Text("Register"),
-                                              backgroundColor: primaryColor,
-                                              icon: Icon(Icons.add),
-                                            ),
-                                          ],
+                                              Center(
+                                                  child: Text(
+                                                "Event Details",
+                                                style: TextStyle(
+                                                    fontSize: 20.0,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Container(
+                                                  child: Column(
+                                                    children: [
+                                                      Text(
+                                                        "Event Name : ${snapshot.value['name']}",
+                                                        style: TextStyle(
+                                                            fontSize: 18.0),
+                                                      ),
+                                                      Text(
+                                                        "Topic : ${snapshot.value['topic']}",
+                                                        style: TextStyle(
+                                                            fontSize: 18.0),
+                                                      ),
+                                                      Text(
+                                                        "Date : ${snapshot.value['date']}",
+                                                        style: TextStyle(
+                                                            fontSize: 18.0),
+                                                      ),
+                                                      Text(
+                                                        "Venue : ${snapshot.value['venue']}",
+                                                        style: TextStyle(
+                                                            fontSize: 18.0),
+                                                      ),
+                                                      Text(
+                                                        "Description : ${snapshot.value['description']}",
+                                                        style: TextStyle(
+                                                            fontSize: 18.0),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              FloatingActionButton.extended(
+                                                onPressed: () async => {
+                                                  // s=snapshot.value['date'],
+                                                  //
+                                                  // s=s.substring(0,11)+" "+snapshot.value['topic'],
+                                                  s = snapshot.value['date'] +
+                                                      " " +
+                                                      snapshot.value['topic'],
+                                                  // print(snapshot.value),
+                                                  if (await check(s) == false)
+                                                    {
+                                                      reference
+                                                          .child(snapshot
+                                                              .value['key'])
+                                                          .update({
+                                                        'registrations':
+                                                            count + 1
+                                                      }).whenComplete(
+                                                              () => ok = 0),
+                                                      _database
+                                                          .child(
+                                                              '/user_details_for_registration/$uniqueId/$s')
+                                                          .set(snapshot.value)
+                                                          .then((value) => print(
+                                                              'updated 1st '))
+                                                          .catchError(
+                                                              (onError) => print(
+                                                                  'error log 1')),
+                                                      _database
+                                                          .child(
+                                                              '/event_registration_user_detials/$s')
+                                                          .push()
+                                                          .set({
+                                                            'emailId':
+                                                                user!.email
+                                                          })
+                                                          .then((value) =>
+                                                              print(
+                                                                  'pushed 2nd'))
+                                                          .catchError((onError) =>
+                                                              print(onError
+                                                                  .toString())),
+                                                    }
+                                                  else if (await check(s) ==
+                                                      true)
+                                                    {
+                                                      _showDeleteDialog(),
+                                                    }
+                                                },
+                                                label: Text("Register"),
+                                                backgroundColor: primaryColor,
+                                                icon: Icon(Icons.add),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ));
-                          },
-                          child: Text("Details")),
-                    ],
+                                      ));
+                            },
+                            child: Text("Details")),
+                      ],
+                    ),
                   ),
                 );
               },
-
             ),
-
           ),
-
         ),
-
       ),
-
     );
   }
 }

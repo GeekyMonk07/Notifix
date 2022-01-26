@@ -8,7 +8,6 @@ class TopBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Material(
       elevation: 5,
       borderRadius: BorderRadius.only(
@@ -45,7 +44,7 @@ class TopBar extends StatelessWidget {
               height: 25,
               width: 25,
               child: InkWell(
-                  onTap: () => Navigator.pushNamed(context, "/notifs"),
+                  onTap: () => Navigator.pushNamed(context, "/labs"),
                   child: Image.asset("assets/images/bellicon.png")),
             ),
           ],
@@ -54,18 +53,17 @@ class TopBar extends StatelessWidget {
     );
   }
 
-  String extractName(){
+  String extractName() {
     final user = FirebaseAuth.instance.currentUser;
     String first_name = "";
     String? name = user?.displayName;
     var idx = 0;
     // print(name);
-    while(idx<name!.length){
-      if(name[idx]==' ')break;
+    while (idx < name!.length) {
+      if (name[idx] == ' ') break;
       first_name += name[idx];
       idx++;
     }
     return first_name;
-
   }
 }

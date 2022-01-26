@@ -31,7 +31,7 @@ class _EventsState extends State<Events> {
                     Padding(
                       padding: const EdgeInsets.only(left: (90.0)),
                       child: Text(
-                        "Events",
+                        "Notices",
                         //details.name,
                         style: TextStyle(
                           fontFamily: 'Avenir',

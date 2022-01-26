@@ -86,6 +86,16 @@ class EventPage extends StatelessWidget {
                   imgUrl: "assets/images/itemboxIcons/updatetimetabe.png",
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.only(left: 40, right: 40, bottom: 20),
+                child: SettingsButton(
+                  ontap: () {
+                    Navigator.pushNamed(context, "/notes");
+                  },
+                  imgtext: "Upload PDFs",
+                  imgUrl: "assets/images/itemboxIcons/note.png",
+                ),
+              ),
             ],
           ),
         ),

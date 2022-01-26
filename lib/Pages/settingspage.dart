@@ -15,8 +15,6 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-
-
   @override
   Widget build(BuildContext context) {
     int hiddenCounter = 0;
@@ -75,21 +73,18 @@ class _SettingsPageState extends State<SettingsPage> {
                 padding: const EdgeInsets.only(left: 40, right: 40, bottom: 20),
                 child: SettingsButton(
                   ontap: () async {
-
                     print("Logged out clicked");
-                    try{
-                      final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+                    try {
+                      final provider = Provider.of<GoogleSignInProvider>(
+                          context,
+                          listen: false);
                       await provider.signOutGoogle();
-
-                    }catch(e){
+                    } catch (e) {
                       Fluttertoast.showToast(msg: "Error while logging out");
-
                     }
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(builder: (context) => WelcomePage()),
-                            (Route<dynamic> route) => false);
-
-
+                        (Route<dynamic> route) => false);
                   },
                   imgtext: "LogOut",
                   imgUrl: "assets/images/itemboxIcons/feedback.png",
@@ -98,12 +93,11 @@ class _SettingsPageState extends State<SettingsPage> {
               Padding(
                 padding: const EdgeInsets.only(left: 40, right: 40, bottom: 20),
                 child: SettingsButton(
-                  ontap: () => Navigator.pushNamed(context, "/about"),
-                  imgtext: "Contact Us",
+                  ontap: () => Navigator.pushNamed(context, "/appfeedback"),
+                  imgtext: "App Feedback",
                   imgUrl: "assets/images/contactus.png",
                 ),
               ),
-
               InkWell(
                   onTap: () {
                     hiddenCounter++;

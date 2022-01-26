@@ -15,6 +15,8 @@ import 'package:appnewui/Pages/HomePageItems/ItemBox/notes.dart';
 import 'package:appnewui/Pages/HomePageItems/UPLOAD%20BUTTON%20DATA/EventsPageItems/UploadTimeTable.dart';
 import 'package:appnewui/Pages/HomePageItems/UPLOAD%20BUTTON%20DATA/EventsPageItems/uploadNotice.dart';
 import 'package:appnewui/Pages/Permission/permission.dart';
+import 'package:appnewui/Pages/Permission/permissionCard.dart';
+import 'package:appnewui/Pages/eventpage.dart';
 import 'package:appnewui/Pages/settingsPageItems/about.dart';
 import 'package:appnewui/Pages/settingsPageItems/eventform.dart';
 import 'package:appnewui/indexPage.dart';
@@ -77,6 +79,7 @@ class MyApp extends StatelessWidget {
           "/timetable": (context) => TimeTables(),
           "/notes": (context) => MainPage(),
           "/labs": (context) => pdf_view(),
+          "/labspage": (context) => Labs(),
           "/cafeteria": (context) => Cafeteria(),
           "/gallery": (context) => PhotoGallery(),
           "/appfeedback": (context) => AppFeedback(),
