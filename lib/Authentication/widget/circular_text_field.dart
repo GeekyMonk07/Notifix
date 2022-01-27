@@ -1,3 +1,4 @@
+import 'package:appnewui/constrants.dart';
 import 'package:flutter/material.dart';
 
 class RoundedTextField extends StatelessWidget {
@@ -6,10 +7,14 @@ class RoundedTextField extends StatelessWidget {
   final IconData? icon, suffixicon;
   final bool privacy;
   final TextInputType keyType;
+  final String? data;
+  final Function(String)? ontap;
 
   const RoundedTextField(
       {Key? key,
       required this.text,
+      this.ontap,
+      this.data,
       required this.color,
       required this.privacy,
       required this.icon,
@@ -19,31 +24,36 @@ class RoundedTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     Size size = MediaQuery.of(context).size;
     return Material(
       borderRadius: BorderRadius.circular(29),
-      color: Color(0xfffac439),
+      color: secondaryPurple,
       child: Container(
         alignment: Alignment.center,
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
         height: 55,
         width: size.width * .8,
-        child: TextFormField(
-          cursorColor: color,
-          obscureText: privacy,
-          keyboardType: keyType, //type of keyboard
+        child: Form(
+          key: _formKey,
+          child: TextFormField(
+            onChanged: ontap,
+            cursorColor: color,
+            obscureText: privacy,
+            keyboardType: keyType, //type of keyboard
 
-          decoration: InputDecoration(
-              hintText: text,
-              border: InputBorder.none,
-              icon: Icon(
-                icon,
-                color: color,
-              ),
-              suffixIcon: Icon(
-                suffixicon,
-                color: color,
-              )),
+            decoration: InputDecoration(
+                hintText: text,
+                border: InputBorder.none,
+                icon: Icon(
+                  icon,
+                  color: color,
+                ),
+                suffixIcon: Icon(
+                  suffixicon,
+                  color: color,
+                )),
+          ),
         ),
       ),
     );

@@ -1,7 +1,9 @@
 import 'package:appnewui/Authentication/adminlogin/background.dart';
+import 'package:appnewui/Authentication/signup/signup.dart';
 import 'package:appnewui/Authentication/widget/button.dart';
 import 'package:appnewui/constrants.dart';
 import 'package:appnewui/indexPage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -93,7 +95,11 @@ class _AdminBodyState extends State<AdminBody> {
                 text: "Faculty",
                 color: primaryColor,
                 textColor: Colors.white,
-                press: () => Navigator.push(context,MaterialPageRoute(builder: (context)=>IndexPage())),
+                press: () async{
+
+
+                  Navigator.push(context,MaterialPageRoute(builder: (context)=>IndexPage()));
+                },
               ),
               SizedBox(
                 height: 20,
@@ -102,7 +108,10 @@ class _AdminBodyState extends State<AdminBody> {
                 text: "Student",
                 color: secondaryPurple,
                 textColor: Colors.black,
-                press: () => Navigator.push(context,MaterialPageRoute(builder: (context)=>IndexPage())),
+                press: () async{
+
+                  Navigator.push(context,MaterialPageRoute(builder: (context)=>SignupPage()));
+                }
               ),
               SizedBox(height: size.height * 0.05),
             ],
