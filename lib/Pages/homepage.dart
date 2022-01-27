@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
                   children: [
                     FloatingNotice(),
                     const SizedBox(
-                      height: 20,
+                      height: 12,
                     ),
                     Padding(
                       padding: const EdgeInsets.all(15),
