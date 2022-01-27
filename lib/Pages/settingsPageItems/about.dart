@@ -15,8 +15,8 @@ class _AboutUsState extends State<AboutUs> {
     Container(
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         ClipOval(
-          child: Image.network(
-            'https://media-exp1.licdn.com/dms/image/C5603AQEuJ6ArNquxXQ/profile-displayphoto-shrink_200_200/0/1642517894474?e=1648684800&v=beta&t=-sMPPNG1FxrxUgB9w_5lYOQQOcJAhYTSpl7_kiH_pEQ',
+          child: Image.asset(
+            'assets/images/TANAY.jpg',
             fit: BoxFit.cover,
             width: 100,
             height: 100,
@@ -60,7 +60,7 @@ class _AboutUsState extends State<AboutUs> {
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         ClipOval(
           child: Image.asset(
-            'assets/images/pfp.png',
+            'assets/images/saumya.jpg',
             fit: BoxFit.cover,
             width: 100,
             height: 100,

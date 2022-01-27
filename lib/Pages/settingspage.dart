@@ -57,46 +57,46 @@ class _SettingsPageState extends State<SettingsPage> {
                           bottomRight: Radius.circular(22))),
                 ),
               ),
-              Lottie.asset("assets/images/settingsAnimation.json", height: 300),
+              Lottie.asset("assets/images/82488-team-members-meetup.json",
+                  height: 250),
               SizedBox(
-                height: 10,
+                height: 20,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 40, right: 40, bottom: 20),
-                child: SettingsButton(
-                  ontap: () => Navigator.pushNamed(context, "/about"),
-                  imgtext: "Our Team",
-                  imgUrl: "assets/images/ourteam.png",
-                ),
+              SettingsButton(
+                ontap: () => Navigator.pushNamed(context, "/about"),
+                imgtext: "OUR TEAM",
+                imgUrl: "assets/images/ourteam.png",
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 40, right: 40, bottom: 20),
-                child: SettingsButton(
-                  ontap: () async {
-                    print("Logged out clicked");
-                    try {
-                      final provider = Provider.of<GoogleSignInProvider>(
-                          context,
-                          listen: false);
-                      await provider.signOutGoogle();
-                    } catch (e) {
-                      Fluttertoast.showToast(msg: "Error while logging out");
-                    }
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => WelcomePage()),
-                        (Route<dynamic> route) => false);
-                  },
-                  imgtext: "LogOut",
-                  imgUrl: "assets/images/itemboxIcons/feedback.png",
-                ),
+              SizedBox(
+                height: 12,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 40, right: 40, bottom: 20),
-                child: SettingsButton(
-                  ontap: () => Navigator.pushNamed(context, "/appfeedback"),
-                  imgtext: "App Feedback",
-                  imgUrl: "assets/images/contactus.png",
-                ),
+              SettingsButton(
+                ontap: () async {
+                  print("Logged out clicked");
+                  try {
+                    final provider = Provider.of<GoogleSignInProvider>(context,
+                        listen: false);
+                    await provider.signOutGoogle();
+                  } catch (e) {
+                    Fluttertoast.showToast(msg: "Error while logging out");
+                  }
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => WelcomePage()),
+                      (Route<dynamic> route) => false);
+                },
+                imgtext: "LOGOUT",
+                imgUrl: "assets/images/itemboxIcons/feedback.png",
+              ),
+              SizedBox(
+                height: 12,
+              ),
+              SettingsButton(
+                ontap: () => Navigator.pushNamed(context, "/appfeedback"),
+                imgtext: "APP FEEDBACK",
+                imgUrl: "assets/images/contactus.png",
+              ),
+              SizedBox(
+                height: 12,
               ),
               InkWell(
                   onTap: () {
