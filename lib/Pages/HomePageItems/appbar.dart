@@ -2,6 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'string_extension.dart';
 
 class TopBar extends StatelessWidget {
   const TopBar({Key? key}) : super(key: key);
@@ -64,6 +65,7 @@ class TopBar extends StatelessWidget {
       first_name += name[idx];
       idx++;
     }
-    return first_name;
+
+    return first_name.toTitleCase();
   }
 }
