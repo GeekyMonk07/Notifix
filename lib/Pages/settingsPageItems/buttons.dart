@@ -23,11 +23,11 @@ class SettingsButton extends StatelessWidget {
           height: 50,
           width: 300,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
-                width: 30,
-              ),
+              // SizedBox(
+              //   width: 30,
+              // ),
               Container(height: 35, width: 35, child: Image.asset("$imgUrl")),
               SizedBox(
                 width: 10,
@@ -35,7 +35,8 @@ class SettingsButton extends StatelessWidget {
               Text(
                 "$imgtext",
                 style: TextStyle(
-                    color: Color(0xff6F35A5),
+                    // color: Color(0xff6F35A5),
+                    color: Colors.black,
                     fontSize: 18,
                     fontWeight: FontWeight.w500),
               )

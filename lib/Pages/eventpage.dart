@@ -13,91 +13,97 @@ class EventPage extends StatelessWidget {
     return Material(
       color: Colors.white,
       child: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Material(
-                elevation: 5,
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(22),
-                    bottomRight: Radius.circular(22)),
-                child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Lottie.asset("assets/images/eventpageAnimataino2.json",
-                          height: 30),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "Events",
-                        style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold),
-                      ),
-                    ],
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Material(
+              elevation: 5,
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(22),
+                  bottomRight: Radius.circular(22)),
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Lottie.asset("assets/images/eventAnimation.json",
+                    //     height: 30),
+                    // SizedBox(
+                    //   width: 10,
+                    // ),
+                    Text(
+                      "Events",
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                height: 60,
+                width: size.width,
+                decoration: BoxDecoration(
+                    color: Color(0xffF1E6FF),
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(22),
+                        bottomRight: Radius.circular(22))),
+              ),
+            ),
+            Expanded(
+                child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                children: [
+                  Lottie.asset("assets/images/81153-admin.json", height: 255),
+                  SizedBox(
+                    height: 10,
                   ),
-                  height: 60,
-                  width: size.width,
-                  decoration: BoxDecoration(
-                      color: Color(0xffF1E6FF),
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(22),
-                          bottomRight: Radius.circular(22))),
-                ),
+                  SettingsButton(
+                    ontap: () => Navigator.pushNamed(context, "/permission"),
+                    imgtext: "VERIFY EVENTS",
+                    imgUrl: "assets/images/itemboxIcons/verify.png",
+                  ),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  SettingsButton(
+                    ontap: () => Navigator.pushNamed(context, "/organise"),
+                    imgtext: "ORGANISE     ",
+                    imgUrl: "assets/images/itemboxIcons/organise.png",
+                  ),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  SettingsButton(
+                    ontap: () => Navigator.pushNamed(context, "/updateNotice"),
+                    imgtext: "ADD NOTICE",
+                    imgUrl: "assets/images/itemboxIcons/bellIcon.png",
+                  ),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  SettingsButton(
+                    ontap: () {
+                      Navigator.pushNamed(context, "/updateTimeTable");
+                    },
+                    imgtext: "UPDATE TIMETABLE",
+                    imgUrl: "assets/images/itemboxIcons/updatetimetabe.png",
+                  ),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  SettingsButton(
+                    ontap: () {
+                      Navigator.pushNamed(context, "/notes");
+                    },
+                    imgtext: "UPLOAD PDFs",
+                    imgUrl: "assets/images/itemboxIcons/note.png",
+                  ),
+                  SizedBox(
+                    height: 50,
+                  )
+                ],
               ),
-              Lottie.asset("assets/images/eventAnimation.json", height: 300),
-              SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 40, right: 40, bottom: 20),
-                child: SettingsButton(
-                  ontap: () => Navigator.pushNamed(context, "/permission"),
-                  imgtext: "Verify Events",
-                  imgUrl: "assets/images/itemboxIcons/verify.png",
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 40, right: 40, bottom: 20),
-                child: SettingsButton(
-                  ontap: () => Navigator.pushNamed(context, "/organise"),
-                  imgtext: "Organise",
-                  imgUrl: "assets/images/itemboxIcons/organise.png",
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 40, right: 40, bottom: 20),
-                child: SettingsButton(
-                  ontap: () => Navigator.pushNamed(context, "/updateNotice"),
-                  imgtext: "Add Notice",
-                  imgUrl: "assets/images/itemboxIcons/bellIcon.png",
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 40, right: 40, bottom: 20),
-                child: SettingsButton(
-                  ontap: () {
-                    Navigator.pushNamed(context, "/updateTimeTable");
-                  },
-                  imgtext: "Update TimeTable",
-                  imgUrl: "assets/images/itemboxIcons/updatetimetabe.png",
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 40, right: 40, bottom: 20),
-                child: SettingsButton(
-                  ontap: () {
-                    Navigator.pushNamed(context, "/notes");
-                  },
-                  imgtext: "Upload PDFs",
-                  imgUrl: "assets/images/itemboxIcons/note.png",
-                ),
-              ),
-            ],
-          ),
+            )),
+          ],
         ),
       ),
     );
