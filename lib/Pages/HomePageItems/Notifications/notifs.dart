@@ -35,14 +35,14 @@ class _NotifsState extends State<Notifs> {
     //extractEmail();
   }
 
-  // void extractEmail() {
-  //   String email = user?.email;
-  //   var idx = 0;
-  //   while (email[idx] != '@') {
-  //     uniqueId += email[idx];
-  //     idx++;
-  //   }
-  // }
+  void extractEmail() {
+    String email = user?.email;
+    var idx = 0;
+    while (email[idx] != '@') {
+      uniqueId += email[idx];
+      idx++;
+    }
+  }
 
   Future<bool> check(String time) async {
     bool ok = false;
@@ -100,6 +100,7 @@ class _NotifsState extends State<Notifs> {
           child: Padding(
             padding: const EdgeInsets.all(5.0),
             child: FirebaseAnimatedList(
+              defaultChild: Center(child:CircularProgressIndicator()),
               query: _ref,
               itemBuilder: (BuildContext context, DataSnapshot snapshot,
                   Animation<double> animation, int index) {
