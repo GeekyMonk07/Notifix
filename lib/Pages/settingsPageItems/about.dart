@@ -104,7 +104,7 @@ class _AboutUsState extends State<AboutUs> {
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         ClipOval(
           child: Image.asset(
-            'assets/images/pfp.png',
+            'assets/images/anmol.jpg',
             fit: BoxFit.cover,
             width: 100,
             height: 100,
