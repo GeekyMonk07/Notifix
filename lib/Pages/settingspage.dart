@@ -1,11 +1,12 @@
 import 'package:appnewui/Authentication/welcomePage/welcome.dart';
 import 'package:appnewui/Pages/settingsPageItems/buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:appnewui/Authentication/Auth/firebase.dart';
-import 'package:appnewui/Authentication/welcomePage/Controller.dart';
+import 'package:appnewui/Authentication/welcomePage/controller.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -77,12 +78,16 @@ class _SettingsPageState extends State<SettingsPage> {
                     final provider = Provider.of<GoogleSignInProvider>(context,
                         listen: false);
                     await provider.signOutGoogle();
+                    // Navigator.of(context).pushAndRemoveUntil(
+                    //     MaterialPageRoute(builder: (context) => WelcomePage()),
+                    //         (Route<dynamic> route) => false);
+                    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+                    // Navigator.push(context,MaterialPageRoute(builder: (context)=>Controller()));
+
                   } catch (e) {
                     Fluttertoast.showToast(msg: "Error while logging out");
                   }
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) => WelcomePage()),
-                      (Route<dynamic> route) => false);
+
                 },
                 imgtext: "LOGOUT",
                 imgUrl: "assets/images/itemboxIcons/feedback.png",

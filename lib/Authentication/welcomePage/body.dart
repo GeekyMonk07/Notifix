@@ -1,6 +1,6 @@
 import 'package:appnewui/Authentication/adminlogin/adminlogin.dart';
 import 'package:appnewui/Authentication/signup/signup.dart';
-import 'package:appnewui/Authentication/welcomePage/Controller.dart';
+import 'package:appnewui/Authentication/welcomePage/controller.dart';
 import 'package:appnewui/Authentication/welcomePage/background.dart';
 import 'package:appnewui/Authentication/widget/button.dart';
 import 'package:appnewui/constrants.dart';
@@ -19,46 +19,57 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  // bool _isLoading = false;
+  bool _isLoading = false;
   // @override
   // void initState(){
   //   setState(() {
   //     _isLoading = false;
   //   });
   // }
+
   void click() async {
-    // setState(() {
-    //   _isLoading = true;
-    // });
     print("Signing with google clicked------>");
-
-    final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
-    await provider.signInWithGoogle();
-    // Navigator.pop(context);
-    //checking custom claims
-    // final user = await FirebaseAuth.instance.currentUser;
-    // // If refresh is set to true, a refresh of the id token is forced.
-    // final idTokenResult = await user!.getIdTokenResult(true);
-    // print(idTokenResult.claims);
-    // if(idTokenResult.claims!.containsKey("verified")==false){
-    //   print("Not verified");
-    //   Navigator.push(context,MaterialPageRoute(builder: (context)=>SignupPage()));
-    // }else
-    Navigator.push(context,MaterialPageRoute(builder: (context)=>Controller()));
-    // Navigator.of(context).pushAndRemoveUntil(
-    //     MaterialPageRoute(builder: (context) => Controller()),
-    //         (Route<dynamic> route) => false);
-
-    // setState(() {
-    //   _isLoading = false;
-    // });
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+      final provider =
+      Provider.of<GoogleSignInProvider>(context, listen: false);
+      await provider.signInWithGoogle();
+      // final user = FirebaseAuth.instance.currentUser;
+      // //
+      // // // If refresh is set to true, a refresh of the id token is forced.
+      // final idTokenResult = await user!.getIdTokenResult(true);
+      // print(idTokenResult.claims);
+      //
+      // print(idTokenResult.claims);
+      // setState(() {
+      //   _isLoading = false;
+      // });
+      // Navigator.push(
+      //     context, MaterialPageRoute(builder: (context) => Controller()));
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      Fluttertoast.showToast(msg: "$e");
+    }
   }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _isLoading = false;
+  //   print("Login init");
+  // }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    // _isLoading ? Center(child:CircularProgressIndicator()):
-    return WelcomeBackground(
+    //
+    return _isLoading
+        ? Center(child: CircularProgressIndicator())
+        : WelcomeBackground(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -69,11 +80,13 @@ class _BodyState extends State<Body> {
               ),
               Text(
                 "WELCOME TO GLBITM",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),
+                style:
+                TextStyle(fontWeight: FontWeight.bold, fontSize: 27),
               ),
               Text(
                 "FIND YOUR SPARK",
-                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15),
+                style: TextStyle(
+                    fontWeight: FontWeight.normal, fontSize: 15),
               ),
               SizedBox(height: size.height * 0.05),
               Lottie.asset("assets/images/welcome.json", height: 250),
@@ -98,4 +111,15 @@ class _BodyState extends State<Body> {
       ),
     );
   }
+
+// @override
+// void dispose() {
+//   super.dispose();
+//   print("Disposed");
+//   setState(() {
+//     _isLoading = false;
+//   });
+//   // _isLoading = false;
+//   // Navigator.pop(context);
+// }
 }

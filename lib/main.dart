@@ -1,7 +1,7 @@
 // @dart=2.9
 
 import 'package:appnewui/Authentication/adminlogin/adminlogin.dart';
-import 'package:appnewui/Authentication/welcomePage/Controller.dart';
+import 'package:appnewui/Authentication/welcomePage/controller.dart';
 import 'package:appnewui/Authentication/welcomePage/welcome.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/Gallery/gallery.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/fetching_timetable.dart';
@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
         title: "GLBITM App",
         initialRoute: "/",
         routes: {
-          "/": (context) => Notifs(),
+          "/": (context) => Controller(),
           "/index": (context) => IndexPage(),
           "/login": (context) => AdminLogin(),
           "/notifs": (context) => Notifs(),
