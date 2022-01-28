@@ -20,9 +20,12 @@ class HomePage extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
+                    SizedBox(
+                      height: 10,
+                    ),
                     FloatingNotice(),
                     const SizedBox(
-                      height: 12,
+                      height: 4,
                     ),
                     Padding(
                       padding: const EdgeInsets.all(15),
