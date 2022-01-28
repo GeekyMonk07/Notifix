@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
       child: SafeArea(
         child: Column(
           children: [
-            const TopBar(),
+            TopBar(),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
