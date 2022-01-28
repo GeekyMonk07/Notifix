@@ -31,18 +31,18 @@ class _NotifsState extends State<Notifs> {
         .child('/verified')
         .orderByChild('name');
     user = FirebaseAuth.instance.currentUser;
-    assert(user != null);
-    extractEmail();
+    //assert(user != null);
+    //extractEmail();
   }
 
-  void extractEmail() {
-    String email = user?.email;
-    var idx = 0;
-    while (email[idx] != '@') {
-      uniqueId += email[idx];
-      idx++;
-    }
-  }
+  // void extractEmail() {
+  //   String email = user?.email;
+  //   var idx = 0;
+  //   while (email[idx] != '@') {
+  //     uniqueId += email[idx];
+  //     idx++;
+  //   }
+  // }
 
   Future<bool> check(String time) async {
     bool ok = false;
@@ -85,11 +85,20 @@ class _NotifsState extends State<Notifs> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Events',
+            style: TextStyle(color: Colors.black),
+          ),
+          centerTitle: true,
+          backgroundColor: secondaryPurple,
+        ),
         body: Container(
           child: Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: const EdgeInsets.all(5.0),
             child: FirebaseAnimatedList(
               query: _ref,
               itemBuilder: (BuildContext context, DataSnapshot snapshot,
@@ -101,22 +110,19 @@ class _NotifsState extends State<Notifs> {
                 int ok = 1;
 
                 return Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Container(
-                    height: 200,
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    color: secondaryPurple,
-                    child: ExpansionCard(
-                      backgroundColor: secondaryPurple,
-                      title: Container(
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
+                    padding: const EdgeInsets.all(5.0),
+                    child: Container(
+                        height: 200,
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        color: secondaryPurple,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
                             Text(
                               snapshot.value['name'].toString(),
                               style: TextStyle(
                                 fontFamily: 'Avenir',
-                                fontSize: 30,
+                                fontSize: 35,
                                 color: Colors.black,
                                 fontWeight: FontWeight.w400,
                               ),
@@ -125,158 +131,220 @@ class _NotifsState extends State<Notifs> {
                               snapshot.value['date'].toString(),
                               style: TextStyle(
                                 fontFamily: 'Avenir',
-                                fontSize: 15,
+                                fontSize: 20,
                                 color: Colors.black,
                                 fontWeight: FontWeight.w300,
                               ),
-                            )
-                          ])),
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.symmetric(horizontal: 7),
-                          alignment: Alignment.bottomLeft,
-                          child: Text(
-                            snapshot.value['topic'].toString(),
-                            style: TextStyle(
-                              fontFamily: 'Avenir',
-                              fontSize: 15,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w300,
                             ),
-                          ),
-                        ),
-                        TextButton(
-                            onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) => Dialog(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                                12.0)), //this right here
-                                        child: Container(
-                                          // height: 300.0,
-                                          // width: 600.0,
-
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(10.0),
+                            TextButton(
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) => Dialog(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        12.0)), //this right here
+                                            child: Container(
+                                                decoration: BoxDecoration(
+                                                    //  borderRadius: BorderRadius.circular(50)
+                                                    ),
+                                                height: double.maxFinite,
+                                                width: double.infinity,
                                                 child: Column(
-                                                  children: <Widget>[
-                                                    Image.asset(
-                                                        'assets/images/5.jpg'),
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    // SizedBox(
+                                                    //   height: size.height * 0.01,
+                                                    // ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              5.0),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Icon(
+                                                            Icons.ac_unit,
+                                                            color: Colors
+                                                                .transparent,
+                                                          ),
+                                                          Text(
+                                                            "Event Details",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 18,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                          IconButton(
+                                                              onPressed: () =>
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop(),
+                                                              icon: Icon(
+                                                                Icons.close,
+                                                                size: 30,
+                                                              ))
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Flexible(
+                                                      child:
+                                                          SingleChildScrollView(
+                                                        scrollDirection:
+                                                            Axis.vertical,
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Container(
+                                                                height: 200,
+                                                                width:
+                                                                    size.width *
+                                                                        .65,
+                                                                child: Image.asset(
+                                                                    'assets/images/5.jpg')),
+                                                            SizedBox(
+                                                              height: 12,
+                                                            ),
+                                                            Text(
+                                                              "Event Name : ${snapshot.value['name']}",
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      18.0),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 12,
+                                                            ),
+                                                            Text(
+                                                              "Topic : ${snapshot.value['topic']}",
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      18.0),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 12,
+                                                            ),
+                                                            Text(
+                                                              "Date : ${snapshot.value['date']}",
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      18.0),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 12,
+                                                            ),
+                                                            Text(
+                                                              "Venue : ${snapshot.value['venue']}",
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      18.0),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 12,
+                                                            ),
+                                                            Text(
+                                                              "Description : ${snapshot.value['description']}",
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      18.0),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    FloatingActionButton
+                                                        .extended(
+                                                      onPressed: () async => {
+                                                        // s=snapshot.value['date'],
+                                                        //
+                                                        // s=s.substring(0,11)+" "+snapshot.value['topic'],
+                                                        s = snapshot
+                                                                .value['date'] +
+                                                            " " +
+                                                            snapshot
+                                                                .value['topic'],
+                                                        // print(snapshot.value),
+                                                        if (await check(s) ==
+                                                            false)
+                                                          {
+                                                            reference
+                                                                .child(snapshot
+                                                                        .value[
+                                                                    'key'])
+                                                                .update({
+                                                              'registrations':
+                                                                  count + 1
+                                                            }).whenComplete(
+                                                                    () =>
+                                                                        ok = 0),
+                                                            _database
+                                                                .child(
+                                                                    '/user_details_for_registration/$uniqueId/$s')
+                                                                .set(snapshot
+                                                                    .value)
+                                                                .then((value) =>
+                                                                    print(
+                                                                        'updated 1st '))
+                                                                .catchError(
+                                                                    (onError) =>
+                                                                        print(
+                                                                            'error log 1')),
+                                                            _database
+                                                                .child(
+                                                                    '/event_registration_user_detials/$s')
+                                                                .push()
+                                                                .set({
+                                                                  'emailId':
+                                                                      user!
+                                                                          .email
+                                                                })
+                                                                .then((value) =>
+                                                                    print(
+                                                                        'pushed 2nd'))
+                                                                .catchError((onError) =>
+                                                                    print(onError
+                                                                        .toString())),
+                                                          }
+                                                        else if (await check(
+                                                                s) ==
+                                                            true)
+                                                          {
+                                                            _showDeleteDialog(),
+                                                          }
+                                                      },
+                                                      label: Text("Register"),
+                                                      backgroundColor:
+                                                          primaryColor,
+                                                      icon: Icon(Icons.add),
+                                                    ),
                                                   ],
-                                                ),
-                                              ),
-                                              Center(
-                                                  child: Text(
-                                                "Event Details",
-                                                style: TextStyle(
-                                                    fontSize: 20.0,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              )),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Container(
-                                                  child: Column(
-                                                    children: [
-                                                      Text(
-                                                        "Event Name : ${snapshot.value['name']}",
-                                                        style: TextStyle(
-                                                            fontSize: 18.0),
-                                                      ),
-                                                      Text(
-                                                        "Topic : ${snapshot.value['topic']}",
-                                                        style: TextStyle(
-                                                            fontSize: 18.0),
-                                                      ),
-                                                      Text(
-                                                        "Date : ${snapshot.value['date']}",
-                                                        style: TextStyle(
-                                                            fontSize: 18.0),
-                                                      ),
-                                                      Text(
-                                                        "Venue : ${snapshot.value['venue']}",
-                                                        style: TextStyle(
-                                                            fontSize: 18.0),
-                                                      ),
-                                                      Text(
-                                                        "Description : ${snapshot.value['description']}",
-                                                        style: TextStyle(
-                                                            fontSize: 18.0),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              FloatingActionButton.extended(
-                                                onPressed: () async => {
-                                                  // s=snapshot.value['date'],
-                                                  //
-                                                  // s=s.substring(0,11)+" "+snapshot.value['topic'],
-                                                  s = snapshot.value['date'] +
-                                                      " " +
-                                                      snapshot.value['topic'],
-                                                  // print(snapshot.value),
-                                                  if (await check(s) == false)
-                                                    {
-                                                      reference
-                                                          .child(snapshot
-                                                              .value['key'])
-                                                          .update({
-                                                        'registrations':
-                                                            count + 1
-                                                      }).whenComplete(
-                                                              () => ok = 0),
-                                                      _database
-                                                          .child(
-                                                              '/user_details_for_registration/$uniqueId/$s')
-                                                          .set(snapshot.value)
-                                                          .then((value) => print(
-                                                              'updated 1st '))
-                                                          .catchError(
-                                                              (onError) => print(
-                                                                  'error log 1')),
-                                                      _database
-                                                          .child(
-                                                              '/event_registration_user_detials/$s')
-                                                          .push()
-                                                          .set({
-                                                            'emailId':
-                                                                user!.email
-                                                          })
-                                                          .then((value) =>
-                                                              print(
-                                                                  'pushed 2nd'))
-                                                          .catchError((onError) =>
-                                                              print(onError
-                                                                  .toString())),
-                                                    }
-                                                  else if (await check(s) ==
-                                                      true)
-                                                    {
-                                                      _showDeleteDialog(),
-                                                    }
-                                                },
-                                                label: Text("Register"),
-                                                backgroundColor: primaryColor,
-                                                icon: Icon(Icons.add),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ));
-                            },
-                            child: Text("Details")),
-                      ],
-                    ),
-                  ),
-                );
+                                                )),
+                                          ));
+                                },
+                                child: Text(
+                                  "Details",
+                                  style: TextStyle(
+                                    color: primaryColor,
+                                    fontSize: 15,
+                                  ),
+                                ))
+                          ],
+                        )));
               },
             ),
           ),
