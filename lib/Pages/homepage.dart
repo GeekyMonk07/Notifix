@@ -18,6 +18,8 @@ class HomePage extends StatelessWidget {
             TopBar(),
             Expanded(
               child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(
+                    parent: AlwaysScrollableScrollPhysics()),
                 child: Column(
                   children: [
                     SizedBox(

@@ -14,7 +14,7 @@ class _pdf_viewState extends State<pdf_view> {
 
   _scrollToBottom() {
     if (_scrollController.hasClients == false) {
-      Future.delayed(Duration(milliseconds: 900), () {
+      Future.delayed(Duration(seconds: 2), () {
         _scrollController.animateTo(_scrollController.position.maxScrollExtent,
             duration: Duration(seconds: 1), curve: Curves.linear);
       });
@@ -72,12 +72,12 @@ class _pdf_viewState extends State<pdf_view> {
           ),
           Expanded(
             child: Container(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [secondaryPurple, primaryColor],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      stops: [0.3, 0.7])),
+              // decoration: BoxDecoration(
+              //     gradient: LinearGradient(
+              //         colors: [Colors.grey, Colors.black],
+              //         begin: Alignment.topCenter,
+              //         end: Alignment.bottomCenter,
+              //         stops: [0.3, 0.7])),
               child: StreamBuilder(
                   stream: database
                       .child('notices')
@@ -93,6 +93,7 @@ class _pdf_viewState extends State<pdf_view> {
                       abc.forEach((key, value) {
                         final next_pdf = Map<String, dynamic>.from(value);
                         final orderTile = ListTile(
+                          // tileColor: Colors.blueGrey,
                           leading: Image.asset(
                             "assets/images/bellicon.png",
                             height: 25,
@@ -115,6 +116,8 @@ class _pdf_viewState extends State<pdf_view> {
                       });
 
                       return (ListView.separated(
+                        physics: BouncingScrollPhysics(
+                            parent: AlwaysScrollableScrollPhysics()),
                         controller: _scrollController,
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
@@ -124,7 +127,7 @@ class _pdf_viewState extends State<pdf_view> {
                         itemBuilder: (BuildContext context, int index) {
                           return Material(
                             color: Colors.white,
-                            elevation: 2,
+                            elevation: 5,
                             borderRadius: BorderRadius.circular(5),
                             child: Center(child: tilesList[index]),
                           );
