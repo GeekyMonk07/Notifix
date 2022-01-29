@@ -44,7 +44,7 @@ class TimeTableBox extends StatelessWidget {
               ),
               Container(
                 height: 300,
-                width: 150,
+                width: 137,
                 child: SvgPicture.asset(
                   "assets/images/timetable.svg",
                   fit: BoxFit.fill,

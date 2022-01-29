@@ -46,105 +46,104 @@ class TimeTable extends StatelessWidget {
           // <-----------------------------------------------Top Bar ends-------------------------------------------->
 
           Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                children: [
-                  //<-------------------------- Animation STARTS-------------------------->
+            child: Column(
+              children: [
+                //<-------------------------- Animation STARTS-------------------------->
 
-                  Lottie.asset("assets/images/fetchingTimetablePage.json",
-                      height: 200),
+                Lottie.asset("assets/images/fetchingTimetablePage.json",
+                    height: 200),
 
-                  //<-------------------------- Animation ENDS-------------------------->
-                  SizedBox(
-                    height: size.height * .02,
-                  ),
-                  Text(
-                    "Find the attachments below",
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
-                  ),
-                  SizedBox(
-                    height: size.height * .025,
-                  ),
-                  //<-------------------------------------------------List of files-------------------------------------->
-                  Material(
-                    color: Colors.white,
-                    // color: Colors.red,
-                    child: StreamBuilder(
-                        stream: database
-                            .child('timetable/$branch')
-                            .orderByChild('timestamp')
-                            .limitToLast(5)
-                            .onValue,
-                        builder: (context, AsyncSnapshot<Event> snapshot) {
-                          final tilesList = <ListTile>[];
-                          if (snapshot.hasData) {
-                            final abc = Map<String, dynamic>.from(
-                                (snapshot.data! as Event).snapshot.value);
-                            abc.forEach((key, value) {
-                              final next_pdf = Map<String, dynamic>.from(value);
-                              final orderTile = ListTile(
-                                leading: Icon(
-                                  Icons.picture_as_pdf,
-                                  color: primaryColor,
-                                ),
-                                title: Text(
-                                  next_pdf['file_name'],
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                                subtitle: Text("Updated on " +
-                                    (next_pdf['time'] == null
-                                        ? ""
-                                        : next_pdf['time'])),
-                                onTap: () {
-                                  launch(next_pdf["url"]);
-                                },
-                              );
-                              tilesList.add(orderTile);
-                            });
-                            // tilesList.reversed.toList();
-                            // return ListView(
-                            //   children: tilesList,
-                            //   reverse: true,
-                            //   shrinkWrap: true,
-
-                            // );
-
-                            return (ListView.separated(
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              reverse: true,
-                              padding: const EdgeInsets.all(8),
-                              itemCount: tilesList.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Material(
-                                  elevation: 3,
-                                  borderRadius: BorderRadius.circular(15),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
-                                      color: secondaryPurple,
-                                    ),
-                                    height: 70,
-                                    child: Center(child: tilesList[index]),
-                                  ),
-                                );
+                //<-------------------------- Animation ENDS-------------------------->
+                SizedBox(
+                  height: size.height * .02,
+                ),
+                Text(
+                  "Find the attachments below",
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                ),
+                SizedBox(
+                  height: size.height * .025,
+                ),
+                //<-------------------------------------------------List of files-------------------------------------->
+                Expanded(
+                  child: StreamBuilder(
+                      stream: database
+                          .child('timetable/$branch')
+                          .orderByChild('timestamp')
+                          .limitToLast(5)
+                          .onValue,
+                      builder: (context, AsyncSnapshot<Event> snapshot) {
+                        final tilesList = <ListTile>[];
+                        if (snapshot.hasData) {
+                          final abc = Map<String, dynamic>.from(
+                              (snapshot.data! as Event).snapshot.value);
+                          abc.forEach((key, value) {
+                            final next_pdf = Map<String, dynamic>.from(value);
+                            final orderTile = ListTile(
+                              leading: Icon(
+                                Icons.picture_as_pdf,
+                                color: primaryColor,
+                              ),
+                              title: Text(
+                                next_pdf['file_name'],
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              subtitle: Text("Updated on " +
+                                  (next_pdf['time'] == null
+                                      ? ""
+                                      : next_pdf['time'])),
+                              onTap: () {
+                                launch(next_pdf["url"]);
                               },
-                              separatorBuilder:
-                                  (BuildContext context, int index) =>
-                                      const Divider(),
-                            ));
-                          }
-                          return Center(
-                            child: CircularProgressIndicator(
-                              color: primaryColor,
-                            ),
-                          );
-                        }),
-                  )
-                  //<-------------------------------------------------list of files-------------------------------------->
-                ],
-              ),
+                            );
+                            tilesList.add(orderTile);
+                          });
+                          // tilesList.reversed.toList();
+                          // return ListView(
+                          //   children: tilesList,
+                          //   reverse: true,
+                          //   shrinkWrap: true,
+
+                          // );
+
+                          return (ListView.separated(
+                            physics: BouncingScrollPhysics(
+                                parent: AlwaysScrollableScrollPhysics()),
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            reverse: false,
+                            padding: const EdgeInsets.all(8),
+                            itemCount: tilesList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Material(
+                                elevation: 3,
+                                borderRadius: BorderRadius.circular(15),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: secondaryPurple,
+                                  ),
+                                  //   height: 70,
+                                  child: Center(
+                                      child: tilesList[
+                                          tilesList.length - 1 - index]),
+                                ),
+                              );
+                            },
+                            separatorBuilder:
+                                (BuildContext context, int index) =>
+                                    const Divider(),
+                          ));
+                        }
+                        return Center(
+                          child: CircularProgressIndicator(
+                            color: primaryColor,
+                          ),
+                        );
+                      }),
+                )
+                //<-------------------------------------------------list of files-------------------------------------->
+              ],
             ),
           )
         ],
