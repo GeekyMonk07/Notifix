@@ -1,5 +1,6 @@
 import 'package:appnewui/Authentication/Auth/firebase.dart';
 import 'package:appnewui/constrants.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
@@ -167,14 +168,30 @@ class _ProfilePageState extends State<ProfilePage> {
                   ClipOval(
                     child: Material(
                       color: Colors.transparent,
-                      child: Image.network(
-                        user?.photoURL == null
-                            ? alter_image_url
-                            : "${user!.photoURL}",
+                      child: CachedNetworkImage(
                         fit: BoxFit.cover,
                         width: 110,
                         height: 110,
+                        imageUrl: user?.photoURL == null
+                            ? alter_image_url
+                            : "${user!.photoURL}",
+                        progressIndicatorBuilder:
+                            (context, url, downloadProgress) => Center(
+                          child: CircularProgressIndicator(
+                              color: primaryColor,
+                              value: downloadProgress.progress),
+                        ),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
                       ),
+
+                      // child: Image.network(
+                      //   user?.photoURL == null
+                      //       ? alter_image_url
+                      //       : "${user!.photoURL}",
+                      //   fit: BoxFit.cover,
+                      //   width: 110,
+                      //   height: 110,
+                      // ),
                     ),
                   ),
                   //<--------------------------------------DP ends------------------------------------------->

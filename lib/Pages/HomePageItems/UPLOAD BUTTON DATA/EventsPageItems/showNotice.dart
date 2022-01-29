@@ -14,13 +14,13 @@ class _pdf_viewState extends State<pdf_view> {
 
   _scrollToBottom() {
     if (_scrollController.hasClients == false) {
-      Future.delayed(Duration(milliseconds: 500), () {
+      Future.delayed(Duration(milliseconds: 900), () {
         _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-            duration: Duration(seconds: 2), curve: Curves.linear);
+            duration: Duration(seconds: 1), curve: Curves.linear);
       });
     } else {
       _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-          duration: Duration(seconds: 2), curve: Curves.linear);
+          duration: Duration(seconds: 1), curve: Curves.linear);
     }
   }
 
@@ -68,68 +68,78 @@ class _pdf_viewState extends State<pdf_view> {
           ),
           // <-----------------------------------------------Top Bar ends-------------------------------------------->
           SizedBox(
-            height: size.height * .025,
+            height: size.height * .01,
           ),
           Expanded(
-            child: StreamBuilder(
-                stream:
-                    database.child('notices').orderByChild('timestamp').onValue,
-                // .limitToLast(20)
+            child: Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [secondaryPurple, primaryColor],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      stops: [0.3, 0.7])),
+              child: StreamBuilder(
+                  stream: database
+                      .child('notices')
+                      .orderByChild('timestamp')
+                      .onValue,
+                  // .limitToLast(20)
 
-                builder: (context, AsyncSnapshot<Event> snapshot) {
-                  final tilesList = <ListTile>[];
-                  if (snapshot.hasData) {
-                    final abc = Map<String, dynamic>.from(
-                        (snapshot.data! as Event).snapshot.value);
-                    abc.forEach((key, value) {
-                      final next_pdf = Map<String, dynamic>.from(value);
-                      final orderTile = ListTile(
-                        leading: Image.asset(
-                          "assets/images/bellicon.png",
-                          height: 25,
-                        ),
-                        title: Text(
-                          next_pdf['title'],
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                  builder: (context, AsyncSnapshot<Event> snapshot) {
+                    final tilesList = <ListTile>[];
+                    if (snapshot.hasData) {
+                      final abc = Map<String, dynamic>.from(
+                          (snapshot.data! as Event).snapshot.value);
+                      abc.forEach((key, value) {
+                        final next_pdf = Map<String, dynamic>.from(value);
+                        final orderTile = ListTile(
+                          leading: Image.asset(
+                            "assets/images/bellicon.png",
+                            height: 25,
                           ),
-                        ),
-                        subtitle: Text(
-                          next_pdf['description'] +
-                              "\n\nUpdated on " +
-                              next_pdf['time'],
-                          style: TextStyle(color: Colors.black, fontSize: 14),
-                        ),
-                      );
-                      tilesList.add(orderTile);
-                    });
-
-                    return (ListView.separated(
-                      controller: _scrollController,
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      reverse: true,
-                      padding: const EdgeInsets.all(8),
-                      itemCount: tilesList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Material(
-                          color: Colors.white,
-                          elevation: 2,
-                          borderRadius: BorderRadius.circular(5),
-                          child: Center(child: tilesList[index]),
+                          title: Text(
+                            next_pdf['title'],
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                          subtitle: Text(
+                            next_pdf['description'] +
+                                "\n\nUpdated on " +
+                                next_pdf['time'],
+                            style: TextStyle(color: Colors.black, fontSize: 14),
+                          ),
                         );
-                      },
-                      separatorBuilder: (BuildContext context, int index) =>
-                          const Divider(),
-                    ));
-                  }
-                  return Center(
-                    child: CircularProgressIndicator(
-                      color: primaryColor,
-                    ),
-                  );
-                }),
+                        tilesList.add(orderTile);
+                      });
+
+                      return (ListView.separated(
+                        controller: _scrollController,
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        reverse: true,
+                        padding: const EdgeInsets.all(8),
+                        itemCount: tilesList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Material(
+                            color: Colors.white,
+                            elevation: 2,
+                            borderRadius: BorderRadius.circular(5),
+                            child: Center(child: tilesList[index]),
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) =>
+                            const Divider(),
+                      ));
+                    }
+                    return Center(
+                      child: CircularProgressIndicator(
+                        color: primaryColor,
+                      ),
+                    );
+                  }),
+            ),
           )
         ],
       )),
