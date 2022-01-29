@@ -188,16 +188,27 @@ class _UploadTimetableState extends State<UploadTimetable> {
       _isButtonDisabled = true;
     });
     if (file == null) return;
-
     final fileName = basename(file!.path);
-    final destination = 'timetable/$DropDownBranchValue/$fileName';
+    final urlDownload;
+    try{
 
-    task = FirebaseApi.uploadFile(destination, file!);
+      final destination = 'timetable/$DropDownBranchValue/$fileName';
 
-    if (task == null) return;
+      task = FirebaseApi.uploadFile(destination, file!);
 
-    final snapshot = await task!.whenComplete(() {});
-    final urlDownload = await snapshot.ref.getDownloadURL();
+      if (task == null) return;
+
+      final snapshot = await task!.whenComplete(() {});
+      urlDownload = await snapshot.ref.getDownloadURL();
+    }catch(e){
+      setState(() {
+        _isButtonDisabled = false;
+      });
+      Fluttertoast.showToast(msg: e.toString());
+      return;
+
+    }
+
 
     set_database(urlDownload, fileName);
 
