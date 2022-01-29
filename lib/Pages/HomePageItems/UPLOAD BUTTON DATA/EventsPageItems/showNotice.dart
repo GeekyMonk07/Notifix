@@ -10,34 +10,36 @@ class pdf_view extends StatefulWidget {
 
 class _pdf_viewState extends State<pdf_view> {
   //scroll animation stars
-  ScrollController _scrollController = ScrollController();
+  // ScrollController _scrollController = ScrollController();
 
-  _scrollToBottom() {
-    if (_scrollController.hasClients == false) {
-      Future.delayed(Duration(seconds: 2), () {
-        _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-            duration: Duration(seconds: 1), curve: Curves.linear);
-      });
-    } else {
-      _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-          duration: Duration(seconds: 1), curve: Curves.linear);
-    }
-  }
+  // _scrollToBottom() {
+  //   if (_scrollController.hasClients == false) {
+  //     Future.delayed(Duration(seconds: 2), () {
+  //       _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+  //           duration: Duration(seconds: 1), curve: Curves.linear);
+  //     });
+  //   } else {
+  //     _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+  //         duration: Duration(seconds: 1), curve: Curves.linear);
+  //   }
+  // }
 
   //scroll animation ends
   final database = FirebaseDatabase.instance.reference();
 
   @override
-  void initState() {
-    super.initState();
-  }
+  // void initState() {
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance!.addPostFrameCallback((_) => _scrollToBottom());
+    //   WidgetsBinding.instance!.addPostFrameCallback((_) => _scrollToBottom());
     Size size = MediaQuery.of(context).size;
     return Material(
-      color: Colors.white,
+      //  color: Colors.white,
+      color: secondaryPurple,
+
       child: SafeArea(
           child: Column(
         children: [
@@ -118,10 +120,10 @@ class _pdf_viewState extends State<pdf_view> {
                       return (ListView.separated(
                         physics: BouncingScrollPhysics(
                             parent: AlwaysScrollableScrollPhysics()),
-                        controller: _scrollController,
+                        // controller: _scrollController,
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
-                        reverse: true,
+                        reverse: false,
                         padding: const EdgeInsets.all(8),
                         itemCount: tilesList.length,
                         itemBuilder: (BuildContext context, int index) {
@@ -129,7 +131,8 @@ class _pdf_viewState extends State<pdf_view> {
                             color: Colors.white,
                             elevation: 5,
                             borderRadius: BorderRadius.circular(5),
-                            child: Center(child: tilesList[index]),
+                            child: Center(
+                                child: tilesList[tilesList.length - 1 - index]),
                           );
                         },
                         separatorBuilder: (BuildContext context, int index) =>
