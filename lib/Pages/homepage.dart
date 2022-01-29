@@ -21,12 +21,12 @@ class HomePage extends StatelessWidget {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: 10,
+                      height: 12,
                     ),
                     FloatingNotice(),
-                    const SizedBox(
-                      height: 4,
-                    ),
+                    // const SizedBox(
+                    //   height: 2,
+                    // ),
                     Padding(
                       padding: const EdgeInsets.all(15),
                       child: TimeTableBox(),
