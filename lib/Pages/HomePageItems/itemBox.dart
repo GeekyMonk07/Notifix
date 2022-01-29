@@ -25,7 +25,7 @@ class ItemBox extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ItemBoxButton(
-                    ontap: () => Navigator.pushNamed(context, "/events"),
+                    ontap: () => Navigator.pushNamed(context, "/notifs"),
                     imgUrl: "assets/images/itemboxIcons/map.png",
                     imgCaption: "Notice",
                   ),

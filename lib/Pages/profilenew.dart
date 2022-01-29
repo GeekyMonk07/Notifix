@@ -544,14 +544,16 @@ class ListContainer extends StatelessWidget {
                   SizedBox(
                     height: size.height * .01,
                   ),
-                  Container(
-                    width: size.width * .5,
-                    child: Text(
-                      "$EventName",
-                      maxLines: 2,
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
+                  Flexible(
+                    child: Container(
+                      width: size.width * .5,
+                      child: Text(
+                        "$EventName",
+                        maxLines: 2,
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   )
