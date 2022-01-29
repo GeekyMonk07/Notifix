@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_constructors, duplicate_ignore
 
+import 'package:appnewui/constrants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'string_extension.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class TopBar extends StatelessWidget {
   //const TopBar({Key? key}) : super(key: key);
@@ -30,30 +32,24 @@ class TopBar extends StatelessWidget {
             ClipOval(
               child: Material(
                 color: Colors.transparent,
-                child: Image.network(
-                  user?.photoURL == null
-                      ? alter_image_url
-                      : "${user!.photoURL}",
+                child: CachedNetworkImage(
                   fit: BoxFit.cover,
                   width: 37,
                   height: 37,
+                  imageUrl: user?.photoURL == null
+                      ? alter_image_url
+                      : "${user!.photoURL}",
+                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                      Center(
+                    child: CircularProgressIndicator(
+                        color: primaryColor, value: downloadProgress.progress),
+                  ),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
               ),
             ),
             //<--------------------------------------DP ends------------------------------------------->
-            // Container(
-            //   width: 35,
-            //   height: 35,
-            //   // ignore: prefer_const_constructors
-            //   decoration: BoxDecoration(
-            //     shape: BoxShape.circle,
-            //     image: DecorationImage(
-            //         image:
-            //             AssetImage("assets/images/user.png"), //  NetworkImage(
-            //         //     'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'),
-            //         fit: BoxFit.cover),
-            //   ),
-            // ),
+
             Text(
               "Hey, ${extractName()}",
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
