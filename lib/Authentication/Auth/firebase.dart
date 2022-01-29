@@ -1,6 +1,7 @@
 //@dart=2.9
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -12,10 +13,10 @@ class GoogleSignInProvider extends ChangeNotifier {
 
   GoogleSignInAccount get user => _user;
 
-  Future signInWithGoogle() async {
+  Future<String> signInWithGoogle() async {
 
     final GoogleSignInAccount googleuser = await googleSignIn.signIn();
-    if (googleuser == null) return;
+    if (googleuser == null) return "Not selected";
     _user = googleuser;
 
     final GoogleSignInAuthentication googleAuth = await googleuser
@@ -26,10 +27,22 @@ class GoogleSignInProvider extends ChangeNotifier {
         idToken: googleAuth.idToken,
         accessToken: googleAuth.accessToken
     );
-    // Fluttertoast.showToast(msg: "Account created");
 
+    // final userId = _user.id;
+    // DatabaseReference _database = FirebaseDatabase.instance.reference().child('/allusers/$userId');
+    //
+    // await _database.once().then((DataSnapshot snapshot) {
+    //   if(snapshot.value!=null){
+    //     return "Already registered";
+    //   }else{
+    //     return "Not registered";
+    //   }
+    // });
+    // return "Successfully signed in";
+
+    // print("----------");
     await FirebaseAuth.instance.signInWithCredential(credential);
-    print(_user);
+    // print(_user);
     // notifyListeners();
 
 

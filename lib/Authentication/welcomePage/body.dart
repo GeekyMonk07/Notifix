@@ -1,9 +1,8 @@
-import 'package:appnewui/Authentication/adminlogin/adminlogin.dart';
-import 'package:appnewui/Authentication/signup/signup.dart';
-import 'package:appnewui/Authentication/welcomePage/controller.dart';
+
 import 'package:appnewui/Authentication/welcomePage/background.dart';
 import 'package:appnewui/Authentication/widget/button.dart';
 import 'package:appnewui/constrants.dart';
+import 'package:appnewui/indexPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:appnewui/Authentication/Auth/firebase.dart';
@@ -36,18 +35,22 @@ class _BodyState extends State<Body> {
       final provider =
       Provider.of<GoogleSignInProvider>(context, listen: false);
       await provider.signInWithGoogle();
-      // final user = FirebaseAuth.instance.currentUser;
-      // //
-      // // // If refresh is set to true, a refresh of the id token is forced.
-      // final idTokenResult = await user!.getIdTokenResult(true);
-      // print(idTokenResult.claims);
-      //
-      // print(idTokenResult.claims);
-      // setState(() {
-      //   _isLoading = false;
-      // });
-      // Navigator.push(
-      //     context, MaterialPageRoute(builder: (context) => Controller()));
+      final user = FirebaseAuth.instance.currentUser;
+      final idTokenResult = await user!.getIdTokenResult(true);
+      if(idTokenResult.claims!.containsKey("verified")==false){
+        await provider.signOutGoogle();
+
+        setState(() {
+          _isLoading = false;
+        });
+        Fluttertoast.showToast(msg: "Need to register first");
+      }else{
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => IndexPage()),
+                (Route<dynamic> route) => false);
+      }
+
+
     } catch (e) {
       setState(() {
         _isLoading = false;
