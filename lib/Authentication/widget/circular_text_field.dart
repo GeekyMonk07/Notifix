@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class RoundedTextField extends StatelessWidget {
   final String text;
+  final String initial;
   final Color color;
   final IconData? icon, suffixicon;
   final bool privacy;
@@ -13,6 +14,7 @@ class RoundedTextField extends StatelessWidget {
   const RoundedTextField(
       {Key? key,
       required this.text,
+      required this.initial,
       this.ontap,
       this.data,
       required this.color,
@@ -37,7 +39,9 @@ class RoundedTextField extends StatelessWidget {
         child: Form(
           key: _formKey,
           child: TextFormField(
+            initialValue: initial,
             onChanged: ontap,
+
             cursorColor: color,
             obscureText: privacy,
             keyboardType: keyType, //type of keyboard
