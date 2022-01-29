@@ -58,7 +58,7 @@ class TopBar extends StatelessWidget {
               height: 25,
               width: 25,
               child: InkWell(
-                  onTap: () => Navigator.pushNamed(context, "/labs"),
+                  onTap: () => Navigator.pushNamed(context, "/labspage"),
                   child: Image.asset("assets/images/bellicon.png")),
             ),
           ],

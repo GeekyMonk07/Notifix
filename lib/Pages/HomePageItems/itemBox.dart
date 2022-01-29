@@ -35,7 +35,7 @@ class ItemBox extends StatelessWidget {
                     imgCaption: "Photo Gallery",
                   ),
                   ItemBoxButton(
-                    ontap: () => Navigator.pushNamed(context, "/labspage"),
+                    ontap: () => Navigator.pushNamed(context, "/labs"),
                     imgUrl: "assets/images/itemboxIcons/note.png",
                     imgCaption: "Labs",
                   ),
