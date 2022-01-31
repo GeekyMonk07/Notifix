@@ -2,9 +2,7 @@
 
 import 'package:appnewui/Authentication/adminlogin/adminlogin.dart';
 import 'package:appnewui/Authentication/welcomePage/controller.dart';
-import 'package:appnewui/Authentication/welcomePage/welcome.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/Gallery/gallery.dart';
-import 'package:appnewui/Pages/HomePageItems/ItemBox/fetching_timetable.dart';
 import 'package:appnewui/Pages/HomePageItems/UPLOAD%20BUTTON%20DATA/EventsPageItems/showNotice.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/showTimeTable.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/cafeteria.dart';
@@ -16,12 +14,11 @@ import 'package:appnewui/Pages/HomePageItems/ItemBox/notes.dart';
 import 'package:appnewui/Pages/HomePageItems/UPLOAD%20BUTTON%20DATA/EventsPageItems/UploadTimeTable.dart';
 import 'package:appnewui/Pages/HomePageItems/UPLOAD%20BUTTON%20DATA/EventsPageItems/uploadNotice.dart';
 import 'package:appnewui/Pages/Permission/permission.dart';
-import 'package:appnewui/Pages/Permission/permissionCard.dart';
-import 'package:appnewui/Pages/eventpage.dart';
 import 'package:appnewui/Pages/settingsPageItems/about.dart';
 import 'package:appnewui/Pages/settingsPageItems/eventform.dart';
 import 'package:appnewui/indexPage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'Pages/HomePageItems/ItemBox/Clubs/clubs_page.dart';
 import 'Pages/HomePageItems/Notifications/notifs.dart';
@@ -45,6 +42,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // FlutterNativeSplash.removeAfter(Firebase.initializeApp());
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
