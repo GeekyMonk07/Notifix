@@ -455,13 +455,7 @@ class _BodyState extends State<Body> {
         return 0;
       }
     }
-    // } else {
-    //   String patt = "@glbitm.ac.in";
-    //   if (contactMail.contains(patt) == false) {
-    //     FluttertoastErrors("Email id should end with @glbitm.ac.in");
-    //     return 0;
-    //   }
-    // }
+
     return 1;
   }
 
