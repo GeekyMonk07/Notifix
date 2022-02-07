@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import 'Authentication/Auth/firebase.dart';
 import 'main.dart';
@@ -26,7 +27,12 @@ class _IndexPageState extends State<IndexPage> {
 
   int selectedIndex = 0;
 
-  List Pages = [HomePage(), ProfilePage(), EventPage(), SettingsPage()];
+  List Pages = [ShowCaseWidget(
+      autoPlay: true,
+      builder: Builder(
+        builder: (_) => HomePage(),
+      ),
+    ), ProfilePage(), EventPage(), SettingsPage()];
   @override
   Widget build(BuildContext context) {
     return WillPopScope(child: Scaffold(

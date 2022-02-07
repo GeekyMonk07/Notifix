@@ -17,6 +17,7 @@ import 'package:appnewui/Pages/Permission/permission.dart';
 import 'package:appnewui/Pages/settingsPageItems/about.dart';
 import 'package:appnewui/Pages/settingsPageItems/eventform.dart';
 import 'package:appnewui/indexPage.dart';
+import 'package:appnewui/onbording.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -69,7 +70,7 @@ class MyApp extends StatelessWidget {
         title: "GLBITM App",
         initialRoute: "/",
         routes: {
-          "/": (context) => Controller(),
+          "/": (context) => Onbording(),
           "/index": (context) => IndexPage(),
           "/login": (context) => AdminLogin(),
           "/notifs": (context) => Notifs(),
