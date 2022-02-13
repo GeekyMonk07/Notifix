@@ -60,6 +60,7 @@ Future<void> main() async {
   runApp(MyApp());
 }
 // flutter build apk --build-name=1.0.1 --build-number=1
+// Shift+Ctrl+Alt+J
 
 class MyApp extends StatelessWidget {
   @override
@@ -70,7 +71,7 @@ class MyApp extends StatelessWidget {
         title: "GLBITM App",
         initialRoute: "/",
         routes: {
-          "/": (context) => Onbording(),
+          "/": (context) => IndexPage(),
           "/index": (context) => IndexPage(),
           "/login": (context) => AdminLogin(),
           "/notifs": (context) => Notifs(),

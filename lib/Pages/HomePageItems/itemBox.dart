@@ -1,4 +1,5 @@
 import 'package:appnewui/Pages/HomePageItems/itemBoxButton.dart';
+import 'package:appnewui/Pages/Search%20widget/page/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -63,7 +64,7 @@ class ItemBox extends StatelessWidget {
                   ontap: () => launch(
                       "https://www.glbitm.org/student_feedback.aspx?mpgid=130&pgidtrail=134"),
                   imgUrl: "assets/images/itemboxIcons/feedback.png",
-                  imgCaption: "Feedback",
+                  imgCaption: "Search",
                 ),
                 ItemBoxButton(
                   ontap: () => Navigator.pushNamed(context, "/clubs"),
@@ -71,11 +72,9 @@ class ItemBox extends StatelessWidget {
                   imgCaption: "Clubs",
                 ),
                 ItemBoxButton(
-                  //ontap: () => Navigator.pushNamed(context, "/contacts"),
-                  ontap: () => launch(
-                      "https://www.glbitm.org/contact-glbitm-top-college-in-up/"),
+                  ontap: () => Navigator.push(context,MaterialPageRoute(builder: (context)=>SearchBar())),
                   imgUrl: "assets/images/itemboxIcons/contact.png",
-                  imgCaption: "Contacts",
+                  imgCaption: "SearchBar",
                 ),
               ]),
             ],
