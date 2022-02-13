@@ -60,6 +60,7 @@ Future<void> main() async {
   runApp(MyApp());
 }
 // flutter build apk --build-name=1.0.1 --build-number=1
+// Shift+Ctrl+Alt+J
 
 class MyApp extends StatelessWidget {
   @override
