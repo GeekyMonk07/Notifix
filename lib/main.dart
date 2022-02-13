@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
         title: "GLBITM App",
         initialRoute: "/",
         routes: {
-          "/": (context) => IndexPage(),
+          "/": (context) => Onbording(),
           "/index": (context) => IndexPage(),
           "/login": (context) => AdminLogin(),
           "/notifs": (context) => Notifs(),

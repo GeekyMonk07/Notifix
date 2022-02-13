@@ -9,7 +9,7 @@ class SearchBar extends StatefulWidget {
 
 class _SearchBarState extends State<SearchBar> {
   TextEditingController _searchController = TextEditingController();
- late bool loading;
+  late bool loading;
   late Future resultsLoaded;
   List<Notice> _allResults = [];
   List<Notice> _resultsList = [];
@@ -66,10 +66,10 @@ class _SearchBarState extends State<SearchBar> {
     List<Notice> list = [];
     final database = FirebaseDatabase.instance.reference();
     var snap = await database.child('notices').once();
-    Map<dynamic,dynamic> result = snap.value;
+    Map<dynamic, dynamic> result = snap.value;
     // print(result.length);
     result.forEach((key, value) {
-      Map<dynamic,dynamic> map = value;
+      Map<dynamic, dynamic> map = value;
       list.add(Notice(
           time: map['time'],
           description: map['description'],
@@ -91,28 +91,35 @@ class _SearchBarState extends State<SearchBar> {
       );
   @override
   Widget build(BuildContext context) {
-    return loading ? Center(child: CircularProgressIndicator(color: Colors.purple,),):Scaffold(
+    return SafeArea(
+        child: Scaffold(
       appBar: AppBar(
         title: Text("Search"),
       ),
-      body: Column(
-        children: <Widget>[
-          Padding(
-            padding:
-                const EdgeInsets.only(left: 30.0, right: 30.0, bottom: 30.0),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(prefixIcon: Icon(Icons.search)),
+      body: loading
+          ? Center(
+              child: CircularProgressIndicator(
+                color: Colors.purple,
+              ),
+            )
+          : Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 30.0, right: 30.0, bottom: 30.0),
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(prefixIcon: Icon(Icons.search)),
+                  ),
+                ),
+                Expanded(
+                    child: ListView.builder(
+                  itemCount: _resultsList.length,
+                  itemBuilder: (BuildContext context, int index) =>
+                      buildNotice(_resultsList[index]),
+                )),
+              ],
             ),
-          ),
-          Expanded(
-              child: ListView.builder(
-            itemCount: _resultsList.length,
-            itemBuilder: (BuildContext context, int index) =>
-                buildNotice(_resultsList[index]),
-          )),
-        ],
-      ),
-    );
+    ));
   }
 }
