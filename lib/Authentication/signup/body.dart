@@ -329,7 +329,7 @@ class _BodyState extends State<Body> {
   }
 
   void signInWithGoogle() async {
-    print("Signing with google clicked------>");
+
     try {
       setState(() {
         _isLoading = true;
@@ -337,21 +337,21 @@ class _BodyState extends State<Body> {
       final provider =
       Provider.of<GoogleSignInProvider>(context, listen: false);
       await provider.signInWithGoogle();
-      final user = FirebaseAuth.instance.currentUser;
-      final idTokenResult = await user!.getIdTokenResult(true);
-      if (idTokenResult.claims!.containsKey("verified") == false ||
-          idTokenResult.claims!["verified"] == false) {
-        await provider.signOutGoogle();
-
-        setState(() {
-          _isLoading = false;
-        });
-        Fluttertoast.showToast(msg: "Need to register first");
-      } else {
+      // final user = FirebaseAuth.instance.currentUser;
+      // final idTokenResult = await user!.getIdTokenResult(true);
+      // if (idTokenResult.claims!.containsKey("verified") == false ||
+      //     idTokenResult.claims!["verified"] == false) {
+      //   await provider.signOutGoogle();
+      //
+      //   setState(() {
+      //     _isLoading = false;
+      //   });
+      //   Fluttertoast.showToast(msg: "Need to register first");
+      // } else {
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => IndexPage()),
                 (Route<dynamic> route) => false);
-      }
+
     } catch (e) {
       setState(() {
         _isLoading = false;
