@@ -4,6 +4,7 @@ import 'package:appnewui/Pages/HomePageItems/itemBox.dart';
 import 'package:appnewui/Pages/HomePageItems/timetableBox.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 class HomePage extends StatefulWidget {
@@ -21,11 +22,18 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    showcase();
 
-    WidgetsBinding.instance!.addPostFrameCallback(
-        (_) => ShowCaseWidget.of(context)!.startShowCase([key1, key2, key3]));
   }
+Future<void> showcase() async{
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+if(prefs.getBool('showcase')==null){
+  WidgetsBinding.instance!.addPostFrameCallback(
+          (_) => ShowCaseWidget.of(context)!.startShowCase([key1, key2, key3]));
+  prefs.setBool('showcase', true);
+}
 
+}
   @override
   Widget build(BuildContext context) {
     return Material(

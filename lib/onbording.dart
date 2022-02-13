@@ -1,6 +1,7 @@
 import 'package:appnewui/Authentication/welcomePage/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'content_model.dart';
 
 class Onbording extends StatefulWidget {
@@ -14,8 +15,17 @@ class _OnbordingState extends State<Onbording> {
 
   @override
   void initState() {
-    _controller = PageController(initialPage: 0);
     super.initState();
+    _controller = PageController(initialPage: 0);
+    onboardingScreen();
+  }
+  Future<void> onboardingScreen() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if(prefs.getBool('showcase')==true){
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => Controller()),
+              (Route<dynamic> route) => false);
+    }
   }
 
   @override
