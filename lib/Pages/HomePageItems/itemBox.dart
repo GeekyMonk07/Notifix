@@ -64,7 +64,7 @@ class ItemBox extends StatelessWidget {
                   ontap: () => launch(
                       "https://www.glbitm.org/student_feedback.aspx?mpgid=130&pgidtrail=134"),
                   imgUrl: "assets/images/itemboxIcons/feedback.png",
-                  imgCaption: "Search",
+                  imgCaption: "Feedback",
                 ),
                 ItemBoxButton(
                   ontap: () => Navigator.pushNamed(context, "/clubs"),
