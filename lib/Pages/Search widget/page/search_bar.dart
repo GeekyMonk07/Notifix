@@ -1,5 +1,8 @@
 import 'package:appnewui/Pages/Search%20widget/model/notice.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase/firebase.dart' as fb;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class SearchBar extends StatefulWidget {
@@ -64,18 +67,21 @@ class _SearchBarState extends State<SearchBar> {
 
   getUsersPastTripsStreamSnapshots() async {
     List<Notice> list = [];
-    final database = FirebaseDatabase.instance.reference();
-    var snap = await database.child('notices').once();
-    Map<dynamic, dynamic> result = snap.value;
-    // print(result.length);
-    result.forEach((key, value) {
-      Map<dynamic, dynamic> map = value;
-      list.add(Notice(
-          time: map['time'],
-          description: map['description'],
-          timestamp: map['timestamp'],
-          title: map['title']));
-    });
+
+      final database = FirebaseDatabase.instance.reference();
+      var snap = await database.child('notices').once();
+      Map<dynamic, dynamic> result = snap.value;
+      // print(result.length);
+      result.forEach((key, value) {
+        Map<dynamic, dynamic> map = value;
+        list.add(Notice(
+            time: map['time'],
+            description: map['description'],
+            timestamp: map['timestamp'],
+            title: map['title']));
+      });
+
+
 
     setState(() {
       _allResults = list;

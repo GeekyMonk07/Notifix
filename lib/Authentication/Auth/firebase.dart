@@ -8,7 +8,11 @@ import 'package:google_sign_in/google_sign_in.dart';
 // final FirebaseAuth _auth=FirebaseAuth.instance;
 
 class GoogleSignInProvider extends ChangeNotifier {
-  final googleSignIn = GoogleSignIn();
+  final googleSignIn = GoogleSignIn(clientId: '743906650805-8j405cr5oms954nf078ppj6dpe56bbkk.apps.googleusercontent.com',
+    scopes: [
+    'email',
+    'https://www.googleapis.com/auth/contacts.readonly',
+  ],);
   GoogleSignInAccount _user;
 
   GoogleSignInAccount get user => _user;
