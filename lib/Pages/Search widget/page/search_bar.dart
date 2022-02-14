@@ -21,7 +21,7 @@ class _SearchBarState extends State<SearchBar> {
       loading = true;
     });
     _searchController.addListener(_onSearchChanged);
-    getUsersPastTripsStreamSnapshots();
+    getNotices();
   }
 
   @override
@@ -34,7 +34,7 @@ class _SearchBarState extends State<SearchBar> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    resultsLoaded = getUsersPastTripsStreamSnapshots();
+    resultsLoaded = getNotices();
   }
 
   _onSearchChanged() {
@@ -62,20 +62,23 @@ class _SearchBarState extends State<SearchBar> {
     });
   }
 
-  getUsersPastTripsStreamSnapshots() async {
+  getNotices() async {
     List<Notice> list = [];
-    final database = FirebaseDatabase.instance.reference();
-    var snap = await database.child('notices').once();
-    Map<dynamic, dynamic> result = snap.value;
-    // print(result.length);
-    result.forEach((key, value) {
-      Map<dynamic, dynamic> map = value;
-      list.add(Notice(
-          time: map['time'],
-          description: map['description'],
-          timestamp: map['timestamp'],
-          title: map['title']));
-    });
+
+      final database = FirebaseDatabase.instance.reference();
+      var snap = await database.child('notices').once();
+      Map<dynamic, dynamic> result = snap.value;
+      // print(result.length);
+      result.forEach((key, value) {
+        Map<dynamic, dynamic> map = value;
+        list.add(Notice(
+            time: map['time'],
+            description: map['description'],
+            timestamp: map['timestamp'],
+            title: map['title']));
+      });
+
+
 
     setState(() {
       _allResults = list;

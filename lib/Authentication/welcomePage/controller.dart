@@ -18,12 +18,12 @@ class _ControllerState extends State<Controller> {
   late final user;
   @override
   Widget build(BuildContext context) {
-    return user!=null ? IndexPage():SignupPage();
+    return SignupPage();
   }
 
-  @override
-  void initState() {
-    user = FirebaseAuth.instance.currentUser;
-  }
+  // @override
+  // void initState() {
+  //   user = FirebaseAuth.instance.currentUser;
+  // }
 }
 
