@@ -1,8 +1,5 @@
 import 'package:appnewui/Pages/Search%20widget/model/notice.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase/firebase.dart' as fb;
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class SearchBar extends StatefulWidget {
@@ -24,7 +21,7 @@ class _SearchBarState extends State<SearchBar> {
       loading = true;
     });
     _searchController.addListener(_onSearchChanged);
-    getUsersPastTripsStreamSnapshots();
+    getNotices();
   }
 
   @override
@@ -37,7 +34,7 @@ class _SearchBarState extends State<SearchBar> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    resultsLoaded = getUsersPastTripsStreamSnapshots();
+    resultsLoaded = getNotices();
   }
 
   _onSearchChanged() {
@@ -65,7 +62,7 @@ class _SearchBarState extends State<SearchBar> {
     });
   }
 
-  getUsersPastTripsStreamSnapshots() async {
+  getNotices() async {
     List<Notice> list = [];
 
       final database = FirebaseDatabase.instance.reference();
