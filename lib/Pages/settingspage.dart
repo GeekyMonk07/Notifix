@@ -7,6 +7,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:appnewui/Authentication/Auth/firebase.dart';
 import 'package:appnewui/Authentication/welcomePage/controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -75,14 +76,14 @@ class _SettingsPageState extends State<SettingsPage> {
                 ontap: () async {
                   print("Logged out clicked");
                   try {
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    prefs.clear();
                     final provider = Provider.of<GoogleSignInProvider>(context,
                         listen: false);
                     await provider.signOutGoogle();
-                    // Navigator.of(context).pushAndRemoveUntil(
-                    //     MaterialPageRoute(builder: (context) => WelcomePage()),
-                    //         (Route<dynamic> route) => false);
-                    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-                    // Navigator.push(context,MaterialPageRoute(builder: (context)=>Controller()));
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => Controller()),
+                            (Route<dynamic> route) => false);
 
                   } catch (e) {
                     Fluttertoast.showToast(msg: "Error while logging out");

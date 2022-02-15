@@ -23,17 +23,17 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     showcase();
-
   }
-Future<void> showcase() async{
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-if(prefs.getBool('showcase')==null){
-  WidgetsBinding.instance!.addPostFrameCallback(
-          (_) => ShowCaseWidget.of(context)!.startShowCase([key1, key2, key3]));
-  prefs.setBool('showcase', true);
-}
 
-}
+  Future<void> showcase() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool('showcase') == null) {
+      WidgetsBinding.instance!.addPostFrameCallback(
+          (_) => ShowCaseWidget.of(context)!.startShowCase([key1, key2, key3]));
+      prefs.setBool('showcase', true);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
