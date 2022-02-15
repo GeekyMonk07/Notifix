@@ -1,6 +1,6 @@
 // @dart=2.9
 
-import 'dart:html';
+
 
 import 'package:appnewui/Authentication/adminlogin/adminlogin.dart';
 import 'package:appnewui/Authentication/welcomePage/controller.dart';
@@ -48,8 +48,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // FlutterNativeSplash.removeAfter(Firebase.initializeApp());
-  await Firebase.initializeApp(
-      options: FirebaseOptions(
+  if(kIsWeb){
+    await Firebase.initializeApp(
+        options: FirebaseOptions(
           apiKey: "AIzaSyAkfM67nUtCHRspsyxfTYBEdK0InFeSNp4",
           authDomain: "event-app-37fbd.firebaseapp.com",
           databaseURL: "https://event-app-37fbd-default-rtdb.firebaseio.com",
@@ -57,12 +58,12 @@ Future<void> main() async {
           storageBucket: "event-app-37fbd.appspot.com",
           messagingSenderId: "743906650805",
           appId: "1:743906650805:web:0f4ec123cbc97b4ceb6cfc",)// Your projectId
-  );
-  String host = 'http://localhost:5000';
-  FirebaseDatabase database = FirebaseDatabase(
-    app: Firebase.app(),
-    databaseURL: host,
-  );
+    );
+  }else{
+    await Firebase.initializeApp();
+  }
+
+
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   await flutterLocalNotificationsPlugin
