@@ -1,7 +1,6 @@
-import 'package:appnewui/Authentication/welcomePage/welcome.dart';
+
 import 'package:appnewui/Pages/settingsPageItems/buttons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';

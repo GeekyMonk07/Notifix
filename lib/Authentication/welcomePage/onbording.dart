@@ -1,6 +1,6 @@
-import 'package:appnewui/Authentication/Search%20widget/page/search_bar.dart';
+
+import 'package:appnewui/Authentication/welcomePage/search_bar.dart';
 import 'package:appnewui/Authentication/controller.dart';
-import 'package:appnewui/Authentication/signup/college_list.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';

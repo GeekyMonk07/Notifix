@@ -2,16 +2,14 @@ import 'package:appnewui/Authentication/signup/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class CollegeList extends StatefulWidget {
-  const CollegeList({Key? key}) : super(key: key);
-
+class CollegeName extends StatefulWidget {
   @override
-  _CollegeListState createState() => _CollegeListState();
+  _CollegeNameState createState() => _CollegeNameState();
 }
 
-class _CollegeListState extends State<CollegeList> {
-  List<String> items = [
-    "Select College",
+class _CollegeNameState extends State<CollegeName> {
+  TextEditingController _searchController = TextEditingController();
+  List<String> _allResults = [
     "001 ANAND-ENGG.COLLEGE,AGRA",
     "002 FACULTY OF ENGG, AGRA COLLEGE,AGRA",
     "004 RAJA BALWANT SINGH ENGINEERING TECHNICAL CAMPUS,AGRA",
@@ -777,77 +775,111 @@ class _CollegeListState extends State<CollegeList> {
     "1192 INTERNATIONAL INSTITUTE FOR SPECIAL EDUCATION (IISE)",
     "1193 ABES BUSINESS SCHOOL"
   ];
+  List<String> _resultsList = [];
+String selected_college = "Search your college";
+  @override
+  void initState() {
+    super.initState();
+    _resultsList = _allResults;
+    _searchController.addListener(_onSearchChanged);
+  }
 
-  String dropdownvalue = 'Select College';
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
+  }
+
+
+  _onSearchChanged() {
+    searchResultsList();
+  }
+
+  searchResultsList() {
+    List<String> showResults = [];
+
+    if (_searchController.text != "") {
+      for (var college in _allResults) {
+        // var title = Trip.fromSnapshot(tripSnapshot).title.toLowerCase();
+        var title = college.toLowerCase();
+        var query = _searchController.text.toLowerCase();
+        if (title.contains(query)) {
+          showResults.add(college);
+        }
+      }
+    } else {
+      showResults = List.from(_allResults);
+    }
+    setState(() {
+      _resultsList = showResults;
+    });
+  }
+
+
+  Widget buildNotice(String college) => ListTile(
+        title: Text(college),
+      );
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+        child: Scaffold(
       appBar: AppBar(
-        title: Text("Select college"),
+        title: Text("Search"),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            DropdownButton(
-
-              // Initial Value
-              value: dropdownvalue,
-
-              // Down Arrow Icon
-              icon: const Icon(Icons.keyboard_arrow_down),
-
-              // Array list of items
-              items: items.map((String items) {
-                return DropdownMenuItem(
-                  value: items,
-                  child: Text(items),
-                );
-              }).toList(),
-              // After selecting the desired option,it will
-              // change button value to selected value
-              onChanged: (String? newValue) {
-                setState(() {
-                  dropdownvalue = newValue!;
-                });
-              },
-            ),
-            Container(
-              height: 60,
-              margin: EdgeInsets.all(40),
-              width: double.infinity,
-              child: FlatButton(
-                child: Text(
-                    "Continue"),
-                onPressed: () {
-                  if(dropdownvalue != "Select College"){
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => SignupPage(DropDownCollegeValue: dropdownvalue,),
-                      ),
-                    );
-                  }else{
-                    Fluttertoast.showToast(msg: "Select a college");
-                  }
-
-                  // _controller.nextPage(
-                  //   duration: Duration(milliseconds: 300),
-                  //   curve: Curves.easeIn,
-                  // );
-                },
-                color: Color(0xff6F35A5),
-                textColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+      body: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 30.0, right: 30.0, bottom: 30.0),
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(label: Text(selected_college),prefixIcon: Icon(Icons.search)),
+                  ),
                 ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
+                Expanded(
+                    child: ListView.builder(
+                  itemCount: _resultsList.length,
+                  itemBuilder: (BuildContext context, int index) =>
+                  ListTile(
+                    title: Text(_resultsList[index]),
+                    onTap: (){
+                      setState(() {
+                        selected_college = _resultsList[index];
+                      });
+                    },
+                  )
+                      // buildNotice(_resultsList[index]),
+                )),
+                Container(
+                  height: 60,
+                  margin: EdgeInsets.all(40),
+                  width: double.infinity,
+                  child: FlatButton(
+                    child: Text(
+                        "Continue"),
+                    onPressed: () {
+                      if(selected_college != "Select your college"){
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => SignupPage(DropDownCollegeValue: selected_college,),
+                          ),
+                        );
+                      }else{
+                        Fluttertoast.showToast(msg: "Select a college");
+                      }
+
+                    },
+                    color: Color(0xff6F35A5),
+                    textColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                )
+              ],
+            ),
+    ));
   }
 }
-
-
