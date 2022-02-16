@@ -6,7 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:appnewui/Authentication/Auth/firebase.dart';
-import 'package:appnewui/Authentication/welcomePage/controller.dart';
+import 'package:appnewui/Authentication/controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {

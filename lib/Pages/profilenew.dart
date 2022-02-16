@@ -1,5 +1,5 @@
 import 'package:appnewui/Authentication/Auth/firebase.dart';
-import 'package:appnewui/Authentication/welcomePage/controller.dart';
+import 'package:appnewui/Authentication/controller.dart';
 import 'package:appnewui/constrants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
