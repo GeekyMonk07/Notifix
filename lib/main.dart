@@ -1,9 +1,5 @@
 // @dart=2.9
-
-
-
-import 'package:appnewui/Authentication/adminlogin/adminlogin.dart';
-import 'package:appnewui/Authentication/welcomePage/controller.dart';
+import 'package:appnewui/Authentication/controller.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/Gallery/gallery.dart';
 import 'package:appnewui/Pages/HomePageItems/UPLOAD%20BUTTON%20DATA/EventsPageItems/showNotice.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/showTimeTable.dart';
@@ -19,11 +15,8 @@ import 'package:appnewui/Pages/Permission/permission.dart';
 import 'package:appnewui/Pages/settingsPageItems/about.dart';
 import 'package:appnewui/Pages/settingsPageItems/eventform.dart';
 import 'package:appnewui/indexPage.dart';
-import 'package:appnewui/onbording.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'Pages/HomePageItems/ItemBox/Clubs/clubs_page.dart';
 import 'Pages/HomePageItems/Notifications/notifs.dart';
@@ -94,7 +87,6 @@ class MyApp extends StatelessWidget {
         routes: {
           "/": (context) => Controller(),
           "/index": (context) => IndexPage(),
-          "/login": (context) => AdminLogin(),
           "/notifs": (context) => Notifs(),
           "/clubs": (context) => ClubsPage(),
           "/library": (context) => CentralLibrary(),

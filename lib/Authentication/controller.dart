@@ -1,6 +1,6 @@
-import 'package:appnewui/Authentication/adminlogin/adminlogin.dart';
-import 'package:appnewui/Authentication/signup/signup.dart';
+
 import 'package:appnewui/indexPage.dart';
+import 'package:appnewui/Authentication/welcomePage/onbording.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +16,7 @@ class _ControllerState extends State<Controller> {
   late final user;
   @override
   Widget build(BuildContext context) {
-    return user == null ? SignupPage() : IndexPage();
+    return user == null ? Onbording() : IndexPage();
   }
 
   @override

@@ -1,4 +1,6 @@
-import 'package:appnewui/Authentication/welcomePage/controller.dart';
+
+import 'package:appnewui/Authentication/welcomePage/search_bar.dart';
+import 'package:appnewui/Authentication/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -97,20 +99,18 @@ class _OnbordingState extends State<Onbording> {
               width: double.infinity,
               child: FlatButton(
                 child: Text(
-                    currentIndex == contents.length - 1 ? "Continue" : "Next"),
+                    "Get started"),
                 onPressed: () {
-                  if (currentIndex == contents.length - 1) {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => Controller(),
-                      ),
-                    );
-                  }
-                  _controller.nextPage(
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeIn,
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => CollegeName(),
+                    ),
                   );
+                  // _controller.nextPage(
+                  //   duration: Duration(milliseconds: 300),
+                  //   curve: Curves.easeIn,
+                  // );
                 },
                 color: Color(0xff6F35A5),
                 textColor: Colors.white,

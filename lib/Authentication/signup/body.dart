@@ -1,7 +1,7 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:appnewui/Authentication/Auth/firebase.dart';
 import 'package:appnewui/Authentication/signup/background.dart';
-import 'package:appnewui/Authentication/welcomePage/controller.dart';
+import 'package:appnewui/Authentication/controller.dart';
 import 'package:appnewui/Authentication/widget/button.dart';
 import 'package:appnewui/Authentication/widget/circular_text_field.dart';
 import 'package:appnewui/constrants.dart';
@@ -17,17 +17,19 @@ import '../../indexPage.dart';
 //import 'package:flutter_svg/svg.dart';
 
 class Body extends StatefulWidget {
+  final String DropDownCollegeValue;
+  Body({required this.DropDownCollegeValue});
   @override
-  State<Body> createState() => _BodyState();
+  State<Body> createState() => _BodyState(DropDownCollegeValue: DropDownCollegeValue);
 }
 
 class _BodyState extends State<Body> {
+  final String DropDownCollegeValue;
+  _BodyState({required this.DropDownCollegeValue});
   bool _isLoading = false;
   bool _isRegistering = false;
   String DropDownBranchValue = "CSE";
   String DropDownYearValue = "2018-22";
-  String DropDownCollegeValue =
-      "192 GL BAJAJ INSTITUTE OF TECHNOLOGY MANAGEMENT GAUTAM BUDDH NAGAR";
   String name = "";
   String UniRoll = "";
   String year = "";
@@ -233,67 +235,7 @@ class _BodyState extends State<Body> {
                   privacy: false,
                   suffixicon: null,
                 ),
-                SizedBox(height: size.height * 0.02),
-                Text(
-                  "Select Your College",
-                  style: TextStyle(
-                      fontSize: 15, fontWeight: FontWeight.w700),
-                ),
-                SizedBox(height: size.height * 0.01),
-                //<--------------------------College Selection STARTS-------------------------->
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: Color(0xffF1E6FF),
-                  ),
-                  height: 55,
-                  width: size.width * .8,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 16, 15, 15),
-                    child: DropdownButton<String>(
-                      //  menuMaxHeight: size.height,
-                      isExpanded: true,
-                      isDense: true,
-                      value: DropDownCollegeValue,
-                      // icon: const Icon(Icons.arrow_downward),
-                      elevation: 16,
-                      style: const TextStyle(
-                        color: Color(0xff6F35A5),
-                      ),
-                      underline: Container(
-                        height: 0,
-                        width: size.width,
-                        color: Color(0xff6F35A5),
-                      ),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          DropDownCollegeValue = newValue!;
-                          name = name;
-                          UniRoll = UniRoll;
-                          year = year;
-                          phoneNo = phoneNo;
-                        });
-                      },
-                      items: <String>[
-                        '192 GL BAJAJ INSTITUTE OF TECHNOLOGY MANAGEMENT GAUTAM BUDDH NAGAR',
-                        '511 G L BAJAJ GROUP OF INSTITUTIONS MATHURA',
-                        '222 ITS ENGG COLLEGE GAUTAM BUDDH NAGAR',
-                        '492 KCC INSTITUTE OF TECHNOLOGY MANAGEMENT GAUTAM BUDDH NAGAR'
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(
-                            value,
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                ),
-                //<-------------------------- College Selection ENDS-------------------------->
+
 
                 SizedBox(height: size.height * 0.03),
                 CircularButton(
