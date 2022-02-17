@@ -1,4 +1,3 @@
-
 import 'package:appnewui/indexPage.dart';
 import 'package:appnewui/Authentication/welcomePage/onbording.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,6 +20,7 @@ class _ControllerState extends State<Controller> {
 
   @override
   void initState() {
+    super.initState();
     user = FirebaseAuth.instance.currentUser;
   }
 }

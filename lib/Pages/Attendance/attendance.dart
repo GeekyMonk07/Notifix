@@ -1,13 +1,10 @@
 
-import 'package:appnewui/Pages/HomePageItems/GoogleAuth/googleAuth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
-import 'package:google_sign_in/google_sign_in.dart' as signIn;
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class Attendance extends StatefulWidget {
   final String fileId;
@@ -36,7 +33,8 @@ class _AttendanceState extends State<Attendance> {
   @override
   void initState() {
     super.initState();
-    initialize(); //authentication drive apis
+    downloadFile();
+    // initialize(); //authentication drive apis
   }
 
   @override
@@ -46,21 +44,21 @@ class _AttendanceState extends State<Attendance> {
     sheet = excel['Sheet1'];
   }
 
-  void initialize() async {
-    try {
-      final Map<String, String> authHeaders = {};
-
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      authHeaders['Authorization'] = prefs.getString('Authorization')!;
-      authHeaders['X-Goog-AuthUser'] = prefs.getString('X-Goog-AuthUser')!;
-      final authenticateClient = GoogleAuthClient(authHeaders);
-      driveApi = drive.DriveApi(authenticateClient);
-      await downloadFile();
-    } catch (e) {
-      print(e);
-      Fluttertoast.showToast(msg: e.toString());
-    }
-  }
+  // void initialize() async {
+  //   try {
+  //     final Map<String, String> authHeaders = {};
+  //
+  //     SharedPreferences prefs = await SharedPreferences.getInstance();
+  //     authHeaders['Authorization'] = prefs.getString('Authorization')!;
+  //     authHeaders['X-Goog-AuthUser'] = prefs.getString('X-Goog-AuthUser')!;
+  //     final authenticateClient = GoogleAuthClient(authHeaders);
+  //     driveApi = drive.DriveApi(authenticateClient);
+  //     await downloadFile();
+  //   } catch (e) {
+  //     print(e);
+  //     Fluttertoast.showToast(msg: e.toString());
+  //   }
+  // }
 
   Future<void> downloadFile() async {
     try {
