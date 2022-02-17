@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:appnewui/Pages/HomePageItems/GoogleAuth/googleAuth.dart';
 import 'package:excel/excel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
@@ -14,6 +15,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:lottie/lottie.dart';
 import 'package:select_form_field/select_form_field.dart';
 import 'package:appnewui/constrants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Bucketform extends StatefulWidget {
   const Bucketform({Key? key}) : super(key: key);
@@ -26,15 +28,15 @@ class _BucketformState extends State<Bucketform> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _database = FirebaseDatabase.instance.reference();
   late final user;
-  String section="";
-  String year="";
-  String branch="";
-  String subject="";
-  String month="";
-  late String userName,email,ui;
-  String uid="";
-  String weblink="";
-  String downloadlink="";
+  String section = "";
+  String year = "";
+  String branch = "";
+  String subject = "";
+  String month = "";
+  late String userName, email, ui;
+  String uid = "";
+  String weblink = "";
+  String downloadlink = "";
 
   bool _isDisable = false;
   late drive.DriveApi driveApi;
@@ -46,21 +48,22 @@ class _BucketformState extends State<Bucketform> {
     userName = user.displayName;
     initialize();
   }
+
   void initialize() async {
     try {
-      final googleSignIn =
-      signIn.GoogleSignIn.standard(scopes: [drive.DriveApi.driveScope]);
-      final signIn.GoogleSignInAccount? account = await googleSignIn.signIn();
-      final authHeaders = await account!.authHeaders;
+      final Map<String, String> authHeaders = {};
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      authHeaders['Authorization'] = prefs.getString('Authorization')!;
+      authHeaders['X-Goog-AuthUser'] = prefs.getString('X-Goog-AuthUser')!;
       final authenticateClient = GoogleAuthClient(authHeaders);
       driveApi = drive.DriveApi(authenticateClient);
-      //await excelSheetInitialization();
     } catch (e) {
       print(e);
-
       Fluttertoast.showToast(msg: e.toString());
     }
   }
+
   final List<Map<String, dynamic>> _branch = [
     {
       'value': 'ME',
@@ -166,39 +169,33 @@ class _BucketformState extends State<Bucketform> {
       'value': '4',
       'label': '4',
     },
-
   ];
   Future<void> updatedata(String Filename) async {
-    try{
+    try {
       await createExcel(Filename);
       final nextEvent = <String, dynamic>{
-       'subject':subject,
-        'year':year,
-        'branch':branch,
-        'section':section,
-        'month':month,
-        'Sheet_uid':uid,
-        'weblink':weblink,
-        'downloadlink':downloadlink,
+        'subject': subject,
+        'year': year,
+        'branch': branch,
+        'section': section,
+        'month': month,
+        'Sheet_uid': uid,
+        'weblink': weblink,
+        'downloadlink': downloadlink,
       };
       print(user.uid);
-      await _database.child("/faculty/${user.uid}/attendence_bucket").push().update(nextEvent);
+      await _database
+          .child("/faculty/${user.uid}/attendence_bucket")
+          .push()
+          .update(nextEvent);
       Fluttertoast.showToast(msg: "Bucket created");
       Navigator.of(context).pop();
-
-
-
-    }catch(error){
+    } catch (error) {
       Fluttertoast.showToast(msg: error.toString());
-
-
     }
-
   }
 
-
-  Future<void> createExcel(String FileName) async{
-
+  Future<void> createExcel(String FileName) async {
     List<String> list = [];
     var driveFile = new drive.File();
     driveFile.name = "$FileName.xlsx";
@@ -224,11 +221,10 @@ class _BucketformState extends State<Bucketform> {
       list.add(res.webContentLink!);
     }
     file.deleteSync(recursive: true);
-    uid=list[0];
-    weblink=list[1];
-    downloadlink=list[2];
+    uid = list[0];
+    weblink = list[1];
+    downloadlink = list[2];
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -238,211 +234,210 @@ class _BucketformState extends State<Bucketform> {
         color: Colors.white,
         child: SafeArea(
             child: Column(
-              children: [
-                // <-----------------------------------------------Top Bar-------------------------------------------->
-                Material(
-                  elevation: 5,
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(22),
-                      bottomRight: Radius.circular(22)),
-                  child: Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Add New Bukcket Here ...... ",
-                          style:
+          children: [
+            // <-----------------------------------------------Top Bar-------------------------------------------->
+            Material(
+              elevation: 5,
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(22),
+                  bottomRight: Radius.circular(22)),
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Add New Bukcket Here ...... ",
+                      style:
                           TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                        ),
-                      ],
                     ),
-                    height: size.height * .075,
-                    width: size.width,
-                    decoration: BoxDecoration(
-                        color: secondaryPurple,
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(22),
-                            bottomRight: Radius.circular(22))),
-                  ),
+                  ],
                 ),
-                // <-----------------------------------------------Top Bar ends-------------------------------------------->
+                height: size.height * .075,
+                width: size.width,
+                decoration: BoxDecoration(
+                    color: secondaryPurple,
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(22),
+                        bottomRight: Radius.circular(22))),
+              ),
+            ),
+            // <-----------------------------------------------Top Bar ends-------------------------------------------->
 
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        //<-------------------------- Animation STARTS-------------------------->
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    //<-------------------------- Animation STARTS-------------------------->
 
-                        Lottie.asset("assets/images/evenformpage.json",
-                            height: 200),
+                    Lottie.asset("assets/images/evenformpage.json",
+                        height: 200),
 
-                        //<-------------------------- Animation ENDS-------------------------->
+                    //<-------------------------- Animation ENDS-------------------------->
 
-                        Container(
-                          padding: EdgeInsets.all(8),
-                          child: Form(
-                            key: _formKey,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Container(
-                                    child: Center(
-                                      child: Text('Bucket Form',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.normal,
-                                          )),
-                                    ),
-                                  ),
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Container(
+                                child: Center(
+                                  child: Text('Bucket Form',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.normal,
+                                      )),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: TextFormField(
-                                    cursorColor: primaryColor,
-                                    decoration: InputDecoration(
-                                      fillColor: secondaryPurple,
-                                      filled: true,
-                                      hintText: "Subject Name",
-                                      border: InputBorder.none,
-                                    ),
-                                    inputFormatters: [
-                                      LengthLimitingTextInputFormatter(30)
-                                    ],
-                                    onChanged: (value) => setState(() {
-                                      subject = value;
-                                    }),
-                                    validator: RequiredValidator(
-                                        errorText: "Required Field"),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: SelectFormField(
-                                    cursorColor: primaryColor,
-
-                                    type: SelectFormFieldType.dropdown,
-                                    // or can be dialog
-                                    initialValue: 'Not Selected',
-                                    icon: Icon(
-                                      Icons.format_shapes,
-                                      color: primaryColor,
-                                    ),
-                                    labelText: 'Year',
-                                    style: TextStyle(color: primaryColor),
-                                    items: _year,
-                                    onChanged: (val) => year = val,
-                                    onSaved: (val) => year = val!,
-                                  ),
-                                ),
-
-
-
-                                Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: SelectFormField(
-                                    cursorColor: primaryColor,
-
-                                    type: SelectFormFieldType.dropdown,
-                                    // or can be dialog
-                                    initialValue: 'Not Selected',
-                                    icon: Icon(
-                                      Icons.format_shapes,
-                                      color: primaryColor,
-                                    ),
-                                    labelText: 'Branch',
-                                    style: TextStyle(color: primaryColor),
-                                    items: _branch,
-                                    onChanged: (val) => branch = val,
-                                    onSaved: (val) => branch = val!,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: SelectFormField(
-                                    cursorColor: primaryColor,
-
-                                    type: SelectFormFieldType.dropdown,
-                                    // or can be dialog
-                                    initialValue: 'Not Selected',
-                                    icon: Icon(
-                                      Icons.format_shapes,
-                                      color: primaryColor,
-                                    ),
-                                    labelText: 'Month',
-                                    style: TextStyle(color: primaryColor),
-                                    items: _month,
-                                    onChanged: (val) => month = val,
-                                    onSaved: (val) => month = val!,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: TextFormField(
-                                    cursorColor: primaryColor,
-                                    decoration: InputDecoration(
-                                      fillColor: secondaryPurple,
-                                      filled: true,
-                                      hintText: "A/B/C/D....(Section)",
-                                      border: InputBorder.none,
-                                    ),
-                                    inputFormatters: [
-                                      LengthLimitingTextInputFormatter(30)
-                                    ],
-                                    onChanged: (value) => setState(() {
-                                      section = value;
-                                    }),
-                                    validator: RequiredValidator(
-                                        errorText: "Required Field"),
-                                  ),
-                                ),
-
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                //<-----------------------------------------button for uploading poster---------------------->
-                                // UploadButton(
-                                //   imgtext: "UPLOAD EVENT POSTER",
-                                //   colorButton: primaryColor,
-                                //   colorText: Colors.black,
-                                //   ontap: () {},
-                                // ),
-
-                                //<-----------------------------------------button for uploading poster ended ---------------------->
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                UploadButton(
-                                  imgtext: _isDisable?"Hold on..":"CONFIRM",
-                                  colorButton: primaryColor,
-                                  colorText: Colors.white,
-                                  ontap:(){
-                                    setState(() {
-                                      //createExcel(subject+year+branch+section);
-                                      updatedata(subject+year+branch+section+month);
-                                      print(uid);
-
-                                    });
-                                  }
-
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                cursorColor: primaryColor,
+                                decoration: InputDecoration(
+                                  fillColor: secondaryPurple,
+                                  filled: true,
+                                  hintText: "Subject Name",
+                                  border: InputBorder.none,
+                                ),
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(30)
+                                ],
+                                onChanged: (value) => setState(() {
+                                  subject = value;
+                                }),
+                                validator: RequiredValidator(
+                                    errorText: "Required Field"),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: SelectFormField(
+                                cursorColor: primaryColor,
+
+                                type: SelectFormFieldType.dropdown,
+                                // or can be dialog
+                                initialValue: 'Not Selected',
+                                icon: Icon(
+                                  Icons.format_shapes,
+                                  color: primaryColor,
+                                ),
+                                labelText: 'Year',
+                                style: TextStyle(color: primaryColor),
+                                items: _year,
+                                onChanged: (val) => year = val,
+                                onSaved: (val) => year = val!,
+                              ),
+                            ),
+
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: SelectFormField(
+                                cursorColor: primaryColor,
+
+                                type: SelectFormFieldType.dropdown,
+                                // or can be dialog
+                                initialValue: 'Not Selected',
+                                icon: Icon(
+                                  Icons.format_shapes,
+                                  color: primaryColor,
+                                ),
+                                labelText: 'Branch',
+                                style: TextStyle(color: primaryColor),
+                                items: _branch,
+                                onChanged: (val) => branch = val,
+                                onSaved: (val) => branch = val!,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: SelectFormField(
+                                cursorColor: primaryColor,
+
+                                type: SelectFormFieldType.dropdown,
+                                // or can be dialog
+                                initialValue: 'Not Selected',
+                                icon: Icon(
+                                  Icons.format_shapes,
+                                  color: primaryColor,
+                                ),
+                                labelText: 'Month',
+                                style: TextStyle(color: primaryColor),
+                                items: _month,
+                                onChanged: (val) => month = val,
+                                onSaved: (val) => month = val!,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                cursorColor: primaryColor,
+                                decoration: InputDecoration(
+                                  fillColor: secondaryPurple,
+                                  filled: true,
+                                  hintText: "A/B/C/D....(Section)",
+                                  border: InputBorder.none,
+                                ),
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(30)
+                                ],
+                                onChanged: (value) => setState(() {
+                                  section = value;
+                                }),
+                                validator: RequiredValidator(
+                                    errorText: "Required Field"),
+                              ),
+                            ),
+
+                            SizedBox(
+                              height: 10,
+                            ),
+                            //<-----------------------------------------button for uploading poster---------------------->
+                            // UploadButton(
+                            //   imgtext: "UPLOAD EVENT POSTER",
+                            //   colorButton: primaryColor,
+                            //   colorText: Colors.black,
+                            //   ontap: () {},
+                            // ),
+
+                            //<-----------------------------------------button for uploading poster ended ---------------------->
+                            SizedBox(
+                              height: 15,
+                            ),
+                            UploadButton(
+                                imgtext: _isDisable ? "Hold on.." : "CONFIRM",
+                                colorButton: primaryColor,
+                                colorText: Colors.white,
+                                ontap: () {
+                                  setState(() {
+                                    //createExcel(subject+year+branch+section);
+                                    updatedata(subject +
+                                        year +
+                                        branch +
+                                        section +
+                                        month);
+                                    print(uid);
+                                  });
+                                }),
+                          ],
                         ),
-                        SizedBox(
-                          height: 150.0,
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                )
-              ],
-            )),
+                    SizedBox(
+                      height: 150.0,
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        )),
       ),
     );
   }
@@ -458,10 +453,10 @@ class UploadButton extends StatelessWidget {
 
   const UploadButton(
       {Key? key,
-        required this.imgtext,
-        this.ontap,
-        this.colorText,
-        this.colorButton})
+      required this.imgtext,
+      this.ontap,
+      this.colorText,
+      this.colorButton})
       : super(key: key);
 
   @override
