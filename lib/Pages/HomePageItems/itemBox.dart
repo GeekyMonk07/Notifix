@@ -1,3 +1,4 @@
+import 'package:appnewui/Pages/Attendance/FacultyBucket.dart';
 import 'package:appnewui/Pages/HomePageItems/itemBoxButton.dart';
 import 'package:appnewui/Pages/Search%20widget/page/search_bar.dart';
 import 'package:flutter/material.dart';
@@ -44,9 +45,9 @@ class ItemBox extends StatelessWidget {
               ),
               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
                 ItemBoxButton(
-                  ontap: () => Navigator.pushNamed(context, "/cafeteria"),
+                  ontap: () => Navigator.push(context,MaterialPageRoute(builder: (context)=>AttendenceBucket())),
                   imgUrl: "assets/images/itemboxIcons/cafe.png",
-                  imgCaption: "Cafeteria",
+                  imgCaption: "Attendance",
                 ),
                 ItemBoxButton(
                   ontap: () => Navigator.pushNamed(context, "/library"),

@@ -1,3 +1,4 @@
+import 'package:appnewui/Pages/Attendance/attendance.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -85,7 +86,7 @@ class _AttendenceBucketState extends State<AttendenceBucket> {
                             abc.forEach((key, value) {
                               final next_pdf = Map<String, dynamic>.from(value);
                               final orderTile = ListTile(
-                                onTap: ,
+                                onTap: (){ Navigator.push(context,MaterialPageRoute(builder: (context)=>Attendance(fileId: next_pdf['Sheet_uid'],)));},
                                 leading: Icon(Icons.backup_rounded),
                                 title: Text(
                                   next_pdf['subject'],

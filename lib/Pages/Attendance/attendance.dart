@@ -10,13 +10,17 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Attendance extends StatefulWidget {
-  const Attendance({Key? key}) : super(key: key);
+  final String fileId;
+  Attendance({required this.fileId});
+
 
   @override
-  _AttendanceState createState() => _AttendanceState();
+  _AttendanceState createState() => _AttendanceState(fileId: fileId);
 }
 
 class _AttendanceState extends State<Attendance> {
+  final String fileId;
+  _AttendanceState({required this.fileId});
   bool check = false;
   String appBarTitle = "Attendance";
   late var excel, excelTemp;
@@ -27,7 +31,7 @@ class _AttendanceState extends State<Attendance> {
   // String fileId = "1dAX-6eXw65CjQPq9f8neHUJVanOD_BJW";
 
   //specify you drive files id here
-  String fileId = "19jF3lOVW563LU6mEjqAjXVLNQ7poXY1Z"; //xlsx file quiz madhav
+  // String fileId = "19jF3lOVW563LU6mEjqAjXVLNQ7poXY1Z"; //xlsx file quiz madhav
 
   @override
   void initState() {
