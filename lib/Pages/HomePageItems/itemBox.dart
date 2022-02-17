@@ -61,8 +61,8 @@ class ItemBox extends StatelessWidget {
               ]),
               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
                 ItemBoxButton(
-                  ontap: () => launch(
-                      "https://www.glbitm.org/student_feedback.aspx?mpgid=130&pgidtrail=134"),
+                  ontap: () => Navigator.pushNamed(context, "/feedback_sheetgit"),
+
                   imgUrl: "assets/images/itemboxIcons/feedback.png",
                   imgCaption: "Feedback",
                 ),
