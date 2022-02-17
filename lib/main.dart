@@ -1,6 +1,7 @@
 // @dart=2.9
 import 'package:appnewui/Authentication/controller.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/Gallery/gallery.dart';
+import 'package:appnewui/Pages/HomePageItems/ItemBox/feedback_sheet.dart';
 import 'package:appnewui/Pages/HomePageItems/UPLOAD%20BUTTON%20DATA/EventsPageItems/showNotice.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/showTimeTable.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/cafeteria.dart';
@@ -103,6 +104,8 @@ class MyApp extends StatelessWidget {
           "/events": (context) => Events(),
           "/updateTimeTable": (context) => UploadTimetable(),
           "/updateNotice": (context) => UploadNotice(),
+          "/feedback_sheet": (context) => Feedback_gen(),
+
         },
       ));
 }
