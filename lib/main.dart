@@ -58,9 +58,11 @@ Future<void> main() async {
     );
   }else{
     await Firebase.initializeApp();
-    prefs = await SharedPreferences.getInstance();
+
+    FirebaseDatabase.instance.setPersistenceEnabled(true);
   }
-  FirebaseDatabase.instance.setPersistenceEnabled(true);
+  prefs = await SharedPreferences.getInstance();
+
 
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);

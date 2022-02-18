@@ -3,34 +3,14 @@ import 'package:flutter/material.dart';
 import '../../../../constrants.dart';
 
 class pdf_view extends StatefulWidget {
-  // const pdf_view({Key? key}) : super(key: key);
   @override
   State<pdf_view> createState() => _pdf_viewState();
 }
 
 class _pdf_viewState extends State<pdf_view> {
-  //scroll animation stars
-  // ScrollController _scrollController = ScrollController();
 
-  // _scrollToBottom() {
-  //   if (_scrollController.hasClients == false) {
-  //     Future.delayed(Duration(seconds: 2), () {
-  //       _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-  //           duration: Duration(seconds: 1), curve: Curves.linear);
-  //     });
-  //   } else {
-  //     _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-  //         duration: Duration(seconds: 1), curve: Curves.linear);
-  //   }
-  // }
-
-  //scroll animation ends
   final database = FirebaseDatabase.instance.reference();
 
-  @override
-  // void initState() {
-  //   super.initState();
-  // }
 
   @override
   Widget build(BuildContext context) {
