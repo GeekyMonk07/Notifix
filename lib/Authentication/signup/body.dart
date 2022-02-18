@@ -11,6 +11,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../indexPage.dart';
 
@@ -279,7 +280,17 @@ class _BodyState extends State<Body> {
       final provider =
       Provider.of<GoogleSignInProvider>(context, listen: false);
       await provider.signInWithGoogle();
-      // final user = FirebaseAuth.instance.currentUser;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final user = await FirebaseAuth.instance.currentUser;
+      prefs.setBool('verified', true);
+      final account = provider.user;
+      final Map<String,String> authHead = await account.authHeaders;
+      authHead.forEach((key, value){
+        prefs.setString(key,value);
+      });
+
+
+
       // final idTokenResult = await user!.getIdTokenResult(true);
       // if (idTokenResult.claims!.containsKey("verified") == false ||
       //     idTokenResult.claims!["verified"] == false) {
@@ -290,9 +301,13 @@ class _BodyState extends State<Body> {
       //   });
       //   Fluttertoast.showToast(msg: "Need to register first");
       // } else {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => IndexPage()),
-                (Route<dynamic> route) => false);
+      //   Navigator.of(context).pushAndRemoveUntil(
+      //       MaterialPageRoute(builder: (context) => IndexPage()),
+      //           (Route<dynamic> route) => false);
+      // }
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => IndexPage()),
+              (Route<dynamic> route) => false);
 
     } catch (e) {
       setState(() {

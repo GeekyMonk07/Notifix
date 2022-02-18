@@ -1,5 +1,7 @@
 //@dart=2.9
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +11,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class GoogleSignInProvider extends ChangeNotifier {
   final googleSignIn = GoogleSignIn(clientId: '743906650805-8j405cr5oms954nf078ppj6dpe56bbkk.apps.googleusercontent.com',
-    scopes: [
-    'email',
-    'https://www.googleapis.com/auth/contacts.readonly',
-  ],);
+    scopes: [drive.DriveApi.driveScope],);
   GoogleSignInAccount _user;
 
   GoogleSignInAccount get user => _user;
@@ -57,11 +56,9 @@ class GoogleSignInProvider extends ChangeNotifier {
   }
 
   Future signOutGoogle() async {
-    print("#####################");
     await googleSignIn.disconnect();
     FirebaseAuth.instance.signOut();
-    // notifyListeners();
-    print("signout");
+    Fluttertoast.showToast(msg: "Logged out");
 
   }
 }

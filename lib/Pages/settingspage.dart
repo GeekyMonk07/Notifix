@@ -73,15 +73,15 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               SettingsButton(
                 ontap: () async {
-                  print("Logged out clicked");
                   try {
                     SharedPreferences prefs = await SharedPreferences.getInstance();
-                    prefs.clear();
+
                     final provider = Provider.of<GoogleSignInProvider>(context,
                         listen: false);
                     await provider.signOutGoogle();
+                    prefs.clear();
                     Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => Controller()),
+                        MaterialPageRoute(builder: (context) => Controller(prefs: prefs,)),
                             (Route<dynamic> route) => false);
 
                   } catch (e) {

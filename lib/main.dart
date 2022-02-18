@@ -1,5 +1,6 @@
 // @dart=2.9
 import 'package:appnewui/Authentication/controller.dart';
+import 'package:appnewui/Pages/Attendance/Bucketform.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/Gallery/gallery.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/feedback_sheet.dart';
 import 'package:appnewui/Pages/HomePageItems/UPLOAD%20BUTTON%20DATA/EventsPageItems/showNotice.dart';
@@ -16,16 +17,18 @@ import 'package:appnewui/Pages/Permission/permission.dart';
 import 'package:appnewui/Pages/settingsPageItems/about.dart';
 import 'package:appnewui/Pages/settingsPageItems/eventform.dart';
 import 'package:appnewui/indexPage.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Pages/HomePageItems/ItemBox/Clubs/clubs_page.dart';
 import 'Pages/HomePageItems/Notifications/notifs.dart';
 import 'package:appnewui/Authentication/Auth/firebase.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-
+SharedPreferences prefs;
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', // id
     'High Importance Notifications', // title// description
@@ -41,7 +44,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // FlutterNativeSplash.removeAfter(Firebase.initializeApp());
+
   if(kIsWeb){
     await Firebase.initializeApp(
         options: FirebaseOptions(
@@ -55,7 +58,9 @@ Future<void> main() async {
     );
   }else{
     await Firebase.initializeApp();
+    prefs = await SharedPreferences.getInstance();
   }
+  FirebaseDatabase.instance.setPersistenceEnabled(true);
 
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -77,7 +82,13 @@ Future<void> main() async {
 // flutter run -d chrome --web-hostname localhost --web-port 5000
 
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) => ChangeNotifierProvider(
       create: (context) => GoogleSignInProvider(),
@@ -86,7 +97,7 @@ class MyApp extends StatelessWidget {
         title: "GLBITM App",
         initialRoute: "/",
         routes: {
-          "/": (context) => Controller(),
+          "/": (context) => Controller(prefs: prefs,),
           "/index": (context) => IndexPage(),
           "/notifs": (context) => Notifs(),
           "/clubs": (context) => ClubsPage(),
@@ -105,6 +116,8 @@ class MyApp extends StatelessWidget {
           "/updateTimeTable": (context) => UploadTimetable(),
           "/updateNotice": (context) => UploadNotice(),
           "/feedback_sheet": (context) => Feedback_gen(),
+          "/bucketform" :(context) => Bucketform(),
+          "/feedback_sheetgit":(context)=> Feedback_gen(),
 
         },
       ));
