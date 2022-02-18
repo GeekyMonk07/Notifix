@@ -11,21 +11,24 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Attendance extends StatefulWidget {
   final String fileId;
   final String fileName;
-  Attendance({required this.fileId, required this.fileName});
+  drive.DriveApi driveApi;
+
+  Attendance({required this.fileId, required this.fileName,required this.driveApi});
 
 
   @override
-  _AttendanceState createState() => _AttendanceState(fileId: fileId,fileName:fileName);
+  _AttendanceState createState() => _AttendanceState(fileId: fileId,fileName:fileName,driveApi: driveApi);
 }
 
 class _AttendanceState extends State<Attendance> {
   final String fileId;
   final String fileName;
-  _AttendanceState({required this.fileId,required this.fileName});
+  drive.DriveApi driveApi;
+
+  _AttendanceState({required this.fileId,required this.fileName,required this.driveApi});
   bool check = false;
   String appBarTitle = "Attendance";
   late var excel, excelTemp;
-  late drive.DriveApi driveApi;
   late Sheet sheet;
   bool loading = true;
   // late Style present,absent;
@@ -49,19 +52,19 @@ class _AttendanceState extends State<Attendance> {
   }
 
   void initialize() async {
-    try {
-      final Map<String, String> authHeaders = {};
-
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      authHeaders['Authorization'] = prefs.getString('Authorization')!;
-      authHeaders['X-Goog-AuthUser'] = prefs.getString('X-Goog-AuthUser')!;
-      final authenticateClient = GoogleAuthClient(authHeaders);
-      driveApi = drive.DriveApi(authenticateClient);
+    // try {
+    //   final Map<String, String> authHeaders = {};
+    //
+    //   SharedPreferences prefs = await SharedPreferences.getInstance();
+    //   authHeaders['Authorization'] = prefs.getString('Authorization')!;
+    //   authHeaders['X-Goog-AuthUser'] = prefs.getString('X-Goog-AuthUser')!;
+    //   final authenticateClient = GoogleAuthClient(authHeaders);
+    //   driveApi = drive.DriveApi(authenticateClient);
       await downloadFile();
-    } catch (e) {
-      print(e);
-      Fluttertoast.showToast(msg: e.toString());
-    }
+    // } catch (e) {
+    //   print(e);
+    //   Fluttertoast.showToast(msg: e.toString());
+    // }
   }
 
   Future<void> downloadFile() async {
