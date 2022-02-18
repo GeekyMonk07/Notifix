@@ -144,16 +144,19 @@ class _ProfilePageState extends State<ProfilePage> {
                             onPressed: () async {
                               print("Logged out clicked");
                               try {
-                                SharedPreferences prefs = await SharedPreferences.getInstance();
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
 
-                                final provider = Provider.of<GoogleSignInProvider>(context,
-                                    listen: false);
+                                final provider =
+                                    Provider.of<GoogleSignInProvider>(context,
+                                        listen: false);
                                 await provider.signOutGoogle();
                                 prefs.clear();
                                 Navigator.of(context).pushAndRemoveUntil(
-                                    MaterialPageRoute(builder: (context) => Controller(prefs:prefs)),
-                                        (Route<dynamic> route) => false);
-
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            Controller(prefs: prefs)),
+                                    (Route<dynamic> route) => false);
                               } catch (e) {
                                 Fluttertoast.showToast(
                                     msg: "Error while logging out");

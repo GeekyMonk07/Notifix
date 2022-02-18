@@ -129,7 +129,6 @@ class _VerifyState extends State<Verify> {
           query: _ref,
           itemBuilder: (BuildContext context, DataSnapshot snapshot,
               Animation<double> animation, int index) {
-            //final nextOrder=Map<String,dynamic>.from(value);
             Map contact = snapshot.value;
             contact['key'] = snapshot.key;
 
