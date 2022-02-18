@@ -86,7 +86,7 @@ class _AttendenceBucketState extends State<AttendenceBucket> {
                             abc.forEach((key, value) {
                               final next_pdf = Map<String, dynamic>.from(value);
                               final orderTile = ListTile(
-                                onTap: (){ Navigator.push(context,MaterialPageRoute(builder: (context)=>Attendance(fileId: next_pdf['Sheet_uid'],)));},
+                                onTap: (){ Navigator.push(context,MaterialPageRoute(builder: (context)=>Attendance(fileId: next_pdf['Sheet_uid'],fileName:next_pdf['fileName'])));},
                                 leading: Icon(Icons.backup_rounded),
                                 title: Text(
                                   next_pdf['subject'],

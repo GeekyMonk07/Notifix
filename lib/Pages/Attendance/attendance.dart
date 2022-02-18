@@ -1,23 +1,27 @@
 
+import 'package:appnewui/Pages/HomePageItems/GoogleAuth/googleAuth.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class Attendance extends StatefulWidget {
   final String fileId;
-  Attendance({required this.fileId});
+  final String fileName;
+  Attendance({required this.fileId, required this.fileName});
 
 
   @override
-  _AttendanceState createState() => _AttendanceState(fileId: fileId);
+  _AttendanceState createState() => _AttendanceState(fileId: fileId,fileName:fileName);
 }
 
 class _AttendanceState extends State<Attendance> {
   final String fileId;
-  _AttendanceState({required this.fileId});
+  final String fileName;
+  _AttendanceState({required this.fileId,required this.fileName});
   bool check = false;
   String appBarTitle = "Attendance";
   late var excel, excelTemp;
@@ -33,8 +37,8 @@ class _AttendanceState extends State<Attendance> {
   @override
   void initState() {
     super.initState();
-    downloadFile();
-    // initialize(); //authentication drive apis
+    // downloadFile();
+    initialize(); //authentication drive apis
   }
 
   @override
@@ -44,21 +48,21 @@ class _AttendanceState extends State<Attendance> {
     sheet = excel['Sheet1'];
   }
 
-  // void initialize() async {
-  //   try {
-  //     final Map<String, String> authHeaders = {};
-  //
-  //     SharedPreferences prefs = await SharedPreferences.getInstance();
-  //     authHeaders['Authorization'] = prefs.getString('Authorization')!;
-  //     authHeaders['X-Goog-AuthUser'] = prefs.getString('X-Goog-AuthUser')!;
-  //     final authenticateClient = GoogleAuthClient(authHeaders);
-  //     driveApi = drive.DriveApi(authenticateClient);
-  //     await downloadFile();
-  //   } catch (e) {
-  //     print(e);
-  //     Fluttertoast.showToast(msg: e.toString());
-  //   }
-  // }
+  void initialize() async {
+    try {
+      final Map<String, String> authHeaders = {};
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      authHeaders['Authorization'] = prefs.getString('Authorization')!;
+      authHeaders['X-Goog-AuthUser'] = prefs.getString('X-Goog-AuthUser')!;
+      final authenticateClient = GoogleAuthClient(authHeaders);
+      driveApi = drive.DriveApi(authenticateClient);
+      await downloadFile();
+    } catch (e) {
+      print(e);
+      Fluttertoast.showToast(msg: e.toString());
+    }
+  }
 
   Future<void> downloadFile() async {
     try {
@@ -107,7 +111,7 @@ class _AttendanceState extends State<Attendance> {
     });
     try {
       var driveFile = new drive.File();
-      driveFile.name = "output.xlsx";
+      driveFile.name = fileName+'.xlsx';
 
       final List<int> bytes = (excel.encode()) as List<int>;
       final Stream<List<int>> mediaStream =

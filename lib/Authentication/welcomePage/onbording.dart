@@ -19,16 +19,8 @@ class _OnbordingState extends State<Onbording> {
   void initState() {
     super.initState();
     _controller = PageController(initialPage: 0);
-    onboardingScreen();
   }
-  Future<void> onboardingScreen() async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if(prefs.getBool('showcase')==true){
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => Controller()),
-              (Route<dynamic> route) => false);
-    }
-  }
+
 
   @override
   void dispose() {

@@ -182,6 +182,7 @@ class _BucketformState extends State<Bucketform> {
         'Sheet_uid': uid,
         'weblink': weblink,
         'downloadlink': downloadlink,
+        'fileName' : Filename
       };
       print(user.uid);
       await _database
