@@ -58,7 +58,7 @@ class GoogleSignInProvider extends ChangeNotifier {
   Future signOutGoogle() async {
     await googleSignIn.disconnect();
     FirebaseAuth.instance.signOut();
-    Fluttertoast.showToast(msg: "Logged out");
+    // Fluttertoast.showToast(msg: "Logged out");
 
   }
 }

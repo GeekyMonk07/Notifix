@@ -172,6 +172,9 @@ class _BucketformState extends State<Bucketform> {
   ];
   Future<void> updatedata(String Filename) async {
     try {
+      setState(() {
+        _isDisable = true;
+      });
       await createExcel(Filename);
       final nextEvent = <String, dynamic>{
         'subject': subject,
@@ -192,6 +195,9 @@ class _BucketformState extends State<Bucketform> {
       Fluttertoast.showToast(msg: "Bucket created");
       Navigator.of(context).pop();
     } catch (error) {
+      setState(() {
+        _isDisable = false;
+      });
       Fluttertoast.showToast(msg: error.toString());
     }
   }
@@ -247,7 +253,7 @@ class _BucketformState extends State<Bucketform> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Add New Bukcket Here ...... ",
+                      "New sheet",
                       style:
                           TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                     ),
@@ -399,32 +405,21 @@ class _BucketformState extends State<Bucketform> {
                             SizedBox(
                               height: 10,
                             ),
-                            //<-----------------------------------------button for uploading poster---------------------->
-                            // UploadButton(
-                            //   imgtext: "UPLOAD EVENT POSTER",
-                            //   colorButton: primaryColor,
-                            //   colorText: Colors.black,
-                            //   ontap: () {},
-                            // ),
 
                             //<-----------------------------------------button for uploading poster ended ---------------------->
                             SizedBox(
                               height: 15,
                             ),
                             UploadButton(
-                                imgtext: _isDisable ? "Hold on.." : "CONFIRM",
+                                imgtext: _isDisable ? "Hold on.." : "Create",
                                 colorButton: primaryColor,
                                 colorText: Colors.white,
-                                ontap: () {
-                                  setState(() {
-                                    //createExcel(subject+year+branch+section);
-                                    updatedata(subject +
-                                        year +
-                                        branch +
-                                        section +
-                                        month);
-                                    print(uid);
-                                  });
+                                ontap: _isDisable ? null : () {
+
+
+                                    String fileName = subject + " "+year+" "+branch+" "+section+" "+month;
+                                    updatedata(fileName);
+
                                 }),
                           ],
                         ),
