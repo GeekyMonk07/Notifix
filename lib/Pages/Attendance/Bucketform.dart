@@ -18,13 +18,16 @@ import 'package:appnewui/constrants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Bucketform extends StatefulWidget {
-  const Bucketform({Key? key}) : super(key: key);
 
+  drive.DriveApi driveApi;
+  Bucketform({required this.driveApi});
   @override
-  State<Bucketform> createState() => _BucketformState();
+  State<Bucketform> createState() => _BucketformState(driveApi: driveApi);
 }
 
 class _BucketformState extends State<Bucketform> {
+  drive.DriveApi driveApi;
+  _BucketformState({required this.driveApi});
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _database = FirebaseDatabase.instance.reference();
   late final user;
@@ -37,9 +40,8 @@ class _BucketformState extends State<Bucketform> {
   String uid = "";
   String weblink = "";
   String downloadlink = "";
-
+  late String folderId;
   bool _isDisable = false;
-  late drive.DriveApi driveApi;
   @override
   void initState() {
     // TODO: implement initState
@@ -175,6 +177,18 @@ class _BucketformState extends State<Bucketform> {
       setState(() {
         _isDisable = true;
       });
+      DataSnapshot snapshot = await _database.child('/faculty/${user.uid}/folder_id').once();
+      if(snapshot.value==null){
+        var driveFile = new drive.File();
+        driveFile.name = 'Attendance';
+        driveFile.mimeType = "application/vnd.google-apps.folder";
+        final folder = await driveApi.files.create(driveFile);
+        folderId = folder.id!;
+        await _database.child('/faculty/${user.uid}/folder_id').update({"folderId" : folderId});
+      }else{
+        folderId = snapshot.value['folderId'];
+      }
+      // print(folderId);
       await createExcel(Filename);
       final nextEvent = <String, dynamic>{
         'subject': subject,
@@ -185,9 +199,9 @@ class _BucketformState extends State<Bucketform> {
         'Sheet_uid': uid,
         'weblink': weblink,
         'downloadlink': downloadlink,
-        'fileName' : Filename
+        'fileName': Filename
       };
-      print(user.uid);
+      // print(user.uid);
       await _database
           .child("/faculty/${user.uid}/attendence_bucket")
           .push()
@@ -206,7 +220,7 @@ class _BucketformState extends State<Bucketform> {
     List<String> list = [];
     var driveFile = new drive.File();
     driveFile.name = "$FileName.xlsx";
-
+    driveFile.parents = [folderId];
     final String path = (await getApplicationSupportDirectory()).path;
     final String fileName = path + '/$FileName.xlsx';
     File file = new File(fileName);
@@ -414,13 +428,20 @@ class _BucketformState extends State<Bucketform> {
                                 imgtext: _isDisable ? "Hold on.." : "Create",
                                 colorButton: primaryColor,
                                 colorText: Colors.white,
-                                ontap: _isDisable ? null : () {
-
-
-                                    String fileName = subject + " "+year+" "+branch+" "+section+" "+month;
-                                    updatedata(fileName);
-
-                                }),
+                                ontap: _isDisable
+                                    ? null
+                                    : () {
+                                        String fileName = subject +
+                                            " " +
+                                            year +
+                                            " " +
+                                            branch +
+                                            " " +
+                                            section +
+                                            " " +
+                                            month;
+                                        updatedata(fileName);
+                                      }),
                           ],
                         ),
                       ),

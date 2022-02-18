@@ -1,9 +1,14 @@
+import 'package:appnewui/Pages/Attendance/Bucketform.dart';
 import 'package:appnewui/Pages/Attendance/attendance.dart';
+import 'package:appnewui/Pages/HomePageItems/GoogleAuth/googleAuth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../constrants.dart';
+import 'package:googleapis/drive/v3.dart' as drive;
 
 class AttendenceBucket extends StatefulWidget {
   const AttendenceBucket({Key? key}) : super(key: key);
@@ -16,14 +21,32 @@ class _AttendenceBucketState extends State<AttendenceBucket> {
   ScrollController _scrollController = ScrollController();
   late Query _ref;
   late final user;
+  late drive.DriveApi driveApi;
   late DatabaseReference reference;
   void initState() {
     super.initState();
     user = FirebaseAuth.instance.currentUser;
     final FirebaseDatabase database = FirebaseDatabase.instance;
     _ref = database.reference().child('/faculty/${user.uid}/attendence_bucket');
-    reference =
-    FirebaseDatabase.instance.reference().child('/faculty/${user.uid}/attendence_bucket');
+    reference = FirebaseDatabase.instance
+        .reference()
+        .child('/faculty/${user.uid}/attendence_bucket');
+    initialize();
+  }
+
+  void initialize() async {
+    try {
+      final Map<String, String> authHeaders = {};
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      authHeaders['Authorization'] = prefs.getString('Authorization')!;
+      authHeaders['X-Goog-AuthUser'] = prefs.getString('X-Goog-AuthUser')!;
+      final authenticateClient = GoogleAuthClient(authHeaders);
+      driveApi = drive.DriveApi(authenticateClient);
+    } catch (e) {
+      print(e);
+      Fluttertoast.showToast(msg: e.toString());
+    }
   }
 
   @override
@@ -54,10 +77,12 @@ class _AttendenceBucketState extends State<AttendenceBucket> {
                   ),
                   IconButton(
                     onPressed: () {
-                      // setState(() {
-                      //
-                      // });//y
-                      Navigator.pushNamed(context, "/bucketform");
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Bucketform(
+                                    driveApi: driveApi,
+                                  )));
                     },
                     icon: Icon(Icons.add_box),
                   ),
@@ -93,8 +118,10 @@ class _AttendenceBucketState extends State<AttendenceBucket> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Attendance(
-                                        fileId: snapshot.value['Sheet_uid'],
-                                        fileName: snapshot.value['fileName'])));
+                                          fileId: snapshot.value['Sheet_uid'],
+                                          fileName: snapshot.value['fileName'],
+                                          driveApi: driveApi,
+                                        )));
                           },
                           leading: Icon(Icons.backup_rounded),
                           title: Row(
@@ -105,18 +132,29 @@ class _AttendenceBucketState extends State<AttendenceBucket> {
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18,
-                                  ),),
+                                  ),
+                                ),
                               ),
-
-                                ElevatedButton(onPressed: () async{
-                                  await reference.child("${snapshot.key}").remove();
-                                }, child: const Text("Delete"),
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                    MaterialStateProperty.all(
-                                        Colors.red),
-                                  ),)
-
+                              ElevatedButton(
+                                onPressed: () async {
+                                  try {
+                                    await driveApi.files
+                                        .delete(snapshot.value['Sheet_uid']);
+                                    await reference
+                                        .child("${snapshot.key}")
+                                        .remove();
+                                    Fluttertoast.showToast(
+                                        msg: "Deleted succesfully");
+                                  } catch (e) {
+                                    Fluttertoast.showToast(msg: e.toString());
+                                  }
+                                },
+                                child: const Text("Delete"),
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all(Colors.red),
+                                ),
+                              )
                             ],
                           ),
                           subtitle: Text(
