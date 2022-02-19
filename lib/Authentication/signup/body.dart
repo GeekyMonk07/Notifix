@@ -236,7 +236,24 @@ class _BodyState extends State<Body> {
                   privacy: false,
                   suffixicon: null,
                 ),
-
+                SizedBox(height: size.height * 0.02),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Color(0xffF1E6FF),
+                  ),
+                  height: 55,
+                  width: size.width * .8,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 16, 15, 15),
+                    child: Text(
+                      DropDownCollegeValue,
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                ),
 
                 SizedBox(height: size.height * 0.03),
                 CircularButton(

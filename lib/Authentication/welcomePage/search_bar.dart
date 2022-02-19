@@ -830,7 +830,7 @@ class _CollegeNameState extends State<CollegeName> {
         color: Colors.white,
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.only(left: 20, top: 50, right: 20),
+            padding: const EdgeInsets.only(left: 20, top: 20, right: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -841,15 +841,15 @@ class _CollegeNameState extends State<CollegeName> {
                       color: Color(0xFF0D1333),
                       fontWeight: FontWeight.bold,
                     )),
-                const Text("Find your college name",
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Color(0xFF61688B),
-                      height: 2,
-                    )),
+                // const Text("Select your college",
+                //     style: TextStyle(
+                //       fontSize: 18,
+                //       color: Color(0xFF61688B),
+                //       height: 2,
+                //     )),
 
                 const SizedBox(
-                  height: 40,
+                  height: 10,
                 ),
 
                 Container(
@@ -881,9 +881,9 @@ class _CollegeNameState extends State<CollegeName> {
                   height: 20,
                 ),
                 selected == 1
-                    ? Text('Selected College: $selected_college',
+                    ? Text(selected_college,
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 15,
                           color: Color(0xFF000000),
                           height: 2,
                         ))
@@ -955,9 +955,8 @@ class _CollegeNameState extends State<CollegeName> {
                       "CONTINUE",
                       style: TextStyle(fontSize: 16),
                     ),
-                    onPressed: () {
-                      if (selected_college != "Search your college") {
-                        Navigator.pushReplacement(
+                    onPressed: selected==0 ? null : () {
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (_) => SignupPage(
@@ -965,9 +964,6 @@ class _CollegeNameState extends State<CollegeName> {
                             ),
                           ),
                         );
-                      } else {
-                        Fluttertoast.showToast(msg: "Select a college");
-                      }
                     },
                     color: Color(0xff6F35A5),
                     textColor: Colors.white,
