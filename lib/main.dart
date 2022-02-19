@@ -82,6 +82,7 @@ Future<void> main() async {
 // flutter build apk --build-name=1.0.1 --build-number=1
 // Shift+Ctrl+Alt+J
 // flutter run -d chrome --web-hostname localhost --web-port 5000
+// flutter build apk --split-per-abi
 
 
 class MyApp extends StatefulWidget {
