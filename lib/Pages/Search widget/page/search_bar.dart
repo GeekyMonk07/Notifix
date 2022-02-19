@@ -65,20 +65,18 @@ class _SearchBarState extends State<SearchBar> {
   getNotices() async {
     List<Notice> list = [];
 
-      final database = FirebaseDatabase.instance.reference();
-      var snap = await database.child('notices').once();
-      Map<dynamic, dynamic> result = snap.value;
-      // print(result.length);
-      result.forEach((key, value) {
-        Map<dynamic, dynamic> map = value;
-        list.add(Notice(
-            time: map['time'],
-            description: map['description'],
-            timestamp: map['timestamp'],
-            title: map['title']));
-      });
-
-
+    final database = FirebaseDatabase.instance.reference();
+    var snap = await database.child('notices').once();
+    Map<dynamic, dynamic> result = snap.value;
+    // print(result.length);
+    result.forEach((key, value) {
+      Map<dynamic, dynamic> map = value;
+      list.add(Notice(
+          time: map['time'],
+          description: map['description'],
+          timestamp: map['timestamp'],
+          title: map['title']));
+    });
 
     setState(() {
       _allResults = list;

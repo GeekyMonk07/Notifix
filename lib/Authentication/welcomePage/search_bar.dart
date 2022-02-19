@@ -1,5 +1,7 @@
 import 'package:appnewui/Authentication/signup/signup.dart';
+import 'package:appnewui/constrants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class CollegeName extends StatefulWidget {
@@ -9,7 +11,7 @@ class CollegeName extends StatefulWidget {
 
 class _CollegeNameState extends State<CollegeName> {
   TextEditingController _searchController = TextEditingController();
-  List<String> _allResults = [
+  final List<String> _allResults = [
     "001 ANAND-ENGG.COLLEGE,AGRA",
     "002 FACULTY OF ENGG, AGRA COLLEGE,AGRA",
     "004 RAJA BALWANT SINGH ENGINEERING TECHNICAL CAMPUS,AGRA",
@@ -776,7 +778,8 @@ class _CollegeNameState extends State<CollegeName> {
     "1193 ABES BUSINESS SCHOOL"
   ];
   List<String> _resultsList = [];
-String selected_college = "Search your college";
+  String selected_college = "Search your college";
+  int selected = 0;
   @override
   void initState() {
     super.initState();
@@ -790,7 +793,6 @@ String selected_college = "Search your college";
     _searchController.dispose();
     super.dispose();
   }
-
 
   _onSearchChanged() {
     searchResultsList();
@@ -816,70 +818,169 @@ String selected_college = "Search your college";
     });
   }
 
-
   Widget buildNotice(String college) => ListTile(
         title: Text(college),
       );
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-      appBar: AppBar(
-        title: Text("Search"),
-      ),
-      body: Column(
+    Color initial_value = Colors.white;
+    Size size = MediaQuery.of(context).size;
+    return Scaffold(
+      body: Material(
+        color: Colors.white,
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20, top: 50, right: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 30.0, right: 30.0, bottom: 30.0),
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: InputDecoration(label: Text(selected_college),prefixIcon: Icon(Icons.search)),
+//padding: const EdgeInsets.only(left: 20, top: 50, right: 20),
+                const Text("Hey Buddy,",
+                    style: TextStyle(
+                      fontSize: 25,
+                      color: Color(0xFF0D1333),
+                      fontWeight: FontWeight.bold,
+                    )),
+                const Text("Find your college name",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Color(0xFF61688B),
+                      height: 2,
+                    )),
+
+                const SizedBox(
+                  height: 40,
+                ),
+
+                Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  height: 55,
+                  // width: size.width * .8,
+                  decoration: BoxDecoration(
+                    color: Color(0xFFF5F5F7),
+                    borderRadius: BorderRadius.circular(40),
                   ),
+                  child: TextFormField(
+                    //initialValue: selected_college,
+                    controller: _searchController,
+                    cursorColor: primaryColor,
+                    decoration: InputDecoration(
+                      // color: Color(0xFFF5F5F7),
+                      hintText: "Search your college",
+                      border: InputBorder.none,
+                      icon: Icon(
+                        Icons.search,
+                        color: primaryColor,
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(
+                  height: 20,
+                ),
+                selected == 1
+                    ? Text('Selected College: $selected_college',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Color(0xFF000000),
+                          height: 2,
+                        ))
+                    : SizedBox(),
+
+                const SizedBox(
+                  height: 20,
                 ),
                 Expanded(
                     child: ListView.builder(
-                  itemCount: _resultsList.length,
-                  itemBuilder: (BuildContext context, int index) =>
-                  ListTile(
-                    title: Text(_resultsList[index]),
-                    onTap: (){
-                      setState(() {
-                        selected_college = _resultsList[index];
-                      });
-                    },
-                  )
-                      // buildNotice(_resultsList[index]),
-                )),
+                        physics: BouncingScrollPhysics(
+                            parent: AlwaysScrollableScrollPhysics()),
+                        itemCount: _resultsList.length,
+                        itemBuilder: (BuildContext context, int index) =>
+                            Padding(
+                                padding: const EdgeInsets.only(bottom: 18),
+                                child: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      selected_college = _resultsList[index];
+                                      selected = 1;
+                                    });
+                                  },
+                                  child: Container(
+                                    color: initial_value,
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Row(children: <Widget>[
+                                      Text(
+                                        (index + 1).toString(),
+                                        style: const TextStyle(
+                                          fontSize: 28,
+                                          color: Color(0xFF0D1333),
+                                          fontWeight: FontWeight.bold,
+                                        ).copyWith(
+                                          color: Color(0xFF0D1333)
+                                              .withOpacity(.15),
+                                          fontSize: 32,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 20),
+                                      Container(
+                                        // color: Colors.red,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .7,
+                                        child: Text(
+                                          _resultsList[index],
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            overflow: TextOverflow.visible,
+                                            color: Color(0xFF61688B),
+                                            height: 2,
+                                          ).copyWith(
+                                            fontWeight: FontWeight.w600,
+                                            height: 1.5,
+                                          ),
+                                        ),
+                                      )
+                                    ]),
+                                  ),
+                                )))),
+
                 Container(
-                  height: 60,
-                  margin: EdgeInsets.all(40),
+                  height: 55,
+                  margin: EdgeInsets.fromLTRB(10, 15, 10, 20),
                   width: double.infinity,
                   child: FlatButton(
                     child: Text(
-                        "Continue"),
+                      "CONTINUE",
+                      style: TextStyle(fontSize: 16),
+                    ),
                     onPressed: () {
-                      if(selected_college != "Select your college"){
+                      if (selected_college != "Search your college") {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => SignupPage(DropDownCollegeValue: selected_college,),
+                            builder: (_) => SignupPage(
+                              DropDownCollegeValue: selected_college,
+                            ),
                           ),
                         );
-                      }else{
+                      } else {
                         Fluttertoast.showToast(msg: "Select a college");
                       }
-
                     },
                     color: Color(0xff6F35A5),
                     textColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(50),
                     ),
                   ),
                 )
               ],
             ),
-    ));
+          ),
+        ),
+      ),
+    );
   }
 }
