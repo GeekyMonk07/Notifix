@@ -93,16 +93,12 @@ class _OnbordingState extends State<Onbording> {
                 child: Text(
                     "Get started"),
                 onPressed: () {
-                  Navigator.pushReplacement(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (_) => CollegeName(),
                     ),
                   );
-                  // _controller.nextPage(
-                  //   duration: Duration(milliseconds: 300),
-                  //   curve: Curves.easeIn,
-                  // );
                 },
                 color: Color(0xff6F35A5),
                 textColor: Colors.white,
