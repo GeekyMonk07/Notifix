@@ -47,24 +47,24 @@ class _BucketformState extends State<Bucketform> {
     // TODO: implement initState
     super.initState();
     user = FirebaseAuth.instance.currentUser;
-    userName = user.displayName;
-    initialize();
+    // userName = user.displayName;
+    // initialize();
   }
 
-  void initialize() async {
-    try {
-      final Map<String, String> authHeaders = {};
-
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      authHeaders['Authorization'] = prefs.getString('Authorization')!;
-      authHeaders['X-Goog-AuthUser'] = prefs.getString('X-Goog-AuthUser')!;
-      final authenticateClient = GoogleAuthClient(authHeaders);
-      driveApi = drive.DriveApi(authenticateClient);
-    } catch (e) {
-      print(e);
-      Fluttertoast.showToast(msg: e.toString());
-    }
-  }
+  // void initialize() async {
+  //   try {
+  //     final Map<String, String> authHeaders = {};
+  //
+  //     SharedPreferences prefs = await SharedPreferences.getInstance();
+  //     authHeaders['Authorization'] = prefs.getString('Authorization')!;
+  //     authHeaders['X-Goog-AuthUser'] = prefs.getString('X-Goog-AuthUser')!;
+  //     final authenticateClient = GoogleAuthClient(authHeaders);
+  //     driveApi = drive.DriveApi(authenticateClient);
+  //   } catch (e) {
+  //     print(e);
+  //     Fluttertoast.showToast(msg: e.toString());
+  //   }
+  // }
 
   final List<Map<String, dynamic>> _branch = [
     {
