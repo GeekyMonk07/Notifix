@@ -74,19 +74,19 @@ class _SettingsPageState extends State<SettingsPage> {
               SettingsButton(
                 ontap: () async {
                   try {
+                    _showDialog(context);
                     SharedPreferences prefs = await SharedPreferences.getInstance();
 
                     final provider = Provider.of<GoogleSignInProvider>(context,
                         listen: false);
                     await provider.signOutGoogle();
                     prefs.clear();
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => Controller(prefs: prefs,)),
-                            (Route<dynamic> route) => false);
+                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => Controller(prefs: prefs,)), (Route<dynamic> route) => false);
 
                   } catch (e) {
                     Fluttertoast.showToast(msg: "Error while logging out");
                   }
+
 
                 },
                 imgtext: "LOGOUT",
@@ -114,5 +114,23 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ),
     );
+  }
+
+  _showDialog(BuildContext context){
+    AlertDialog alert=AlertDialog(
+      content: new Row(
+        children: [
+          CircularProgressIndicator(),
+          Container(margin: EdgeInsets.only(left: 7),child:Text("Logging out..." )),
+        ],),
+    );
+    showDialog(barrierDismissible: false,
+      context:context,
+      builder:(context) => WillPopScope(
+          child: alert,
+          onWillPop: () async => false,
+      )
+    );
+
   }
 }
