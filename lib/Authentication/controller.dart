@@ -12,5 +12,6 @@ class Controller extends StatelessWidget {
     return (prefs.containsKey('verified')==false || prefs.getBool('verified')==false) ? Onbording() : IndexPage();
   }
   //hello
+//test
 }
 
