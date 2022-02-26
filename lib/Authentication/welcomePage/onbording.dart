@@ -1,4 +1,3 @@
-
 import 'package:appnewui/Authentication/welcomePage/search_college.dart';
 import 'package:appnewui/Authentication/controller.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +19,6 @@ class _OnbordingState extends State<Onbording> {
     super.initState();
     _controller = PageController(initialPage: 0);
   }
-
 
   @override
   void dispose() {
@@ -90,8 +88,7 @@ class _OnbordingState extends State<Onbording> {
               margin: EdgeInsets.all(40),
               width: double.infinity,
               child: FlatButton(
-                child: Text(
-                    "Get started"),
+                child: Text("Get started"),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -103,7 +100,7 @@ class _OnbordingState extends State<Onbording> {
                 color: Color(0xff6F35A5),
                 textColor: Colors.white,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(55),
                 ),
               ),
             )
