@@ -1,5 +1,5 @@
+import 'package:appnewui/Authentication/FacultyStudentSignup/signup/body.dart';
 import 'package:flutter/material.dart';
-import 'package:appnewui/Authentication/signup/body.dart';
 
 class SignupPage extends StatelessWidget {
   final String DropDownCollegeValue;

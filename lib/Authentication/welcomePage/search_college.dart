@@ -1,4 +1,5 @@
-import 'package:appnewui/Authentication/signup/signup.dart';
+import 'package:appnewui/Authentication/FacultyStudentSignup/FacltyStudentLogin.dart';
+
 import 'package:appnewui/constrants.dart';
 import 'package:flutter/material.dart';
 
@@ -953,16 +954,18 @@ class _CollegeNameState extends State<CollegeName> {
                       "CONTINUE",
                       style: TextStyle(fontSize: 16),
                     ),
-                    onPressed: selected==0 ? null : () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => SignupPage(
-                              DropDownCollegeValue: selected_college,
-                            ),
-                          ),
-                        );
-                    },
+                    onPressed: selected == 0
+                        ? null
+                        : () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => FacultyStudentSignupPage(
+                                  DropDownCollegeValue: selected_college,
+                                ),
+                              ),
+                            );
+                          },
                     color: Color(0xff6F35A5),
                     textColor: Colors.white,
                     shape: RoundedRectangleBorder(
