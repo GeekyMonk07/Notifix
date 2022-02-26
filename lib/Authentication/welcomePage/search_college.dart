@@ -1,8 +1,6 @@
 import 'package:appnewui/Authentication/signup/signup.dart';
 import 'package:appnewui/constrants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class CollegeName extends StatefulWidget {
   @override

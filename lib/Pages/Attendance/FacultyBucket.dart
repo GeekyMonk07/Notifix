@@ -11,17 +11,29 @@ import '../../constrants.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
 
 class AttendenceBucket extends StatefulWidget {
-  const AttendenceBucket({Key? key}) : super(key: key);
+  drive.DriveApi driveApi;
+  String folderId;
+  String key_id;
+  String folder_name;
+
+  AttendenceBucket(
+      {required this.folderId, required this.key_id, required this.driveApi,required this.folder_name});
 
   @override
-  _AttendenceBucketState createState() => _AttendenceBucketState();
+  _AttendenceBucketState createState() => _AttendenceBucketState(folderId: folderId,key_id:key_id,driveApi: driveApi,folder_name: folder_name);
 }
 
 class _AttendenceBucketState extends State<AttendenceBucket> {
-  ScrollController _scrollController = ScrollController();
+  drive.DriveApi driveApi;
+  String folderId;
+  String key_id;
+  String folder_name;
+
+  _AttendenceBucketState(
+      {required this.folderId, required this.key_id, required this.driveApi,required this.folder_name});
+
   late Query _ref;
   late final user;
-  late drive.DriveApi driveApi;
   late DatabaseReference reference;
 
   @override
@@ -29,30 +41,13 @@ class _AttendenceBucketState extends State<AttendenceBucket> {
     super.initState();
     user = FirebaseAuth.instance.currentUser;
     final FirebaseDatabase database = FirebaseDatabase.instance;
-    _ref = database.reference().child('/faculty/${user.uid}/attendence_bucket');
+    _ref = database.reference().child('/faculty/${user.uid}/attendance/sub_folders/${key_id}/new_files');
     reference = FirebaseDatabase.instance
         .reference()
-        .child('/faculty/${user.uid}/attendence_bucket');
-    initialize();
+        .child('/faculty/${user.uid}/attendance/sub_folders/${key_id}/new_files');
   }
 
-  void initialize() async {
-    try {
-      // final Map<String, String> authHeaders = {};
-      // SharedPreferences prefs = await SharedPreferences.getInstance();
-      // authHeaders['Authorization'] = prefs.getString('Authorization')!;
-      // authHeaders['X-Goog-AuthUser'] = prefs.getString('X-Goog-AuthUser')!;
-      // final authenticateClient = GoogleAuthClient(authHeaders);
-      final googleSignIn = GoogleSignIn(scopes: [drive.DriveApi.driveFileScope],);
-      final GoogleSignInAccount? account = await googleSignIn.signIn();
-      final authHeaders = await account!.authHeaders;
-      final authenticateClient = GoogleAuthClient(authHeaders);
-      driveApi = drive.DriveApi(authenticateClient);
-    } on drive.DetailedApiRequestError catch  (e) {
-      print(e);
-      Fluttertoast.showToast(msg: e.toString());
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +72,7 @@ class _AttendenceBucketState extends State<AttendenceBucket> {
                     child: Icon(Icons.dashboard),
                   ),
                   Text(
-                    "Buckets",
+                    folder_name,
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
                   IconButton(
@@ -87,6 +82,8 @@ class _AttendenceBucketState extends State<AttendenceBucket> {
                           MaterialPageRoute(
                               builder: (context) => Bucketform(
                                     driveApi: driveApi,
+                                folderId : folderId,
+                                key_id: key_id,
                                   )));
                     },
                     icon: Icon(Icons.add_box),
@@ -128,7 +125,7 @@ class _AttendenceBucketState extends State<AttendenceBucket> {
                                           driveApi: driveApi,
                                         )));
                           },
-                          leading: Icon(Icons.backup_rounded),
+                          leading: Icon(Icons.file_copy,color: Colors.green,),
                           title: Row(
                             children: <Widget>[
                               Expanded(

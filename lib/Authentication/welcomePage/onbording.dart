@@ -1,5 +1,5 @@
 
-import 'package:appnewui/Authentication/welcomePage/search_bar.dart';
+import 'package:appnewui/Authentication/welcomePage/search_college.dart';
 import 'package:appnewui/Authentication/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';

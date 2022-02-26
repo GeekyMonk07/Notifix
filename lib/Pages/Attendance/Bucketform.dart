@@ -20,14 +20,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Bucketform extends StatefulWidget {
 
   drive.DriveApi driveApi;
-  Bucketform({required this.driveApi});
+  String folderId;
+  String key_id;
+  Bucketform({required this.driveApi,required this.folderId,required this.key_id});
   @override
-  State<Bucketform> createState() => _BucketformState(driveApi: driveApi);
+  State<Bucketform> createState() => _BucketformState(driveApi: driveApi,folderId:folderId,key_id: key_id);
 }
 
 class _BucketformState extends State<Bucketform> {
   drive.DriveApi driveApi;
-  _BucketformState({required this.driveApi});
+  String folderId;
+  String key_id;
+  _BucketformState({required this.driveApi,required this.folderId,required this.key_id});
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _database = FirebaseDatabase.instance.reference();
   late final user;
@@ -40,7 +44,6 @@ class _BucketformState extends State<Bucketform> {
   String uid = "";
   String weblink = "";
   String downloadlink = "";
-  late String folderId;
   bool _isDisable = false;
   @override
   void initState() {
@@ -50,21 +53,6 @@ class _BucketformState extends State<Bucketform> {
     // userName = user.displayName;
     // initialize();
   }
-
-  // void initialize() async {
-  //   try {
-  //     final Map<String, String> authHeaders = {};
-  //
-  //     SharedPreferences prefs = await SharedPreferences.getInstance();
-  //     authHeaders['Authorization'] = prefs.getString('Authorization')!;
-  //     authHeaders['X-Goog-AuthUser'] = prefs.getString('X-Goog-AuthUser')!;
-  //     final authenticateClient = GoogleAuthClient(authHeaders);
-  //     driveApi = drive.DriveApi(authenticateClient);
-  //   } catch (e) {
-  //     print(e);
-  //     Fluttertoast.showToast(msg: e.toString());
-  //   }
-  // }
 
   final List<Map<String, dynamic>> _branch = [
     {
@@ -177,18 +165,7 @@ class _BucketformState extends State<Bucketform> {
       setState(() {
         _isDisable = true;
       });
-      DataSnapshot snapshot = await _database.child('/faculty/${user.uid}/folder_id').once();
-      if(snapshot.value==null){
-        var driveFile = new drive.File();
-        driveFile.name = 'Attendance';
-        driveFile.mimeType = "application/vnd.google-apps.folder";
-        final folder = await driveApi.files.create(driveFile);
-        folderId = folder.id!;
-        await _database.child('/faculty/${user.uid}/folder_id').update({"folderId" : folderId});
-      }else{
-        folderId = snapshot.value['folderId'];
-      }
-      // print(folderId);
+
       await createExcel(Filename);
       final nextEvent = <String, dynamic>{
         'subject': subject,
@@ -203,7 +180,7 @@ class _BucketformState extends State<Bucketform> {
       };
       // print(user.uid);
       await _database
-          .child("/faculty/${user.uid}/attendence_bucket")
+          .child("/faculty/${user.uid}/attendance/sub_folders/${key_id}/new_files")
           .push()
           .update(nextEvent);
       Fluttertoast.showToast(msg: "Bucket created");
@@ -235,7 +212,7 @@ class _BucketformState extends State<Bucketform> {
     if (response.id != null) {
       list.add(response.id!);
       await driveApi.permissions.create(
-          drive.Permission(role: 'reader', type: 'anyone'), response.id!);
+          drive.Permission(role: 'reader', type: 'domain',domain: 'glbitm.ac.in'), response.id!);
       drive.File res = (await driveApi.files.get(response.id!,
           $fields: 'webViewLink,webContentLink')) as drive.File;
       list.add(res.webViewLink!);
