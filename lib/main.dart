@@ -1,6 +1,6 @@
 // @dart=2.9
 import 'package:appnewui/Authentication/controller.dart';
-import 'package:appnewui/Authentication/welcomePage/UpdatePage/adminlogin.dart';
+import 'package:appnewui/Authentication/welcomePage/UpdatePage/update.dart';
 import 'package:appnewui/Pages/Attendance/Bucketform.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/Gallery/gallery.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/feedback_sheet.dart';
@@ -22,7 +22,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Pages/HomePageItems/ItemBox/Clubs/clubs_page.dart';
 import 'Pages/HomePageItems/Notifications/notifs.dart';
@@ -30,8 +29,6 @@ import 'package:appnewui/Authentication/Auth/firebase.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-
 SharedPreferences prefs;
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', // id
