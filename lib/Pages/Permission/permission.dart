@@ -1,11 +1,13 @@
 import 'package:appnewui/Pages/HomePageItems/Notifications/email_generator.dart';
+import 'package:appnewui/constrants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'permissionCard.dart';
 // import 'package:glbapp/Notifiaction_event/email_generator.dart';
-import 'lib/Pages/HomePageItems/Notifications/email_generator.dart' ;
+import 'lib/Pages/HomePageItems/Notifications/email_generator.dart';
+
 class Verify extends StatefulWidget {
   @override
   _VerifyState createState() => _VerifyState();
@@ -16,18 +18,17 @@ class _VerifyState extends State<Verify> {
   late var first;
   late var second;
   late final user;
-  final String body='Thank you for registering your event. Director/HOD office has viewed your request and granted Permission for so. ';
+  final String body =
+      'Thank you for registering your event. Director/HOD office has viewed your request and granted Permission for so. ';
 
-  DatabaseReference _database =
-  FirebaseDatabase.instance.reference();
+  DatabaseReference _database = FirebaseDatabase.instance.reference();
   DatabaseReference reference =
-  FirebaseDatabase.instance.reference().child('/pending_events');
+      FirebaseDatabase.instance.reference().child('/pending_events');
   @override
   void initState() {
-
     super.initState();
     user = FirebaseAuth.instance.currentUser;
-    assert(user!=null);
+    assert(user != null);
     _ref = FirebaseDatabase.instance
         .reference()
         .child('/pending_events')
@@ -38,37 +39,41 @@ class _VerifyState extends State<Verify> {
     //Color typeColor = getTypeColor(contact['type']);
 
     return PermissionCard(
+      AcceptPress: () async {
+        nextOrder['verified'] = 1;
 
-      AcceptPress:() async {
-        nextOrder['verified']=1;
-
-
-
-        Send(topic:nextOrder['topic'],date:nextOrder['date'],slot:nextOrder['date'],description:nextOrder['description'],body:body,email:nextOrder['emailId'], ).send().then((value) =>
-            reference
+        Send(
+          topic: nextOrder['topic'],
+          date: nextOrder['date'],
+          slot: nextOrder['date'],
+          description: nextOrder['description'],
+          body: body,
+          email: nextOrder['emailId'],
+        )
+            .send()
+            .then((value) => reference
                 .child(nextOrder['key'])
                 .remove()
-                .whenComplete(() => Navigator.pop(context))).then((value) =>
-            _database.child('/verified').push().set(nextOrder)
+                .whenComplete(() => Navigator.pop(context)))
+            .then((value) => _database
+                .child('/verified')
+                .push()
+                .set(nextOrder)
                 .then((value) => print('hogya '))
-                .catchError((onError)=> print('nai hua '))
-        ).then((value) => _database.child('time_slot_details').push().set({'date': nextOrder['date']}));
-
-
-
-
-
-
-
-
-
-
+                .catchError((onError) => print('nai hua ')))
+            .then((value) => _database
+                .child('time_slot_details')
+                .push()
+                .set({'date': nextOrder['date']}));
       },
-      DeclinePress:() {
-        nextOrder['declined']=1;
-        _database.child('/declined').push().set(nextOrder)
+      DeclinePress: () {
+        nextOrder['declined'] = 1;
+        _database
+            .child('/declined')
+            .push()
+            .set(nextOrder)
             .then((value) => print('hogya '))
-            .catchError((onError)=> print('nai hua '));
+            .catchError((onError) => print('nai hua '));
 
         reference
             .child(nextOrder['key'])
@@ -84,12 +89,7 @@ class _VerifyState extends State<Verify> {
       Description: nextOrder['description'].toString(),
       name: nextOrder['name'],
 
-
       // color: secondaryYellow,
-
-
-
-
     );
   }
 
@@ -121,23 +121,66 @@ class _VerifyState extends State<Verify> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    Size size = MediaQuery.of(context).size;
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+            centerTitle: true,
+            backgroundColor: secondaryPurple,
+            title: Text(
+              'Permission',
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            ),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(26),
+            ))),
+        body: Material(
+          // height: double.infinity,
+          child:
+              //Column(
+              // children: [
+              //   Material(
+              //     elevation: 5,
+              //     borderRadius: BorderRadius.only(
+              //         bottomLeft: Radius.circular(22),
+              //         bottomRight: Radius.circular(22)),
+              //     child: Container(
+              //       child: Row(
+              //         mainAxisAlignment: MainAxisAlignment.center,
+              //         children: [
+              //           Text(
+              //             "Permission Requests",
+              //             style: TextStyle(
+              //                 fontSize: 22, fontWeight: FontWeight.bold),
+              //           ),
+              //         ],
+              //       ),
+              //       height: size.height * .075,
+              //       width: size.width,
+              //       decoration: BoxDecoration(
+              //           color: Color(0xffF1E6FF),
+              //           borderRadius: BorderRadius.only(
+              //               bottomLeft: Radius.circular(22),
+              //               bottomRight: Radius.circular(22))),
+              //     ),
+              //   ),
+              //   SizedBox(height: size.height * 0.01),
+              FirebaseAnimatedList(
+            query: _ref,
+            itemBuilder: (BuildContext context, DataSnapshot snapshot,
+                Animation<double> animation, int index) {
+              Map contact = snapshot.value;
+              contact['key'] = snapshot.key;
 
-      body: Container(
-        height: double.infinity,
-        child: FirebaseAnimatedList(
-          query: _ref,
-          itemBuilder: (BuildContext context, DataSnapshot snapshot,
-              Animation<double> animation, int index) {
-            Map contact = snapshot.value;
-            contact['key'] = snapshot.key;
-
-            return _buildContactItem(nextOrder: contact);
-          },
+              return _buildContactItem(nextOrder: contact);
+            },
+          ),
+          //],
+          // ),
         ),
       ),
-
     );
   }
-
 }

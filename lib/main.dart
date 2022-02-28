@@ -2,6 +2,7 @@
 import 'package:appnewui/Authentication/controller.dart';
 import 'package:appnewui/Authentication/welcomePage/UpdatePage/update.dart';
 import 'package:appnewui/Pages/Attendance/Bucketform.dart';
+import 'package:appnewui/Pages/HomePageItems/ItemBox/Gallery/gall_thumb.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/Gallery/gallery.dart';
 import 'package:appnewui/Pages/HomePageItems/ItemBox/feedback_sheet.dart';
 import 'package:appnewui/Pages/HomePageItems/UPLOAD%20BUTTON%20DATA/EventsPageItems/showNotice.dart';
@@ -29,6 +30,7 @@ import 'package:appnewui/Authentication/Auth/firebase.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+
 SharedPreferences prefs;
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', // id
@@ -46,18 +48,19 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if(kIsWeb){
+  if (kIsWeb) {
     await Firebase.initializeApp(
         options: FirebaseOptions(
-          apiKey: "AIzaSyAkfM67nUtCHRspsyxfTYBEdK0InFeSNp4",
-          authDomain: "event-app-37fbd.firebaseapp.com",
-          databaseURL: "https://event-app-37fbd-default-rtdb.firebaseio.com",
-          projectId: "event-app-37fbd",
-          storageBucket: "event-app-37fbd.appspot.com",
-          messagingSenderId: "743906650805",
-          appId: "1:743906650805:web:0f4ec123cbc97b4ceb6cfc",)// Your projectId
-    );
-  }else{
+      apiKey: "AIzaSyAkfM67nUtCHRspsyxfTYBEdK0InFeSNp4",
+      authDomain: "event-app-37fbd.firebaseapp.com",
+      databaseURL: "https://event-app-37fbd-default-rtdb.firebaseio.com",
+      projectId: "event-app-37fbd",
+      storageBucket: "event-app-37fbd.appspot.com",
+      messagingSenderId: "743906650805",
+      appId: "1:743906650805:web:0f4ec123cbc97b4ceb6cfc",
+    ) // Your projectId
+        );
+  } else {
     await Firebase.initializeApp();
 
     FirebaseDatabase.instance.setPersistenceEnabled(true);
@@ -78,8 +81,6 @@ Future<void> main() async {
   //   prefs.setBool("update", false);
   // }
 
-
-
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   await flutterLocalNotificationsPlugin
@@ -99,9 +100,7 @@ Future<void> main() async {
 // flutter run -d chrome --web-hostname localhost --web-port 5000
 // flutter build apk --split-per-abi
 
-
 class MyApp extends StatefulWidget {
-
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -115,7 +114,9 @@ class _MyAppState extends State<MyApp> {
         title: "GLBITM App",
         initialRoute: "/",
         routes: {
-          "/": (context) => Controller(prefs: prefs,),
+          "/": (context) => Controller(
+                prefs: prefs,
+              ),
           "/index": (context) => IndexPage(),
           "/notifs": (context) => Notifs(),
           "/clubs": (context) => ClubsPage(),
@@ -125,7 +126,8 @@ class _MyAppState extends State<MyApp> {
           "/labspage": (context) => pdf_view(),
           "/labs": (context) => Labs(),
           "/cafeteria": (context) => Cafeteria(),
-          "/gallery": (context) => PhotoGallery(),
+          "/gallery": (context) => GallThumb(),
+          "/gallerydata": (context) => PhotoGallery(),
           "/appfeedback": (context) => AppFeedback(),
           "/about": (context) => AboutUs(),
           "/permission": (context) => Verify(),
@@ -134,8 +136,8 @@ class _MyAppState extends State<MyApp> {
           "/updateTimeTable": (context) => UploadTimetable(),
           "/updateNotice": (context) => UploadNotice(),
           "/feedback_sheet": (context) => Feedback_gen(),
-          "/bucketform" :(context) => Bucketform(),
-          "/feedback_sheetgit":(context)=> Feedback_gen(),
+          "/bucketform": (context) => Bucketform(),
+          "/feedback_sheetgit": (context) => Feedback_gen(),
         },
       ));
 }

@@ -1,7 +1,8 @@
-import 'package:appnewui/constrants.dart';
 import 'package:flutter/material.dart';
 
-import 'galleryData.dart';
+import 'gallery_data.dart';
+
+// import 'galleryData.dart';
 
 class PhotoGallery extends StatelessWidget {
   @override
@@ -19,7 +20,7 @@ class PhotoGallery extends StatelessWidget {
           centerTitle: true,
           flexibleSpace: Container(
               decoration: BoxDecoration(
-                  color: secondaryPurple,
+                  color: Color(0xffF1E6FF),
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(22.0),
                       bottomRight: Radius.circular(22.0))))),
@@ -28,7 +29,11 @@ class PhotoGallery extends StatelessWidget {
         child: ListView.builder(
           itemCount: 6,
           itemBuilder: (BuildContext context, int index) {
-            return Image.asset(a[index]);
+            return Container(
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(25)),
+                padding: EdgeInsets.all(5),
+                child: Image.asset(a[index]));
           },
         ),
       ),
