@@ -66,20 +66,12 @@ Future<void> main() async {
     FirebaseDatabase.instance.setPersistenceEnabled(true);
   }
   prefs = await SharedPreferences.getInstance();
-  // final _database = FirebaseDatabase.instance.reference();
-  // DataSnapshot snapshot = await _database.child('/app_version').once();
-  // final app_version = snapshot.value['app'].toString();
-  // PackageInfo packageInfo = await PackageInfo.fromPlatform();
-  //
-  // String version = packageInfo.version;
-  // String buildNumber = packageInfo.buildNumber;
-  // print(version);
-  // print(buildNumber);
-  // if(app_version != version){
-  //   prefs.setBool("update", true);
-  // }else{
-  //   prefs.setBool("update", false);
-  // }
+  final _database = FirebaseDatabase.instance.reference();
+  _database.keepSynced(true);
+  DataSnapshot snapshot = await _database.child('/app_version').once();
+  final app_version = snapshot.value['app'].toString();
+  print(app_version);
+  prefs.setString('version', app_version);
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
