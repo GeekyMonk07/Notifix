@@ -19,6 +19,7 @@ import 'package:appnewui/Pages/Permission/permission.dart';
 import 'package:appnewui/Pages/settingsPageItems/about.dart';
 import 'package:appnewui/Pages/settingsPageItems/eventform.dart';
 import 'package:appnewui/indexPage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -66,12 +67,15 @@ Future<void> main() async {
     FirebaseDatabase.instance.setPersistenceEnabled(true);
   }
   prefs = await SharedPreferences.getInstance();
-  final _database = FirebaseDatabase.instance.reference();
-  _database.keepSynced(true);
-  DataSnapshot snapshot = await _database.child('/app_version').once();
-  final app_version = snapshot.value['app'].toString();
-  print(app_version);
-  prefs.setString('version', app_version);
+  if(FirebaseAuth.instance.currentUser!=null){
+    final _database = FirebaseDatabase.instance.reference();
+    _database.keepSynced(true);
+    DataSnapshot snapshot = await _database.child('/app_version').once();
+    final app_version = snapshot.value['app'].toString();
+    print(app_version);
+    prefs.setString('version', app_version);
+  }
+
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -87,7 +91,7 @@ Future<void> main() async {
   );
   runApp(MyApp());
 }
-// flutter build apk --build-name=1.0.1 --build-number=1
+// flutter build apk --build-name=1.0.0 --build-number=1
 // Shift+Ctrl+Alt+J
 // flutter run -d chrome --web-hostname localhost --web-port 5000
 // flutter build apk --split-per-abi
