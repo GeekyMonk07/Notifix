@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:appnewui/Pages/HomePageItems/GoogleAuth/googleAuth.dart';
 import 'package:excel/excel.dart';
+import 'package:intl/intl.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:flutter/material.dart';
@@ -40,11 +42,16 @@ class _BucketformState extends State<Bucketform> {
   String branch = "";
   String subject = "";
   String month = "";
+  String startDay = "";
+  String endDay = "";
   late String userName, email, ui;
   String uid = "";
+  DateTime currentDate = DateTime.now();
   String weblink = "";
   String downloadlink = "";
   bool _isDisable = false;
+  DateTime start_slot = DateTime.now();
+  DateTime end_slot = DateTime.now();
   @override
   void initState() {
     // TODO: implement initState
@@ -52,6 +59,25 @@ class _BucketformState extends State<Bucketform> {
     user = FirebaseAuth.instance.currentUser;
     // userName = user.displayName;
     // initialize();
+  }
+  Future<void> _selectDate(BuildContext context, int id) async {
+    final DateTime? pickedDate = await showDatePicker(
+        context: context,
+        initialDate: currentDate,
+        firstDate: DateTime(2015),
+        lastDate: DateTime(2050));
+    if (pickedDate != null)
+
+      setState(() {
+        if(id==1){
+          start_slot = pickedDate;
+          startDay = DateFormat('dd MMMM yyyy').format(start_slot);
+        }else{
+          end_slot = pickedDate;
+          endDay = DateFormat('dd MMMM yyyy').format(end_slot);
+        }
+
+      });
   }
 
   final List<Map<String, dynamic>> _branch = [
@@ -192,6 +218,11 @@ class _BucketformState extends State<Bucketform> {
       Fluttertoast.showToast(msg: error.toString());
     }
   }
+  int daysInMonth(DateTime date){
+    var firstDayThisMonth = new DateTime(date.year, date.month, date.day);
+    var firstDayNextMonth = new DateTime(firstDayThisMonth.year, firstDayThisMonth.month + 1, firstDayThisMonth.day);
+    return firstDayNextMonth.difference(firstDayThisMonth).inDays;
+  }
 
   Future<void> createExcel(String FileName) async {
     List<String> list = [];
@@ -202,6 +233,21 @@ class _BucketformState extends State<Bucketform> {
     final String fileName = path + '/$FileName.xlsx';
     File file = new File(fileName);
     var excel = Excel.createExcel();
+    Sheet sheet = excel['Sheet1'];
+    var firstDayThisMonth = new DateTime(start_slot.year, start_slot.month, start_slot.day);
+    var firstDayNextMonth = new DateTime(end_slot.year, end_slot.month, end_slot.day);
+    int totalDays = firstDayNextMonth.difference(firstDayThisMonth).inDays+1;
+    var c1 = sheet.cell(CellIndex.indexByColumnRow(
+        rowIndex: 0, columnIndex: 0));
+    c1.value = 'Roll No';
+    var c2 = sheet.cell(CellIndex.indexByColumnRow(
+        rowIndex: 0, columnIndex: 1));
+    c2.value = 'Students';
+    for(int i = 0; i<totalDays; ++i){
+      var cell = sheet.cell(CellIndex.indexByColumnRow(
+          rowIndex: 0, columnIndex: i+2));
+      cell.value = "${i+1}/${start_slot.month}/${start_slot.year}";
+    }
     File(Path.join(file.path))
       ..createSync(recursive: true)
       ..writeAsBytesSync(excel.encode()!);
@@ -355,22 +401,69 @@ class _BucketformState extends State<Bucketform> {
                             ),
                             Padding(
                               padding: const EdgeInsets.all(16.0),
-                              child: SelectFormField(
-                                cursorColor: primaryColor,
-
-                                type: SelectFormFieldType.dropdown,
-                                // or can be dialog
-                                initialValue: 'Not Selected',
-                                icon: Icon(
-                                  Icons.format_shapes,
-                                  color: primaryColor,
-                                ),
-                                labelText: 'Month',
-                                style: TextStyle(color: primaryColor),
-                                items: _month,
-                                onChanged: (val) => month = val,
-                                onSaved: (val) => month = val!,
-                              ),
+                              child: Column(
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      IconButton(
+                                          onPressed: () async {
+                                            _selectDate(context,1);
+                                          },
+                                          icon: Icon(
+                                            Icons.calendar_today,
+                                            color: primaryColor,
+                                          )),
+                                      Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.white10,
+                                          ),
+                                          child: Text(
+                                            (startDay != "")
+                                                ? startDay
+                                                :
+                                            "From to",
+                                            style: TextStyle(
+                                                fontSize: 17,
+                                                color: Colors.black),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      IconButton(
+                                          onPressed: () async {
+                                            _selectDate(context,2);
+                                          },
+                                          icon: Icon(
+                                            Icons.calendar_today,
+                                            color: primaryColor,
+                                          )),
+                                      Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.white10,
+                                          ),
+                                          child: Text(
+                                            (endDay != "")
+                                                ? endDay
+                                                : "To date",
+                                            style: TextStyle(
+                                                fontSize: 17,
+                                                color: Colors.black),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              )
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),

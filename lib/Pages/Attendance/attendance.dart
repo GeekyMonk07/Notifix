@@ -1,11 +1,9 @@
-import 'package:appnewui/Pages/HomePageItems/GoogleAuth/googleAuth.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constrants.dart';
 
@@ -62,15 +60,17 @@ class _AttendanceState extends State<Attendance> {
       }, onDone: () {
         excel = Excel.decodeBytes(dataStore);
         sheet = excel['Sheet1'];
-        for (int i = 1; i < sheet.maxCols; ++i) {
+        for (int i = 2; i < sheet.maxCols; ++i) {
           var cell = sheet.rows[0][i]!.value;
           String val = cell.toString().toLowerCase();
           if (val == "null") {
             break;
           } else {
             var newItem = DateSelector(
+              selectedIndex: 1,
               date: val,
               month: val,
+              index: i,
             );
             dateValues.add(newItem);
           }
@@ -113,9 +113,8 @@ class _AttendanceState extends State<Attendance> {
   }
 
   int itr = 1;
-  // late String initialDropDownVal;
-  // List<DropdownMenuItem<String>> dropdownItems = [];
   List<DateSelector> dateValues = [];
+  int selectedIndex = 1;
 
   CellStyle present = CellStyle(
     fontColorHex: "#Ffffff",
@@ -143,22 +142,28 @@ class _AttendanceState extends State<Attendance> {
               ),
             )
           : Column(children: [
-            Container(
-              height: 100,
-
-              child: ListView.separated(
-                padding: EdgeInsets.all(16),
-                scrollDirection: Axis.horizontal,
-                  itemBuilder: (context,index) => DateSelector(date: dateValues[index].date, month: dateValues[index].month,ontap: (){
-                    setState(() {
-                      itr = index+1;
-                    });
-                  },),
-                  separatorBuilder: (context, _) => SizedBox(width: 12,),
-                  itemCount: dateValues.length),
-            ),
-
-
+              Container(
+                height: 100,
+                child: ListView.separated(
+                    padding: EdgeInsets.all(16),
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) => DateSelector(
+                          selectedIndex: selectedIndex,
+                          index: index + 1,
+                          date: dateValues[index].date,
+                          month: dateValues[index].month,
+                          ontap: () {
+                            setState(() {
+                              selectedIndex = index + 1;
+                              itr = index + 1;
+                            });
+                          },
+                        ),
+                    separatorBuilder: (context, _) => SizedBox(
+                          width: 12,
+                        ),
+                    itemCount: dateValues.length),
+              ),
               Column(
                 children: [
                   SizedBox(
@@ -167,53 +172,98 @@ class _AttendanceState extends State<Attendance> {
                       itemCount: sheet.maxRows - 1,
                       itemBuilder: (context, index) {
                         var cell = sheet.cell(CellIndex.indexByColumnRow(
-                            rowIndex: index + 1, columnIndex: itr));
+                            rowIndex: index + 1, columnIndex: itr + 1));
                         String val = cell.value.toString().toLowerCase();
-                        if (cell.value == null ||
-                            (val != 'present' && val != 'absent')) {
-                          cell.value = 'absent';
-                          cell.cellStyle = absent;
-                        }
+                        // if (cell.value == null ||
+                        //     (val != 'present' && val != 'absent')) {
+                        //   cell.value = 'absent';
+                        //   cell.cellStyle = absent;
+                        // }
 
                         return ListTile(
-                          subtitle: Text(cell.value.toString()),
+                          subtitle:
+                              Text(sheet.rows[index + 1][0]!.value.toString()),
                           title: Row(
                             children: <Widget>[
                               const Icon(Icons.person),
                               Expanded(
                                 child: Text(
-                                    sheet.rows[index + 1][0]!.value.toString()),
+                                    sheet.rows[index + 1][1]!.value.toString()),
                               ),
-                              (cell.value.toString().toLowerCase().trim() ==
-                                      'absent')
-                                  ? ElevatedButton(
+                              SizedBox(
+                                width: 40, // <-- Your width
+                                height: 40, // <-- Your height
+                                child: Center(
+                                  child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        onPrimary: cell.value=='present' ? Colors.white : Colors.black,
+                                          primary: cell.value == 'present'
+                                              ? Colors.green
+                                              : Colors.white),
                                       onPressed: () {
                                         setState(() {
                                           cell.value = "present";
                                           cell.cellStyle = present;
                                         });
                                       },
-                                      child: const Text("Mark Present"),
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                                Colors.green),
-                                      ),
-                                    )
-                                  : ElevatedButton(
+                                      child: const Text('P')),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 30,
+                              ),
+                              SizedBox(
+                                width: 40, // <-- Your width
+                                height: 40, // <-- Your height
+                                child: Center(
+                                  child: ElevatedButton(
+
+                                      style: ElevatedButton.styleFrom(
+                                        onPrimary: cell.value=='absent'?Colors.white:Colors.black,
+                                          primary: cell.value == 'absent'
+                                              ? Colors.red
+                                              : Colors.white),
                                       onPressed: () {
                                         setState(() {
                                           cell.value = "absent";
                                           cell.cellStyle = absent;
                                         });
                                       },
-                                      child: const Text("Mark Absent"),
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                                Colors.red),
-                                      ),
-                                    ),
+                                      child: const Text('A'
+                                      )),
+                                ),
+                              ),
+
+                              // (cell.value.toString().toLowerCase().trim() ==
+                              //         'absent')
+                              //     ? ElevatedButton(
+                              //         onPressed: () {
+                              //           setState(() {
+                              //             cell.value = "present";
+                              //             cell.cellStyle = present;
+                              //           });
+                              //         },
+                              //         child: const Text("Mark Present"),
+                              //         style: ButtonStyle(
+                              //           backgroundColor:
+                              //               MaterialStateProperty.all(
+                              //                   Colors.green),
+                              //         ),
+                              //       )
+                              //     : ElevatedButton(
+                              //         onPressed: () {
+                              //           setState(() {
+                              //             cell.value = "absent";
+                              //             cell.cellStyle = absent;
+                              //           });
+                              //         },
+                              //         child: const Text("Mark Absent"),
+                              //         style: ButtonStyle(
+                              //           backgroundColor:
+                              //               MaterialStateProperty.all(
+                              //                   Colors.red),
+                              //         ),
+                              //       ),
                             ],
                           ),
                         );
@@ -223,11 +273,44 @@ class _AttendanceState extends State<Attendance> {
                   const SizedBox(
                     height: 5,
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      fileUpdate();
-                    },
-                    child: const Text("Update"),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.green,
+                          // padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                        ),
+                        onPressed: () {
+                          try {
+                            markAll(1);
+                          } catch (e) {
+                            Fluttertoast.showToast(msg: "Error");
+                          }
+                        },
+                        child: const Text("Mark all P"),
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.red,
+                          // padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                        ),
+                        onPressed: () {
+                          try {
+                            markAll(0);
+                          } catch (e) {
+                            Fluttertoast.showToast(msg: "Error");
+                          }
+                        },
+                        child: const Text("Mark all A"),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          fileUpdate();
+                        },
+                        child: const Text("Update"),
+                      ),
+                    ],
                   )
                 ],
               )
@@ -235,19 +318,39 @@ class _AttendanceState extends State<Attendance> {
     ));
   }
 
-
+  void markAll(int id) {
+    for (int i = 1; i < sheet.maxRows; ++i) {
+      var cell = sheet
+          .cell(CellIndex.indexByColumnRow(rowIndex: i, columnIndex: itr + 1));
+      if (id == 1) {
+        setState(() {
+          cell.cellStyle = present;
+          cell.value = 'present';
+        });
+      } else {
+        setState(() {
+          cell.cellStyle = absent;
+          cell.value = 'absent';
+        });
+      }
+    }
+  }
 }
 
 class DateSelector extends StatelessWidget {
   final String date;
   final String month;
+  int index;
+  int selectedIndex;
   final VoidCallback? ontap;
 
-  const DateSelector(
+  DateSelector(
       {Key? key,
-        this.ontap,
-        required this.date,
-        required this.month})
+      required this.index,
+      required this.selectedIndex,
+      this.ontap,
+      required this.date,
+      required this.month})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -266,57 +369,64 @@ class DateSelector extends StatelessWidget {
       'DEC'
     ];
     return Material(
-      elevation: 2,
-      borderRadius: BorderRadius.circular(10),
-      child: InkWell(
-        onTap: ontap,
-        child: Container(
-
-          height: 50,
-          width: 50,
-          decoration: BoxDecoration(
-            color:  primaryColor,
-            borderRadius: BorderRadius.circular(10),
+        elevation: 2,
+        borderRadius: BorderRadius.circular(10),
+        child: InkWell(
+          onTap: ontap,
+          child: Container(
+            height: 30,
+            width: 70,
+            decoration: BoxDecoration(
+              color: selectedIndex == index ? primaryColor : Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  month[monthNum(date, 1) - 1],
+                  style: TextStyle(
+                      fontSize: 10,
+                      color:
+                          selectedIndex == index ? Colors.white : Colors.black,
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  monthNum(date, 2).toString(),
+                  style: TextStyle(
+                      fontSize: 16,
+                      color:
+                          selectedIndex == index ? Colors.white : Colors.black,
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  monthDay(date),
+                  style: TextStyle(
+                      fontSize: 16,
+                      color:
+                          selectedIndex == index ? Colors.white : Colors.black,
+                      fontWeight: FontWeight.bold),
+                )
+              ],
+            ),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                month[monthNum(date, 1)],
-                style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold),
-              ),
-              Text(
-                monthNum(date, 2).toString(),
-                style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold),
-              )
-            ],
-          ),
-        ),
-      )
-
-    );
+        ));
   }
-  int monthNum(String date, int id) {
-    int index = 0;
-    for(int i = 0; i<date.length; ++i){
-      if(date[i]=='t'){
-        index = i;
-        break;
-      }
-    }
 
-    date = date.substring(0, index);
+  String monthDay(String date) {
     // print(date);
-    final DateTime day = DateFormat("yyyy-mm-dd").parse(date);
+    final DateTime day = DateFormat('d/M/yyyy').parse(date);
+    final DateFormat formatter = DateFormat('E');
+    return formatter.format(day);
+  }
+
+  int monthNum(String date, int id) {
+    // print(date);
+    final DateTime day = DateFormat('d/M/yyyy').parse(date);
     // print(day);
 
     if (id == 1) {
+      // print(day.month);
       return day.month;
     } else if (id == 2) {
       return day.day;
@@ -324,5 +434,4 @@ class DateSelector extends StatelessWidget {
       return day.weekday;
     }
   }
-
 }
