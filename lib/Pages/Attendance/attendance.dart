@@ -4,7 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../constrants.dart';
 
 class Attendance extends StatefulWidget {
   final String fileId;
@@ -31,6 +34,7 @@ class _AttendanceState extends State<Attendance> {
   late var excel, excelTemp;
   late Sheet sheet;
   bool loading = true;
+
   // late Style present,absent;
   // String fileId = "1dAX-6eXw65CjQPq9f8neHUJVanOD_BJW";
 
@@ -64,14 +68,11 @@ class _AttendanceState extends State<Attendance> {
           if (val == "null") {
             break;
           } else {
-            if (i == 1) {
-              initialDropDownVal = val;
-            }
-            var newItem = DropdownMenuItem(
-              child: Text(val),
-              value: val,
+            var newItem = DateSelector(
+              date: val,
+              month: val,
             );
-            dropdownItems.add(newItem);
+            dateValues.add(newItem);
           }
         }
         setState(() {
@@ -112,8 +113,9 @@ class _AttendanceState extends State<Attendance> {
   }
 
   int itr = 1;
-  late String initialDropDownVal;
-  List<DropdownMenuItem<String>> dropdownItems = [];
+  // late String initialDropDownVal;
+  // List<DropdownMenuItem<String>> dropdownItems = [];
+  List<DateSelector> dateValues = [];
 
   CellStyle present = CellStyle(
     fontColorHex: "#Ffffff",
@@ -141,26 +143,22 @@ class _AttendanceState extends State<Attendance> {
               ),
             )
           : Column(children: [
-              Center(
-                  child: Column(
-                children: [
-                  DropdownButton(
-                    value: initialDropDownVal,
-                    icon: const Icon(Icons.keyboard_arrow_down),
-                    items: dropdownItems,
-                    onChanged: (String? value) {
-                      setState(() {
-                        initialDropDownVal = value!;
-                        appBarTitle = value;
-                        itr =
-                            dropdownItems.indexWhere((i) => i.value == value) +
-                                1;
-                        check = true;
-                      });
-                    },
-                  )
-                ],
-              )),
+            Container(
+              height: 100,
+
+              child: ListView.separated(
+                padding: EdgeInsets.all(16),
+                scrollDirection: Axis.horizontal,
+                  itemBuilder: (context,index) => DateSelector(date: dateValues[index].date, month: dateValues[index].month,ontap: (){
+                    setState(() {
+                      itr = index+1;
+                    });
+                  },),
+                  separatorBuilder: (context, _) => SizedBox(width: 12,),
+                  itemCount: dateValues.length),
+            ),
+
+
               Column(
                 children: [
                   SizedBox(
@@ -236,4 +234,95 @@ class _AttendanceState extends State<Attendance> {
             ]),
     ));
   }
+
+
+}
+
+class DateSelector extends StatelessWidget {
+  final String date;
+  final String month;
+  final VoidCallback? ontap;
+
+  const DateSelector(
+      {Key? key,
+        this.ontap,
+        required this.date,
+        required this.month})
+      : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    List month = [
+      'JAN',
+      'FEB',
+      'MAR',
+      'APR',
+      'MAY',
+      'JUN',
+      'JLY',
+      'AUG',
+      'SEP',
+      'OCT',
+      'NOV',
+      'DEC'
+    ];
+    return Material(
+      elevation: 2,
+      borderRadius: BorderRadius.circular(10),
+      child: InkWell(
+        onTap: ontap,
+        child: Container(
+
+          height: 50,
+          width: 50,
+          decoration: BoxDecoration(
+            color:  primaryColor,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                month[monthNum(date, 1)],
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+              Text(
+                monthNum(date, 2).toString(),
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              )
+            ],
+          ),
+        ),
+      )
+
+    );
+  }
+  int monthNum(String date, int id) {
+    int index = 0;
+    for(int i = 0; i<date.length; ++i){
+      if(date[i]=='t'){
+        index = i;
+        break;
+      }
+    }
+
+    date = date.substring(0, index);
+    // print(date);
+    final DateTime day = DateFormat("yyyy-mm-dd").parse(date);
+    // print(day);
+
+    if (id == 1) {
+      return day.month;
+    } else if (id == 2) {
+      return day.day;
+    } else {
+      return day.weekday;
+    }
+  }
+
 }
