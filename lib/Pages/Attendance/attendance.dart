@@ -60,7 +60,7 @@ class _AttendanceState extends State<Attendance> {
       }, onDone: () {
         excel = Excel.decodeBytes(dataStore);
         sheet = excel['Sheet1'];
-        for (int i = 2; i < sheet.maxCols; ++i) {
+        for (int i = 2; i < sheet.maxCols - 2; ++i) {
           var cell = sheet.rows[0][i]!.value;
           String val = cell.toString().toLowerCase();
           if (val == "null") {
@@ -94,8 +94,69 @@ class _AttendanceState extends State<Attendance> {
       loading = true;
     });
     try {
+      int present = -1, total = -1;
+      for (int i = 1; i < sheet.maxCols; ++i) {
+        var totalAttend = sheet
+            .cell(CellIndex.indexByColumnRow(rowIndex: 0, columnIndex: i))
+            .value
+            .toString();
+        if (totalAttend == 'Total attended') {
+          present = i;
+          break;
+        }
+      }
+      for (int i = 1; i < sheet.maxCols; ++i) {
+        var totalAttend = sheet
+            .cell(CellIndex.indexByColumnRow(rowIndex: 0, columnIndex: i))
+            .value
+            .toString();
+        if (totalAttend == 'Total lectures') {
+          total = i;
+          break;
+        }
+      }
+      // print(present);
+      // print(total);
+      if (present == -1 || total == -1) {
+        Fluttertoast.showToast(
+            msg: "Excel file format changed, please fix that");
+        setState(() {
+          loading = false;
+        });
+        return;
+      }
+      int mxR = sheet.maxRows;
+      int mxC = sheet.maxCols;
+      int to = 0;
+      for (int i = 1; i < mxR; ++i) {
+        int p = 0, t = 0;
+        for (int j = 2; j < mxC; ++j) {
+          var cell = sheet
+              .cell(CellIndex.indexByColumnRow(rowIndex: i, columnIndex: j));
+          if (cell.value.toString() == "present") {
+            p++;
+          }if (cell.value.toString() == "absent" ||
+              cell.value.toString() == 'present') {
+            t++;
+            if(t>to){
+              to = t;
+            }
+          }
+        }
+        // print(p);
+        // print(t);
+        var totalAttend = sheet.cell(
+            CellIndex.indexByColumnRow(rowIndex: i, columnIndex: present));
+        totalAttend.value = p;
+
+      }
+      for(int i = 1; i<mxR; ++i){
+        var totalLecture = sheet
+            .cell(CellIndex.indexByColumnRow(rowIndex: i, columnIndex: total));
+        totalLecture.value = to;
+      }
       var driveFile = new drive.File();
-      driveFile.name = fileName + '.xlsx';
+      driveFile.name = (fileName + '.xlsx').trim();
 
       final List<int> bytes = (excel.encode()) as List<int>;
       final Stream<List<int>> mediaStream =
@@ -103,7 +164,7 @@ class _AttendanceState extends State<Attendance> {
       var media = new drive.Media(mediaStream, bytes.length);
       await driveApi.files.update(driveFile, fileId, uploadMedia: media);
 
-      Fluttertoast.showToast(msg: "Sucesfully updated");
+      Fluttertoast.showToast(msg: "Attendance updated");
     } catch (e) {
       Fluttertoast.showToast(msg: e.toString());
     }
@@ -173,12 +234,6 @@ class _AttendanceState extends State<Attendance> {
                       itemBuilder: (context, index) {
                         var cell = sheet.cell(CellIndex.indexByColumnRow(
                             rowIndex: index + 1, columnIndex: itr + 1));
-                        String val = cell.value.toString().toLowerCase();
-                        // if (cell.value == null ||
-                        //     (val != 'present' && val != 'absent')) {
-                        //   cell.value = 'absent';
-                        //   cell.cellStyle = absent;
-                        // }
 
                         return ListTile(
                           subtitle:
@@ -196,7 +251,9 @@ class _AttendanceState extends State<Attendance> {
                                 child: Center(
                                   child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                        onPrimary: cell.value=='present' ? Colors.white : Colors.black,
+                                          onPrimary: cell.value == 'present'
+                                              ? Colors.white
+                                              : Colors.black,
                                           primary: cell.value == 'present'
                                               ? Colors.green
                                               : Colors.white),
@@ -217,9 +274,10 @@ class _AttendanceState extends State<Attendance> {
                                 height: 40, // <-- Your height
                                 child: Center(
                                   child: ElevatedButton(
-
                                       style: ElevatedButton.styleFrom(
-                                        onPrimary: cell.value=='absent'?Colors.white:Colors.black,
+                                          onPrimary: cell.value == 'absent'
+                                              ? Colors.white
+                                              : Colors.black,
                                           primary: cell.value == 'absent'
                                               ? Colors.red
                                               : Colors.white),
@@ -229,41 +287,9 @@ class _AttendanceState extends State<Attendance> {
                                           cell.cellStyle = absent;
                                         });
                                       },
-                                      child: const Text('A'
-                                      )),
+                                      child: const Text('A')),
                                 ),
                               ),
-
-                              // (cell.value.toString().toLowerCase().trim() ==
-                              //         'absent')
-                              //     ? ElevatedButton(
-                              //         onPressed: () {
-                              //           setState(() {
-                              //             cell.value = "present";
-                              //             cell.cellStyle = present;
-                              //           });
-                              //         },
-                              //         child: const Text("Mark Present"),
-                              //         style: ButtonStyle(
-                              //           backgroundColor:
-                              //               MaterialStateProperty.all(
-                              //                   Colors.green),
-                              //         ),
-                              //       )
-                              //     : ElevatedButton(
-                              //         onPressed: () {
-                              //           setState(() {
-                              //             cell.value = "absent";
-                              //             cell.cellStyle = absent;
-                              //           });
-                              //         },
-                              //         child: const Text("Mark Absent"),
-                              //         style: ButtonStyle(
-                              //           backgroundColor:
-                              //               MaterialStateProperty.all(
-                              //                   Colors.red),
-                              //         ),
-                              //       ),
                             ],
                           ),
                         );

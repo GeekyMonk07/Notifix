@@ -21,7 +21,7 @@ class Controller extends StatelessWidget {
         if (snapshot.hasError) {
           return const Text('ERROR');
         } else if (!snapshot.hasData) {
-          return const Text('Loading...');
+          return Center(child:CircularProgressIndicator(color: Colors.purple,));
         } else {
           final data = snapshot.data!;
           if (prefs.containsKey('version') &&

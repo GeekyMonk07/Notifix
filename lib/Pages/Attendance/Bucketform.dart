@@ -237,6 +237,7 @@ class _BucketformState extends State<Bucketform> {
     var firstDayThisMonth = new DateTime(start_slot.year, start_slot.month, start_slot.day);
     var firstDayNextMonth = new DateTime(end_slot.year, end_slot.month, end_slot.day);
     int totalDays = firstDayNextMonth.difference(firstDayThisMonth).inDays+1;
+    print(totalDays);
     var c1 = sheet.cell(CellIndex.indexByColumnRow(
         rowIndex: 0, columnIndex: 0));
     c1.value = 'Roll No';
@@ -246,8 +247,12 @@ class _BucketformState extends State<Bucketform> {
     for(int i = 0; i<totalDays; ++i){
       var cell = sheet.cell(CellIndex.indexByColumnRow(
           rowIndex: 0, columnIndex: i+2));
-      cell.value = "${i+1}/${start_slot.month}/${start_slot.year}";
+      cell.value = "${start_slot.day+i}/${start_slot.month}/${start_slot.year}";
     }
+    var totalAttend = sheet.cell(CellIndex.indexByColumnRow(rowIndex: 0,columnIndex: totalDays+2));
+    totalAttend.value = "Total attended";
+    var totalClasses = sheet.cell(CellIndex.indexByColumnRow(rowIndex: 0,columnIndex: totalDays+3));
+    totalClasses.value = "Total lectures";
     File(Path.join(file.path))
       ..createSync(recursive: true)
       ..writeAsBytesSync(excel.encode()!);

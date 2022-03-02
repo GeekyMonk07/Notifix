@@ -28,17 +28,20 @@ class _AttendenceBucketState extends State<AttendenceBucket> {
   String folderId;
   String key_id;
   String folder_name;
+  bool isLoading = false;
 
   _AttendenceBucketState(
       {required this.folderId, required this.key_id, required this.driveApi,required this.folder_name});
 
   late Query _ref;
   late final user;
+  late TextEditingController controller;
   late DatabaseReference reference;
 
   @override
   void initState() {
     super.initState();
+    controller = TextEditingController();
     user = FirebaseAuth.instance.currentUser;
     final FirebaseDatabase database = FirebaseDatabase.instance;
     _ref = database.reference().child('/faculty/${user.uid}/attendance/sub_folders/${key_id}/new_files');
@@ -51,7 +54,7 @@ class _AttendenceBucketState extends State<AttendenceBucket> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return isLoading ? Center(child: CircularProgressIndicator(color: Colors.purple,),) :Scaffold(
         body: Material(
       child: SafeArea(
           child: Column(
@@ -85,6 +88,7 @@ class _AttendenceBucketState extends State<AttendenceBucket> {
                                 folderId : folderId,
                                 key_id: key_id,
                                   )));
+
                     },
                     icon: Icon(Icons.add_box),
                   ),
@@ -140,6 +144,9 @@ class _AttendenceBucketState extends State<AttendenceBucket> {
                               ElevatedButton(
                                 onPressed: () async {
                                   try {
+                                    setState(() {
+                                      isLoading = true;
+                                    });
                                     await driveApi.files
                                         .delete(snapshot.value['Sheet_uid']);
                                     await reference
@@ -149,6 +156,10 @@ class _AttendenceBucketState extends State<AttendenceBucket> {
                                         msg: "Deleted succesfully");
                                   } catch (e) {
                                     Fluttertoast.showToast(msg: e.toString());
+                                  }finally{
+                                    setState(() {
+                                      isLoading = false;
+                                    });
                                   }
                                 },
                                 child: const Text("Delete"),
@@ -180,6 +191,7 @@ class _AttendenceBucketState extends State<AttendenceBucket> {
         // <-----------------------------------------------Top Bar ends-------------------------------------------->
       )),
     ));
-    ;
+
   }
+  
 }
